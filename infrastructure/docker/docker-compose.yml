@@ -1,0 +1,21 @@
+services:
+  # ローカル開発環境
+  app:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../frontend/src:/app/src
+      - ../../frontend/public:/app/public
+      - ../../frontend/next.config.mjs:/app/next.config.mjs
+      - ../../frontend/tailwind.config.ts:/app/tailwind.config.ts
+      - ../../frontend/tsconfig.json:/app/tsconfig.json
+      - ../../frontend/postcss.config.mjs:/app/postcss.config.mjs
+    command: pnpm dev
+
+networks:
+  nomoca-network:
+    driver: bridge
+

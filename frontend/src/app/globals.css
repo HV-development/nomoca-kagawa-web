@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 42 43% 97%;
+    --foreground: 180 48% 32%;
+    --card: 0 0% 100%;
+    --card-foreground: 180 48% 32%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 180 48% 32%;
+    --primary: 178 48% 32%;
+    --primary-foreground: 42 43% 97%;
+    --secondary: 42 30% 92%;
+    --secondary-foreground: 180 48% 32%;
+    --muted: 42 30% 92%;
+    --muted-foreground: 180 20% 45%;
+    --accent: 42 30% 92%;
+    --accent-foreground: 180 48% 32%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 42 20% 85%;
+    --input: 42 20% 85%;
+    --ring: 178 48% 32%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
