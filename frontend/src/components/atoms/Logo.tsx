@@ -10,17 +10,17 @@ interface LogoProps {
 
 export function Logo({ size = "md", className = "", onClick }: LogoProps) {
   const sizeClasses = {
-    sm: "h-4",
-    md: "h-6",
-    lg: "h-8",
+    sm: "h-10",
+    md: "h-16",
+    lg: "h-20",
   }
 
   const WrapperComponent = onClick ? "button" : "div"
 
   const pixelSizes = {
-    sm: 16,
-    md: 24,
-    lg: 32,
+    sm: 40,
+    md: 64,
+    lg: 80,
   }
 
   return (

@@ -65,7 +65,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
 
   const fetchPlans = useCallback(async () => {
     try {
-      // さいたま市アプリ連携状態に応じてクエリパラメータを構築
+      // 高松市アプリ連携状態に応じてクエリパラメータを構築
       const queryParams = new URLSearchParams({
         status: 'active',
         limit: '50',
@@ -112,7 +112,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
     }
   }, [saitamaAppLinked])
 
-  // ユーザー情報を取得してさいたま市アプリ連携状態を確認
+  // ユーザー情報を取得して高松市アプリ連携状態を確認
   useEffect(() => {
     fetchUserInfo()
   }, [fetchUserInfo])
@@ -179,7 +179,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
 
   const handleLinkSaitamaApp = async () => {
     if (!saitamaAppId || saitamaAppId.trim() === "") {
-      setLinkError("さいたま市アプリIDを入力してください")
+      setLinkError("高松市アプリIDを入力してください")
       return
     }
 
@@ -206,7 +206,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
       const pointsMessage = typeof data.pointsGranted === 'number' && data.pointsGranted > 0
         ? `${data.pointsGranted}ポイントを付与しました！` 
         : 'ポイントが付与されました！'
-      setModalMessage(`さいたま市みんなのアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
+      setModalMessage(`高松市みんなのアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
       
       // モーダルを表示
       setShowSuccessModal(true)
@@ -218,7 +218,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
       await fetchUserInfo()
       await fetchPlans()
     } catch {
-      setLinkError('さいたま市アプリ連携中にエラーが発生しました')
+      setLinkError('高松市アプリ連携中にエラーが発生しました')
     } finally {
       setIsLinking(false)
     }
@@ -374,11 +374,11 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
           const isCurrentPlan = plan.id === currentPlan.id
           const isSelected = selectedPlan === plan.id
           
-          // さいたま市アプリ連携済みの場合の価格表示
+          // 高松市アプリ連携済みの場合の価格表示
           const isSaitamaLinked = saitamaAppLinked || linkedSaitamaAppId;
-          const saitamaDiscountPrice = 480; // さいたま市アプリ連携時の価格
+          const saitamaDiscountPrice = 480; // 高松市アプリ連携時の価格
           
-          // さいたま市アプリ連携済みで、通常価格が980円の場合
+          // 高松市アプリ連携済みで、通常価格が980円の場合
           if (isSaitamaLinked && plan.price === 980) {
             return (
               <div key={plan.id} className="relative">
@@ -388,7 +388,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
                   features={plan.features}
                   price={`¥${saitamaDiscountPrice.toLocaleString()}/月`}
                   originalPrice={`¥${plan.price.toLocaleString()}/月`}
-                  badge="さいたま市アプリ連携でお得"
+                  badge="高松市アプリ連携でお得"
                   isSelected={isSelected}
                   onSelect={() => handlePlanSelect(plan.id)}
                   disabled={isCurrentPlan}
@@ -436,7 +436,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
             <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
             <div className="flex-1">
               <p className="text-sm text-gray-900">
-                <span className="font-medium">さいたま市みんなのアプリ連携:</span>
+                <span className="font-medium">高松市みんなのアプリ連携:</span>
               </p>
               <p className="text-xs text-gray-600 font-mono break-all mt-1">
                 {linkedSaitamaAppId || '連携済み'}
@@ -447,7 +447,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
         </div>
       )}
 
-      {/* さいたま市みんなのアプリ連携フォーム（未連携の場合のみ表示） */}
+      {/* 高松市みんなのアプリ連携フォーム（未連携の場合のみ表示） */}
       {!saitamaAppLinked && !linkedSaitamaAppId && (
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5 space-y-4">
           {/* 割引強調セクション */}
@@ -464,7 +464,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
                   ¥480/月
                 </p>
                 <p className="text-gray-700 text-sm font-medium">
-                  さいたま市みんなのアプリ連携で
+                  高松市みんなのアプリ連携で
                 </p>
                 <p className="text-sm font-bold text-indigo-700">
                   月額480円でご利用いただけます
@@ -476,9 +476,9 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
           {/* アプリ説明とダウンロードリンク */}
           <div className="bg-white rounded-lg p-4 space-y-3">
             <div>
-              <h4 className="font-bold text-gray-900 text-sm mb-1">さいたま市みんなのアプリ</h4>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">高松市みんなのアプリ</h4>
               <p className="text-xs text-gray-700 leading-relaxed">
-                さいたま市が提供する公式アプリです。<br />
+                高松市が提供する公式アプリです。<br />
                 アプリと連携することで、特別な割引価格でご利用いただけます。
               </p>
             </div>
@@ -526,7 +526,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
           <div className="bg-white rounded-lg p-4 space-y-3">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                さいたま市みんなのアプリ ユーザーID
+                高松市みんなのアプリ ユーザーID
               </label>
               <input
                 type="text"
@@ -628,7 +628,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
           </div>
           <h3 className="text-lg font-bold text-gray-900 mb-2">
-            さいたま市みんなのアプリとの連携が完了しました！
+            高松市みんなのアプリとの連携が完了しました！
           </h3>
           <p className="text-gray-600 mb-4 whitespace-pre-line">
             {modalMessage}

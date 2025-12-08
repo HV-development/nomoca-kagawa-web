@@ -2,7 +2,7 @@ services:
   # ローカル開発環境
   app:
     build:
-      context: ../../
+      context: ../../../
       dockerfile: nomoca-kagawa-web/infrastructure/docker/Dockerfile
       args:
         - GITHUB_TOKEN=${GITHUB_TOKEN}

@@ -32,13 +32,13 @@ export function NavigationBar({
   }
 
   const tabs = [
-    { id: "home", label: "ホーム", icon: Map, color: "text-green-500" },
-    { id: "favorites", label: "お気に入り", icon: Heart, color: "text-green-500" },
+    { id: "home", label: "ホーム", icon: Map, color: "text-green-600" },
+    { id: "favorites", label: "お気に入り", icon: Heart, color: "text-green-600" },
     {
       id: "mypage",
       label: isAuthenticated ? "マイページ" : "ログイン",
       icon: isAuthenticated ? MoreHorizontal : User,
-      color: "text-green-500",
+      color: "text-green-600",
     },
   ]
 

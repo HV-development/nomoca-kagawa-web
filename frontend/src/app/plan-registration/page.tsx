@@ -154,7 +154,7 @@ export default function PlanRegistrationPage() {
       // 明示的に渡された状態を優先、なければ現在の状態を使用
       const linkedState = explicitLinkedState !== undefined ? explicitLinkedState : saitamaAppLinked
 
-      // さいたま市アプリ連携状態に応じてクエリパラメータを構築
+      // 高松市アプリ連携状態に応じてクエリパラメータを構築
       const queryParams = new URLSearchParams({
         status: 'active',
         limit: '50',
@@ -193,7 +193,7 @@ export default function PlanRegistrationPage() {
     }
   }, [saitamaAppLinked])
 
-  // ユーザー情報を取得してさいたま市アプリ連携状態を確認
+  // ユーザー情報を取得して高松市アプリ連携状態を確認
   useEffect(() => {
     if (isClient && saitamaAppLinked === null) {
       // URLパラメータでsaitamaAppLinkedが設定されていない場合のみ取得

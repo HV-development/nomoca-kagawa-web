@@ -1,6 +1,6 @@
 /**
  * エリア値から市区町村名へのマッピング
- * さいたま市のエリアを定義
+ * 高松市のエリアを定義
  */
 
 const AREA_TO_CITY_MAP: Record<string, string> = {

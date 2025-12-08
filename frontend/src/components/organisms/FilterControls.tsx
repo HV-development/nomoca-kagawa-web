@@ -162,7 +162,7 @@ export function FilterControls({
       <div className="grid grid-cols-3 gap-1 px-2 py-4">
         <button
           onClick={handleCurrentLocationClick}
-          className="w-full flex items-center justify-center gap-1 px-2 py-2 border border-gray-300 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50 rounded-full text-xs font-medium transition-colors whitespace-nowrap"
+          className="w-full flex items-center justify-center gap-1 px-2 py-2 border border-gray-300 bg-white text-gray-700 hover:border-green-600 hover:bg-green-50 focus:border-green-600 focus:ring-green-600 rounded-full text-xs font-medium transition-colors whitespace-nowrap"
         >
           近くのお店
         </button>
@@ -170,7 +170,7 @@ export function FilterControls({
           onClick={handleAreaPopupOpen}
           className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap ${selectedArea
             ? "border-green-500 bg-green-50 text-green-700"
-            : "border-gray-300 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
+            : "border-gray-300 bg-white text-gray-700 hover:border-green-600 hover:bg-green-50"
             }`}
         >
           <span>エリア</span>
@@ -184,7 +184,7 @@ export function FilterControls({
           onClick={handleGenrePopupOpen}
           className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap ${selectedGenres.length > 0
             ? "border-green-700 bg-green-100 text-green-800"
-            : "border-gray-300 bg-white text-gray-700 hover:border-green-400 hover:bg-green-100"
+            : "border-gray-300 bg-white text-gray-700 hover:border-green-600 hover:bg-green-100"
             }`}
         >
           <span>ジャンル</span>

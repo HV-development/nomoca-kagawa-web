@@ -26,7 +26,7 @@ export default function RegisterCompletePage() {
       sessionStorage.setItem('userEmail', userEmail)
     }
     
-    // URLパラメータからさいたま市アプリ連携フラグを取得
+    // URLパラメータから高松市アプリ連携フラグを取得
     const urlParams = new URLSearchParams(window.location.search)
     const saitamaAppLinked = urlParams.get('saitamaAppLinked') === 'true'
     
@@ -81,7 +81,7 @@ export default function RegisterCompletePage() {
                 <h2 className="text-lg font-bold text-green-900 mb-3">🎉 ようこそTAMAYOIへ！</h2>
                 <div className="text-green-800 space-y-2">
                   <p>アカウントの作成が正常に完了しました。</p>
-                  <p>さいたま市内の美味しいお店で</p>
+                  <p>高松市内の美味しいお店で</p>
                   <p>お得なクーポンをお楽しみください。</p>
                 </div>
               </div>

@@ -23,10 +23,10 @@ export function Button({ children, onClick, type = "button", variant = "primary"
     "px-3 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 whitespace-nowrap"
 
   const variantClasses = {
-    primary: "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500",
-    secondary: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-500",
+    primary: "bg-green-600 text-white hover:bg-green-700 focus:ring-green-600",
+    secondary: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-600",
     location:
-      "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-500",
+      "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-green-600",
   }
 
   return (

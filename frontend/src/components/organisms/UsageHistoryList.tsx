@@ -46,9 +46,9 @@ export function UsageHistoryList(props: UsageHistoryListProps) {
             <Image
               src="/logo.svg"
               alt="TAMAYOI"
-              width={144}
-              height={32}
-              className="h-8 object-contain"
+              width={360}
+              height={80}
+              className="h-20 object-contain"
             />
             <div className="w-12"></div>
           </div>

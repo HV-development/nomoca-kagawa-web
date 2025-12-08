@@ -78,7 +78,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
             <Store className="w-8 h-8 text-green-600 mr-3" />
             <h1 className="text-2xl font-bold text-gray-800">店舗紹介</h1>
           </div>
-          
+
           <p className="text-gray-600 mb-6">
             お気に入りの店舗を3店舗ご紹介ください。店舗名とおすすめメニューを入力してください。
           </p>
@@ -87,7 +87,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
             {/* 店舗1 */}
             <div className="border-2 border-green-200 rounded-lg p-4">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">店舗 1</h3>
-              
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   店舗名 <span className="text-red-500">*</span>
@@ -96,10 +96,9 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName1}
                   onChange={(e) => handleChange('storeName1', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.storeName1 ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="例: カフェ たまのみ"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName1 ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="例: カフェ nomocaKagawa"
                   disabled={isLoading}
                 />
                 {errors.storeName1 && (
@@ -115,9 +114,8 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu1}
                   onChange={(e) => handleChange('recommendedMenu1', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.recommendedMenu1 ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu1 ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="例: 特製パスタランチ"
                   disabled={isLoading}
                 />
@@ -130,7 +128,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
             {/* 店舗2 */}
             <div className="border-2 border-green-200 rounded-lg p-4">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">店舗 2</h3>
-              
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   店舗名 <span className="text-red-500">*</span>
@@ -139,9 +137,8 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName2}
                   onChange={(e) => handleChange('storeName2', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.storeName2 ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName2 ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="例: 居酒屋 さくら"
                   disabled={isLoading}
                 />
@@ -158,9 +155,8 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu2}
                   onChange={(e) => handleChange('recommendedMenu2', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.recommendedMenu2 ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu2 ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="例: 刺身盛り合わせ"
                   disabled={isLoading}
                 />
@@ -173,7 +169,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
             {/* 店舗3 */}
             <div className="border-2 border-green-200 rounded-lg p-4">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">店舗 3</h3>
-              
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   店舗名 <span className="text-red-500">*</span>
@@ -182,9 +178,8 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName3}
                   onChange={(e) => handleChange('storeName3', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.storeName3 ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName3 ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="例: ラーメン 一番"
                   disabled={isLoading}
                 />
@@ -201,9 +196,8 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu3}
                   onChange={(e) => handleChange('recommendedMenu3', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-                    errors.recommendedMenu3 ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu3 ? 'border-red-500' : 'border-gray-300'
+                    }`}
                   placeholder="例: 特製味噌ラーメン"
                   disabled={isLoading}
                 />

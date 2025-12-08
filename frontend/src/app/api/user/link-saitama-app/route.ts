@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     if (!saitamaAppId || saitamaAppId.trim() === '') {
       return NextResponse.json(
-        { error: 'さいたま市アプリIDを入力してください' },
+        { error: '高松市アプリIDを入力してください' },
         { status: 400 }
       )
     }
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       console.error('Backend API error:', data)
       return NextResponse.json(
-        { error: data.error?.message || 'さいたま市アプリ連携に失敗しました' },
+        { error: data.error?.message || '高松市アプリ連携に失敗しました' },
         { status: response.status }
       )
     }
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Link saitama app route error:', error)
     return NextResponse.json(
-      { error: 'さいたま市アプリ連携中にエラーが発生しました' },
+      { error: '高松市アプリ連携中にエラーが発生しました' },
       { status: 500 }
     )
   }

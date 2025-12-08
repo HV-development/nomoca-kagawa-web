@@ -35,7 +35,7 @@ export function PlanCard({
           ? "border-gray-300 bg-gray-100 cursor-not-allowed opacity-60" // グレーアウトスタイル
           : isSelected
             ? "border-green-500 bg-green-50 shadow-lg cursor-pointer"
-            : "border-gray-200 bg-white hover:border-green-300 hover:shadow-md cursor-pointer"
+            : "border-gray-200 bg-white hover:border-green-600 hover:shadow-md cursor-pointer"
       } ${className}`}
     >
       {/* バッジ */}

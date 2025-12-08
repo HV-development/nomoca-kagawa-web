@@ -215,7 +215,7 @@ export function PasswordChangeForm({
                 placeholder=""
                 value={formData.currentPassword}
                 onChange={(e) => updateField('currentPassword', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
               />
               {errors.currentPassword && <p className="mt-1 text-sm text-red-500">{errors.currentPassword}</p>}
             </div>
@@ -229,7 +229,7 @@ export function PasswordChangeForm({
               placeholder=""
               value={formData.newPassword}
               onChange={(e) => updateField('newPassword', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
             />
             {errors.newPassword && <p className="mt-1 text-sm text-red-500">{errors.newPassword}</p>}
           </div>
@@ -242,7 +242,7 @@ export function PasswordChangeForm({
               placeholder=""
               value={formData.confirmPassword}
               onChange={(e) => updateField('confirmPassword', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
             />
             {errors.confirmPassword && <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>}
           </div>

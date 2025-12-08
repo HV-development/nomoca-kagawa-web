@@ -36,7 +36,7 @@ export function RegisterConfirmationDisplay({
     { label: "住所", value: data.address },
     { label: "生年月日", value: formatDate(data.birthDate) },
     { label: "性別", value: genderLabels[data.gender as keyof typeof genderLabels] },
-    { label: "さいたま市みんなのアプリID", value: data.saitamaAppId },
+    { label: "高松市みんなのアプリID", value: data.saitamaAppId },
     { label: "パスワード", value: "●".repeat(data.password.length) },
     { label: "パスワード確認", value: "●".repeat(data.passwordConfirm.length) },
   ]

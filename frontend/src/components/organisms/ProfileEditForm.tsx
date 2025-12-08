@@ -87,7 +87,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
     birthDate: "生年月日",
     gender: "性別",
     phone: "電話番号",
-    saitamaAppId: "さいたま市みんなのアプリID",
+    saitamaAppId: "高松市みんなのアプリID",
   } as const
 
   const validateForm = () => {
@@ -334,7 +334,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
               value={formData.postalCode}
               onChange={(e) => updateFormData("postalCode", e.target.value)}
               onBlur={() => handleBlur("postalCode")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
             />
           </div>
           <button

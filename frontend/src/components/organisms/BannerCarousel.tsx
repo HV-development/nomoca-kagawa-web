@@ -13,7 +13,7 @@ const banners: Banner[] = [
   {
     id: "banner-1",
     title: "おいしい酒場。",
-    subtitle: "さいたまの夜を彩る特別な一杯",
+    subtitle: "高松の夜を彩る特別な一杯",
     imageUrl: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
     backgroundColor: "bg-gradient-to-r from-orange-600 to-red-600",
     textColor: "text-white"

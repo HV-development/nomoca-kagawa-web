@@ -24,7 +24,7 @@ export function CouponCard({ coupon, onUse, className = "" }: CouponCardProps) {
 
   return (
     <div
-      className={`bg-white rounded-2xl border-2 border-green-200 hover:border-green-300 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden ${className}`}
+      className={`bg-white rounded-2xl border-2 border-green-200 hover:border-green-600 shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden ${className}`}
     >
       {/* クーポン画像 */}
       {shouldShowPlaceholder ? (

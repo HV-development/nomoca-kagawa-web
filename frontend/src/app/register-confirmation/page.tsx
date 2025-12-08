@@ -207,7 +207,7 @@ export default function RegisterConfirmationPage() {
         // 登録成功後はサーバーサイドセッションをクリア
         await clearRegisterSession()
 
-        // さいたま市アプリ連携でポイント付与があった場合はモーダルを表示
+        // 高松市アプリ連携でポイント付与があった場合はモーダルを表示
         if (result.pointsGranted) {
           setPointsGranted(result.pointsGranted)
           setShowSuccessModal(true)
@@ -239,7 +239,7 @@ export default function RegisterConfirmationPage() {
             // ログイン画面にリダイレクト
             router.push(`/?error=already_registered`)
           } else {
-            // さいたま市アプリID重複の場合は新規登録画面に戻す
+            // 高松市アプリID重複の場合は新規登録画面に戻す
             const tokenParam = token ? `?token=${encodeURIComponent(token)}` : ''
             const shopIdParam = shopId ? `&shop_id=${encodeURIComponent(shopId)}` : ''
             const errorParam = `&error=${encodeURIComponent(errorMessage)}`
@@ -305,7 +305,7 @@ export default function RegisterConfirmationPage() {
 
   const handleSaitamaFailedModalClose = async () => {
     setShowSaitamaFailedModal(false)
-    // さいたま市アプリ連携なしでプラン登録画面に遷移
+    // 高松市アプリ連携なしでプラン登録画面に遷移
     await setRegisterSessionItem('userEmail', email)
     if (typeof window !== 'undefined') {
       window.location.href = '/plan-registration'
@@ -358,7 +358,7 @@ export default function RegisterConfirmationPage() {
       >
         <div className="space-y-4">
           <p className="text-gray-700 whitespace-pre-line">
-            {`さいたま市みんなのアプリとの連携が完了しました。\n\n${pointsGranted}ポイントを付与しました！\n\nお得なプランが表示されます。`}
+            {`高松市みんなのアプリとの連携が完了しました。\n\n${pointsGranted}ポイントを付与しました！\n\nお得なプランが表示されます。`}
           </p>
           <Button
             onClick={handleModalClose}
@@ -369,7 +369,7 @@ export default function RegisterConfirmationPage() {
         </div>
       </Modal>
 
-      {/* さいたま市アプリ連携失敗モーダル */}
+      {/* 高松市アプリ連携失敗モーダル */}
       <Modal
         isOpen={showSaitamaFailedModal}
         onClose={handleSaitamaFailedModalClose}
@@ -377,7 +377,7 @@ export default function RegisterConfirmationPage() {
       >
         <div className="space-y-4">
           <p className="text-gray-700 whitespace-pre-line">
-            {`会員登録は完了しましたが、さいたま市みんなのアプリとの連携に失敗しました。\n\nプラン登録画面で再度連携をお試しください。`}
+            {`会員登録は完了しましたが、高松市みんなのアプリとの連携に失敗しました。\n\nプラン登録画面で再度連携をお試しください。`}
           </p>
           <Button
             onClick={handleSaitamaFailedModalClose}

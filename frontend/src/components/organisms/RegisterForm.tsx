@@ -323,7 +323,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               value={formData.postalCode}
               onChange={(e) => updateFormData("postalCode", e.target.value)}
               onBlur={() => handleFieldBlur("postalCode")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
             />
           </div>
           <Button
@@ -351,7 +351,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
           value={formData.address}
           onChange={(e) => updateFormData("address", e.target.value)}
           onBlur={() => handleFieldBlur("address")}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
         />
         {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
       </div>
@@ -383,7 +383,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                   setAlcoholRestrictionError("")
                 }
               }}
-              className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer"
+              className="mt-1 h-4 w-4 text-green-600 focus:ring-green-600 border-gray-300 rounded cursor-pointer"
             />
             <label htmlFor="alcoholRestriction" className="ml-2 text-sm text-gray-700 cursor-pointer">
               20歳未満の方はアルコールは飲めません
@@ -417,11 +417,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         error={errors.gender}
       />
 
-      {/* さいたま市みんなのアプリID */}
+      {/* 高松市みんなのアプリID */}
       <Input
         type="text"
-        label="さいたま市みんなのアプリ（任意）"
-        placeholder="さいたま市みんなのアプリIDを入力"
+        label="高松市みんなのアプリ（任意）"
+        placeholder="高松市みんなのアプリIDを入力"
         value={formData.saitamaAppId || ""}
         onChange={(value) => updateFormData("saitamaAppId", value)}
         onBlur={() => handleFieldBlur("saitamaAppId")}
@@ -463,7 +463,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
                 setTermsError("")
               }
             }}
-            className="mt-1 h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer"
+            className="mt-1 h-4 w-4 text-green-600 focus:ring-green-600 border-gray-300 rounded cursor-pointer"
           />
           <label htmlFor="terms" className="ml-2 text-sm text-gray-700 cursor-pointer">
             <a

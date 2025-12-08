@@ -48,7 +48,7 @@ export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClea
 
           {/* 説明テキスト */}
           <div className="text-sm text-gray-600 mb-4">
-            さいたま市内のエリアを選択してください
+            高松市内のエリアを選択してください
           </div>
 
           {/* エリア選択グリッド - スマホ最適化 */}

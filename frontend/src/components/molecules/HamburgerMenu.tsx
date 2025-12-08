@@ -27,7 +27,7 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       label: "利用規約",
       onClick: () => {
         // PDFファイルを新しいタブで開く
-        window.open("/たまのみサービス利用規約.pdf", "_blank")
+        window.open("/nomocaKagawaサービス利用規約.pdf", "_blank")
         onMenuItemClick("terms")
       },
     },
@@ -94,8 +94,8 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
 
       {/* オーバーレイ */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/20 z-40" 
+        <div
+          className="fixed inset-0 bg-black/20 z-40"
           onClick={handleOverlayClick}
         ></div>
       )}

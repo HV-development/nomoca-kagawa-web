@@ -71,7 +71,7 @@ export default function SaitamaAppGuidePage() {
             プラン登録に戻る
           </Link>
           <h1 className="text-base font-bold text-gray-900 mb-2">
-            さいたま市みんなのアプリ 使い方ガイド
+            高松市みんなのアプリ 使い方ガイド
           </h1>
           <p className="text-sm text-gray-600">
             ID連携の方法についてご説明します。
@@ -111,7 +111,7 @@ export default function SaitamaAppGuidePage() {
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-2 text-sm">1. アプリを開く</h3>
               <p className="text-gray-700 text-xs">
-                ダウンロードした「さいたま市みんなのアプリ」を開いてください。
+                ダウンロードした「高松市みんなのアプリ」を開いてください。
               </p>
             </div>
             
@@ -152,7 +152,7 @@ export default function SaitamaAppGuidePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                さいたま市みんなのアプリ ユーザーID
+                高松市みんなのアプリ ユーザーID
               </label>
               <input
                 type="text"
@@ -200,7 +200,7 @@ export default function SaitamaAppGuidePage() {
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">
-              さいたま市みんなのアプリとの連携が完了しました！
+              高松市みんなのアプリとの連携が完了しました！
             </h3>
             <p className="text-gray-600 mb-4">
               {grantedPoints > 0 ? `${grantedPoints}ポイントを獲得しました！` : '連携が完了しました。'}

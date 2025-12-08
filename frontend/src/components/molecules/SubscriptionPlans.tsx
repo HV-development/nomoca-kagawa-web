@@ -17,7 +17,7 @@ export function SubscriptionPlans({ onSubscribe, isLoading = false }: Subscripti
       id: "monthly",
       title: "マンスリープラン",
       description: "毎日お得にお酒を楽しめる定番プラン",
-      features: ["1日1杯お酒が無料", "さいたま市内の加盟店で利用可能", "いつでもキャンセル可能"],
+      features: ["1日1杯お酒が無料", "高松市内の加盟店で利用可能", "いつでもキャンセル可能"],
       price: "月額980円",
       badge: "最初の1ヶ月無料",
     },
@@ -40,7 +40,7 @@ export function SubscriptionPlans({ onSubscribe, isLoading = false }: Subscripti
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">プランを選択してください</h2>
-        <p className="text-gray-600">TAMAYOIでさいたまの夜をもっと楽しく</p>
+        <p className="text-gray-600">TAMAYOIで高松の夜をもっと楽しく</p>
       </div>
 
       {/* プラン選択 */}

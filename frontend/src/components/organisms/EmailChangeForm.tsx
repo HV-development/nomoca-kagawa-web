@@ -131,7 +131,7 @@ export function EmailChangeForm({ currentEmail, initialNewEmail = "", onSubmit, 
               placeholder=""
               value={formData.currentPassword}
               onChange={(e) => updateField("currentPassword", e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
             />
             {errors.currentPassword && <p className="mt-1 text-sm text-red-500">{errors.currentPassword}</p>}
           </div>
@@ -146,7 +146,7 @@ export function EmailChangeForm({ currentEmail, initialNewEmail = "", onSubmit, 
               placeholder=""
               value={formData.newEmail}
               onChange={(e) => updateField("newEmail", e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
             />
             {errors.newEmail && <p className="mt-1 text-sm text-red-500">{errors.newEmail}</p>}
           </div>
@@ -161,7 +161,7 @@ export function EmailChangeForm({ currentEmail, initialNewEmail = "", onSubmit, 
               placeholder=""
               value={formData.confirmEmail}
               onChange={(e) => updateField("confirmEmail", e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors"
             />
             {errors.confirmEmail && <p className="mt-1 text-sm text-red-500">{errors.confirmEmail}</p>}
           </div>
