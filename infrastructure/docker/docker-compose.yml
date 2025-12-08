@@ -3,9 +3,13 @@ services:
   app:
     build:
       context: ../../
-      dockerfile: infrastructure/docker/Dockerfile
+      dockerfile: nomoca-kagawa-web/infrastructure/docker/Dockerfile
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
     ports:
       - "3000:3000"
+    env_file:
+      - ../../frontend/.env
     volumes:
       - ../../frontend/src:/app/src
       - ../../frontend/public:/app/public
@@ -17,5 +21,6 @@ services:
 
 networks:
   nomoca-network:
-    driver: bridge
+    external: true
+    name: nomoca-network
 
