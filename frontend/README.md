@@ -15,7 +15,7 @@ nomoca-kagawa Web Frontend - Next.js + TypeScript + Tailwind CSS
 
 - Node.js 18以上
 - pnpm
-- nomoca-kagawa-api が起動していること
+- tamanomi-api が起動していること
 
 ### クイックスタート
 
@@ -93,11 +93,11 @@ pnpm stop:all
 ### API接続エラー
 
 ```bash
-# nomoca-kagawa-apiが起動しているか確認
+# tamanomi-apiが起動しているか確認
 curl http://localhost:3002/health
 
 # APIサーバーを起動
-cd ../nomoca-kagawa-api && pnpm dev
+cd ../tamanomi-api && pnpm dev
 ```
 
 ### ビルドエラー

@@ -140,7 +140,7 @@ components/templates/ (プレゼンテーション)
 プロジェクトは以下の2層構造を採用：
 
 ```
-Browser → 内部API (Next.js) → バックエンドAPI (nomoca-kagawa-api)
+Browser → 内部API (Next.js) → バックエンドAPI (tamanomi-api)
 ```
 
 #### 内部API（Next.js API Routes）
@@ -148,7 +148,7 @@ Browser → 内部API (Next.js) → バックエンドAPI (nomoca-kagawa-api)
 - **URL**: `/api/auth/pre-register` など（バージョン番号なし）
 - **責務**: プロキシ、バリデーション、エラーハンドリング
 
-#### バックエンドAPI（nomoca-kagawa-api）
+#### バックエンドAPI（tamanomi-api）
 - **URL**: `/api/v1/*`（バージョン番号あり）
 - **責務**: ビジネスロジック、DB操作、メール送信
 
