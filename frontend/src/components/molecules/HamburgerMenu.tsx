@@ -27,7 +27,7 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       label: "利用規約",
       onClick: () => {
         // PDFファイルを新しいタブで開く
-        window.open("/たまのみサービス利用規約.pdf", "_blank")
+        window.open("/nomoca香川サービス利用規約.pdf", "_blank")
         onMenuItemClick("terms")
       },
     },
@@ -62,10 +62,6 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       label: "ログアウト",
       onClick: () => onMenuItemClick("logout"),
     }] : []),
-    {
-      id: "voicevox-credit",
-      label: "VOICEVOX:ずんだもん",
-    },
   ]
 
   const handleToggle = () => {
