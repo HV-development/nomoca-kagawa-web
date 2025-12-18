@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Limelight, Plaster } from 'next/font/google'
+import { Limelight, Plaster, Oswald, Noto_Sans_JP } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'sonner'
 import { ErrorHandlerProvider } from '@/components/providers/ErrorHandlerProvider'
@@ -14,6 +14,18 @@ const plaster = Plaster({
   weight: '400',
   subsets: ['latin'],
   variable: '--font-plaster',
+})
+
+const oswald = Oswald({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-oswald',
+})
+
+const notoSansJP = Noto_Sans_JP({
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  variable: '--font-noto-sans-jp',
 })
 
 export const metadata: Metadata = {
@@ -37,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${limelight.variable} ${plaster.variable}`}>
+      <body className={`${limelight.variable} ${plaster.variable} ${oswald.variable} ${notoSansJP.variable}`}>
         <ErrorHandlerProvider>
           {children}
           <Toaster position="top-right" richColors />
