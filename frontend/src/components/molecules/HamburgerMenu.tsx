@@ -26,8 +26,7 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       id: "terms",
       label: "利用規約",
       onClick: () => {
-        // PDFファイルを新しいタブで開く
-        window.open("/nomoca香川サービス利用規約.pdf", "_blank")
+        window.location.href = "/lp/terms"
         onMenuItemClick("terms")
       },
     },

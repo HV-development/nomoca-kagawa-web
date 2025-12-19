@@ -19,24 +19,10 @@ export const useLoginPage = () => {
     email: searchParams.get('email')
   }), [searchParams])
 
-  // ログイン後のリダイレクトフラグをチェック（ページ遷移中もローディングを継続）
+  // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
+  // リダイレクトは即座に実行されるため、このチェックは不要
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const checkRedirecting = () => {
-        const loginRedirecting = sessionStorage.getItem('loginRedirecting')
-        const shouldRedirect = !!loginRedirecting
-        setIsRedirecting(shouldRedirect)
-      }
-      
-      // 初回チェック
-      checkRedirecting()
-      
-      // 定期的にチェック（遷移先のページでフラグがクリアされるまで）
-      // ページ遷移が始まっても、ログインページがアンマウントされるまでチェックを継続
-      const interval = setInterval(checkRedirecting, 50) // より頻繁にチェック
-      
-      return () => clearInterval(interval)
-    }
+    setIsRedirecting(false)
   }, [])
 
   // 認証状態チェック
@@ -45,7 +31,7 @@ export const useLoginPage = () => {
       // skip-auth-check パラメータがある場合は認証チェックをスキップ
       const urlParams = new URLSearchParams(window.location.search)
       const skipAuthCheck = urlParams.get('skip-auth-check')
-      
+
       if (skipAuthCheck === 'true') {
         // URLパラメータをクリア
         const newUrl = new URL(window.location.href)
@@ -54,29 +40,28 @@ export const useLoginPage = () => {
         setIsCheckingAuth(false)
         return
       }
-      
+
       // Cookieから自動的に認証チェック
       try {
-        const response = await fetch('/api/user/me')
+        const response = await fetch('/api/user/me', {
+          credentials: 'include', // Cookieを送信
+        })
 
         if (response.ok) {
           const userData = await response.json()
           const hasPlan = userData.plan !== null && userData.plan !== undefined
-          
+
           let targetPath: string
           if (!hasPlan) {
-            // プラン未登録の場合はプラン登録画面へ（セッションストレージにメールアドレスを保存）
-            sessionStorage.setItem('userEmail', userData.email)
+            // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
             targetPath = '/plan-registration'
           } else {
             targetPath = '/home'
           }
 
-          // ローディング継続フラグをセッションストレージに設定
-          // 遷移先のページで完全に表示されたらクリアされる
-          sessionStorage.setItem('loginRedirecting', targetPath)
+          // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
           setIsRedirecting(true)
-          
+
           router.replace(targetPath)
         } else {
           setIsCheckingAuth(false)
@@ -90,14 +75,10 @@ export const useLoginPage = () => {
   }, [router])
 
   // URLパラメータ処理
+  // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
+  // リダイレクト先はURLパラメータから直接取得する
   useEffect(() => {
-    const { paymentSuccess, view } = urlParams
-
-    if (paymentSuccess === 'true' || view === 'mypage') {
-      if (typeof window !== 'undefined' && view === 'mypage') {
-        sessionStorage.setItem('redirectAfterLogin', `/home?view=mypage${paymentSuccess ? '&payment-success=true' : ''}`)
-      }
-    }
+    // URLパラメータの処理は必要に応じて実装
   }, [urlParams])
 
   // エラーメッセージ取得
@@ -111,6 +92,11 @@ export const useLoginPage = () => {
 
   // パスワード認証
   const handlePasswordLogin = useCallback(async (loginData: { email: string; password: string }) => {
+    // 連続押下を防ぐ
+    if (isLoading) {
+      return
+    }
+
     setIsLoading(true)
     setError("")
 
@@ -120,6 +106,7 @@ export const useLoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Cookieを送信
         body: JSON.stringify({ email: loginData.email, password: loginData.password }),
       })
 
@@ -136,6 +123,7 @@ export const useLoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Cookieを送信
         body: JSON.stringify({ email: loginData.email }),
       })
 
@@ -144,10 +132,12 @@ export const useLoginPage = () => {
       }
 
       const otpData = await otpResponse.json()
-      
-      // OTP入力ページへ遷移
-      const targetUrl = `/login/verify-otp?email=${encodeURIComponent(loginData.email)}&requestId=${encodeURIComponent(otpData.requestId)}`
-      
+
+      // セキュリティ改善：メールアドレスをURLパラメータで送信しない
+      // requestIdのみをURLパラメータで送信（メールアドレスはサーバーサイドセッションに保存済み）
+      // skip-auth-checkパラメータを追加して、OTP入力画面での認証チェックをスキップ
+      const targetUrl = `/login/verify-otp?requestId=${encodeURIComponent(otpData.requestId)}&skip-auth-check=true`
+
       // window.location.hrefを使って強制的にページ遷移
       window.location.href = targetUrl
     } catch (err) {
@@ -155,7 +145,7 @@ export const useLoginPage = () => {
       setError(errorMessage)
       setIsLoading(false)
     }
-  }, [])
+  }, [isLoading])
 
   // 新規登録画面へ
   const handleSignup = useCallback(() => {

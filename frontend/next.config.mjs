@@ -9,10 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-      { protocol: 'http', hostname: 'localhost', port: '9000', pathname: '/nomoca-kagawa/**' },
-      { protocol: 'http', hostname: '127.0.0.1', port: '9000', pathname: '/nomoca-kagawa/**' },
+      { protocol: 'http', hostname: 'localhost', port: '9000', pathname: '/tamanomi/**' },
+      { protocol: 'http', hostname: '127.0.0.1', port: '9000', pathname: '/tamanomi/**' },
       // Docker 内部名でのアクセスにも対応
-      { protocol: 'http', hostname: process.env.MINIO_HOST || 'minio', port: process.env.MINIO_PORT || '9000', pathname: '/nomoca-kagawa/**' },
+      { protocol: 'http', hostname: process.env.MINIO_HOST || 'minio', port: process.env.MINIO_PORT || '9000', pathname: '/tamanomi/**' },
     ],
   },
   // 静的ファイル配信の設定
@@ -45,6 +45,14 @@ const nextConfig = {
         key: 'Strict-Transport-Security',
         value: 'max-age=31536000; includeSubDomains; preload'
       },
+      {
+        key: 'Cache-Control',
+        value: 'no-store, no-cache, must-revalidate, private',
+      },
+      {
+        key: 'Pragma',
+        value: 'no-cache',
+      },
     ]
 
     if (process.env.VERCEL_ENV === 'preview') {
@@ -56,7 +64,13 @@ const nextConfig = {
 
     return [
       {
+        // 全てのルートに適用（静的ファイルを除く）
         source: '/(.*)',
+        headers: securityHeaders,
+      },
+      {
+        // APIルートにも明示的に適用
+        source: '/api/:path*',
         headers: securityHeaders,
       },
     ]

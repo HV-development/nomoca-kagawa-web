@@ -142,6 +142,11 @@ export function OtpInputForm({
   }
 
   const handleSubmit = (otpArray: string[] = otp) => {
+    // 連続押下を防ぐ
+    if (isLoading) {
+      return
+    }
+
     const otpError = validateOtp(otpArray)
     if (otpError) {
       setError(otpError)
@@ -191,7 +196,7 @@ export function OtpInputForm({
               className={`w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 rounded-lg transition-all duration-200 ${digit
                 ? "border-green-500 bg-green-50 text-green-900"
                 : "border-gray-300 bg-white text-gray-900"
-                } focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 disabled:opacity-50 disabled:cursor-not-allowed`}
+                } focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] disabled:opacity-50 disabled:cursor-not-allowed`}
               maxLength={1}
               autoComplete="off"
             />

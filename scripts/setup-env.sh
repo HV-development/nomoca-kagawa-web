@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# nomoca-kagawa-web 環境セットアップスクリプト
+# tamanomi-web 環境セットアップスクリプト
 # 
 # このスクリプトは以下を実行します:
 # 1. env.exampleから.envファイルを作成
@@ -10,7 +10,7 @@
 
 set -e
 
-echo "🚀 nomoca-kagawa-web 環境セットアップ開始..."
+echo "🚀 tamanomi-web 環境セットアップ開始..."
 echo ""
 
 # スクリプトのディレクトリを取得
@@ -110,7 +110,7 @@ else
         # 新しいトークンを作成
         echo "🔧 新しいPersonal Access Tokenを作成しています..."
         
-        # リポジトリ名を取得（例: nomoca-kagawa-web-dev）
+        # リポジトリ名を取得（例: tamanomi-web-dev）
         REPO_NAME=$(basename "$PROJECT_ROOT")
         TOKEN_NAME="${REPO_NAME}-dev"
         
@@ -146,7 +146,7 @@ else
         echo ""
         echo "1. https://github.com/settings/tokens にアクセス"
         echo "2. 'Generate new token' → 'Generate new token (classic)' をクリック"
-        echo "3. Note: 'nomoca-kagawa-development' など分かりやすい名前"
+        echo "3. Note: 'tamanomi-development' など分かりやすい名前"
         echo "4. Expiration: 適切な期限を選択（推奨: 90日）"
         echo "5. Scopes: 'read:packages' にチェック"
         echo "6. 'Generate token' をクリックしてトークンをコピー"
@@ -158,9 +158,9 @@ else
           echo
           if [[ $REPLY =~ ^[Yy]$ ]]; then
             if [[ "$OSTYPE" == "darwin"* ]]; then
-              open "https://github.com/settings/tokens/new?scopes=read:packages&description=nomoca-kagawa-development"
+              open "https://github.com/settings/tokens/new?scopes=read:packages&description=tamanomi-development"
             else
-              xdg-open "https://github.com/settings/tokens/new?scopes=read:packages&description=nomoca-kagawa-development" 2>/dev/null
+              xdg-open "https://github.com/settings/tokens/new?scopes=read:packages&description=tamanomi-development" 2>/dev/null
             fi
             echo "✅ ブラウザでトークン作成ページを開きました"
           fi
@@ -193,7 +193,7 @@ else
     echo ""
     echo "1. https://github.com/settings/tokens にアクセス"
     echo "2. 'Generate new token' → 'Generate new token (classic)' をクリック"
-    echo "3. Note: 'nomoca-kagawa-development' など分かりやすい名前"
+    echo "3. Note: 'tamanomi-development' など分かりやすい名前"
     echo "4. Expiration: 適切な期限を選択（推奨: 90日）"
     echo "5. Scopes: 'read:packages' にチェック"
     echo "6. 'Generate token' をクリックしてトークンをコピー"
@@ -205,9 +205,9 @@ else
       echo
       if [[ $REPLY =~ ^[Yy]$ ]]; then
         if [[ "$OSTYPE" == "darwin"* ]]; then
-          open "https://github.com/settings/tokens/new?scopes=read:packages&description=nomoca-kagawa-development"
+          open "https://github.com/settings/tokens/new?scopes=read:packages&description=tamanomi-development"
         else
-          xdg-open "https://github.com/settings/tokens/new?scopes=read:packages&description=nomoca-kagawa-development" 2>/dev/null
+          xdg-open "https://github.com/settings/tokens/new?scopes=read:packages&description=tamanomi-development" 2>/dev/null
         fi
         echo "✅ ブラウザでトークン作成ページを開きました"
       fi

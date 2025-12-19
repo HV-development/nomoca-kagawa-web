@@ -1,34 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
-import { getAuthHeader } from '@/lib/auth-header'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = getAuthHeader(request)
-    
-    const headers: HeadersInit = {}
-    if (authHeader) {
-      headers['Authorization'] = authHeader
-    }
-
     const fullUrl = buildApiUrl('/logout')
-    const response = await fetch(fullUrl, {
+    // ログアウトは認証がオプショナル（認証されていない場合でもログアウト処理を実行）
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'POST',
-      headers,
+      headerOptions: {
+        requireAuth: false, // 認証がオプショナル
+      },
     })
 
     const ok = response.ok
-    const nextResponse = NextResponse.json(
+    const nextResponse = createNoCacheResponse(
       ok ? { message: 'Logout successful' } : { message: 'Logout locally cleared', upstream: response.status }
     )
     const isSecure = (() => {
       try { return new URL(request.url).protocol === 'https:' } catch { return process.env.NODE_ENV === 'production' }
     })()
-    
-    nextResponse.headers.set('Cache-Control', 'no-store')
-    nextResponse.headers.set('Pragma', 'no-cache')
     
     // accessToken クッキーを削除
     nextResponse.cookies.set('accessToken', '', {
@@ -65,9 +59,7 @@ export async function POST(request: NextRequest) {
     return nextResponse
   } catch (error: unknown) {
     console.error('❌ API Route: Logout error', error)
-    const res = NextResponse.json({ message: 'Local logout executed' }, { status: 200 })
-    res.headers.set('Cache-Control', 'no-store')
-    res.headers.set('Pragma', 'no-cache')
+    const res = createNoCacheResponse({ message: 'Local logout executed' }, { status: 200 })
     const isSecure = (() => {
       try { return new URL(request.url).protocol === 'https:' } catch { return process.env.NODE_ENV === 'production' }
     })()
@@ -103,6 +95,3 @@ export async function POST(request: NextRequest) {
     return res
   }
 }
-
-
-

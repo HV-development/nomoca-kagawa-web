@@ -9,3 +9,7 @@ export interface Notification {
   createdAt: Date
   imageUrl?: string | null
 }
+
+
+
+

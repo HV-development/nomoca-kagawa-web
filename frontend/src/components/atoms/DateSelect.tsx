@@ -92,7 +92,7 @@ export function DateSelect({ value, onChange, onBlur, label, error, className = 
   }
 
   const selectClassName =
-    "px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors bg-white"
+    "px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] transition-colors bg-white"
 
   return (
     <div className={`w-full ${className}`}>

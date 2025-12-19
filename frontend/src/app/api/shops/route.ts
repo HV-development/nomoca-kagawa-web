@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { getAuthHeader } from '@/lib/auth-header'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 // サーバーサイドなので NEXT_PUBLIC_ なしの環境変数を使用
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3002'
+// api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
+import { API_BASE_URL } from '@/lib/api-config'
 
 // タイムアウト用のAbortControllerを作成するヘルパー関数
 function createTimeoutSignal(timeoutMs: number): AbortSignal {
@@ -45,22 +48,17 @@ export async function GET(request: NextRequest) {
 
     let response: Response
     try {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      }
-      
-      if (authorization) {
-        headers.Authorization = authorization
-      }
-      
       // タイムアウト設定（30秒）- AbortSignal.timeout()のフォールバック
       const timeoutSignal = typeof AbortSignal !== 'undefined' && 'timeout' in AbortSignal
         ? AbortSignal.timeout(30000)
         : createTimeoutSignal(30000)
       
-      response = await fetch(backendUrl, {
+      // 認証がオプショナルなので、authorizationがあるかどうかでrequireAuthを設定
+      response = await secureFetchWithCommonHeaders(request, backendUrl, {
         method: 'GET',
-        headers,
+        headerOptions: {
+          requireAuth: !!authorization, // 認証ヘッダーがある場合のみ認証が必要
+        },
         signal: timeoutSignal,
       })
       
@@ -88,7 +86,7 @@ export async function GET(request: NextRequest) {
         userMessage = 'リクエストがタイムアウトしました。しばらく待ってから再度お試しください。'
       }
       
-      return NextResponse.json(
+      return createNoCacheResponse(
         {
           error: {
             code: 'NETWORK_ERROR',
@@ -101,7 +99,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    let data: any = {}
+    interface ShopData {
+      shops?: unknown[];
+      total?: number;
+      error?: unknown;
+    }
+    let data: ShopData = {}
     try {
       const contentType = response.headers.get('content-type')
       if (contentType && contentType.includes('application/json')) {
@@ -123,7 +126,7 @@ export async function GET(request: NextRequest) {
           status: response.status,
           data,
         })
-        return NextResponse.json(
+        return createNoCacheResponse(
           {
             error: {
               code: 'INTERNAL_SERVER_ERROR',
@@ -139,7 +142,7 @@ export async function GET(request: NextRequest) {
         status: response.status,
         data,
       })
-      return NextResponse.json(
+      return createNoCacheResponse(
         {
           error: data?.error || {
             code: 'API_ERROR',
@@ -150,11 +153,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(data)
+    return createNoCacheResponse(data)
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     console.error('[api/shops] network error:', message)
-    return NextResponse.json(
+    return createNoCacheResponse(
       {
         error: {
           code: 'NETWORK_ERROR',
@@ -166,5 +169,3 @@ export async function GET(request: NextRequest) {
     )
   }
 }
-
-

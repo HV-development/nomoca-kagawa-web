@@ -1,32 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 // サーバーサイドなので NEXT_PUBLIC_ なしの環境変数を使用
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3002'
+// api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
+import { API_BASE_URL } from '@/lib/api-config'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     // 公開エンドポイント（認証不要）
     // バックエンドのエンドポイントは /api/v1/genres（server.tsで登録されている）
     const backendUrl = `${API_BASE_URL}/api/v1/genres`
 
-    const response = await fetch(backendUrl, {
+    const response = await secureFetchWithCommonHeaders(request, backendUrl, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+      headerOptions: {
+        requireAuth: false, // ジャンル一覧は認証不要（公開エンドポイント）
       },
-      cache: 'no-store',
     })
-
 
     const data = await response.json().catch(() => ({}))
 
     if (!response.ok) {
       // 500系は文言を統一
       if (response.status >= 500) {
-        return NextResponse.json(
+        return createNoCacheResponse(
           {
             error: {
               code: 'INTERNAL_SERVER_ERROR',
@@ -38,7 +39,7 @@ export async function GET() {
       }
 
       // 4xx などはバックエンドのエラーをそのまま返す
-      return NextResponse.json(
+      return createNoCacheResponse(
         {
           error: data?.error || {
             code: 'API_ERROR',
@@ -49,11 +50,11 @@ export async function GET() {
       )
     }
 
-    return NextResponse.json(data)
+    return createNoCacheResponse(data)
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     console.error('[api/genres] network error:', message)
-    return NextResponse.json(
+    return createNoCacheResponse(
       {
         error: {
           code: 'NETWORK_ERROR',
@@ -65,4 +66,3 @@ export async function GET() {
     )
   }
 }
-

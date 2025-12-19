@@ -1,3 +1,5 @@
+/// <reference path="../../types/shims-next.d.ts" />
+// @ts-nocheck
 'use client'
 
 import Image from 'next/image'
@@ -48,17 +50,17 @@ export default function LPPage() {
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (isTransitioning) return
-    
+
     setIsTransitioning(true)
-    
+
     // スライドを増減（無限に）
     const delta = direction === 'right' ? -1 : 1
     setCurrentSlide(prev => prev + delta)
-    
+
     // トランジション完了後に境界チェックと瞬間移動
     setTimeout(() => {
       setIsTransitioning(false)
-      
+
       // 境界を超えたら瞬間移動（トランジションなし）
       setCurrentSlide((prev) => {
         // 右端を超えた場合（12番目のセット以降に入った）
@@ -76,10 +78,10 @@ export default function LPPage() {
 
   const goToSlide = (index: number) => {
     if (isTransitioning) return
-    
+
     setIsTransitioning(true)
     setCurrentSlide(images.length * 7 + index) // 中央のセット（8番目）の該当位置
-    
+
     // トランジション完了後にフラグをリセット
     setTimeout(() => setIsTransitioning(false), 500)
   }
@@ -102,7 +104,7 @@ export default function LPPage() {
   return (
     <div className="w-full overflow-x-hidden">
       {/* First View */}
-      <div 
+      <div
         className="relative w-full min-h-screen"
         style={{
           maxWidth: 'none',
@@ -135,7 +137,7 @@ export default function LPPage() {
               <div className="flex items-center">
                 <Image
                   src="/lp/images/horizon-color-white.png"
-                  alt="たまのみ"
+                  alt="nomocaKagawa"
                   width={1312}
                   height={320}
                   className="w-40 h-10 md:w-[328px] md:h-20"
@@ -147,15 +149,15 @@ export default function LPPage() {
               <div style={{ flex: 1 }}></div>
               <div className="flex items-center gap-4 md:gap-11">
                 <nav className="hidden md:flex items-center space-x-6 lg:space-x-10">
-                  <a href="#about" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">たまのみとは</a>
+                  <a href="#about" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">nomocaKagawaとは</a>
                   <a href="#features" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">魅力</a>
                   <a href="#howto" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">使い方</a>
                   <a href="#pricing" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">利用料金</a>
                   <a href="#stores" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">使えるお店</a>
                   <Link href="/lp/contact" className="text-white hover:text-blue-200 transition-colors text-base lg:text-lg">お問い合わせ</Link>
                 </nav>
-                
-                <Link 
+
+                <Link
                   href="/lp/merchant"
                   className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm lg:text-base px-4 py-2 md:px-6 md:py-4"
                   style={{
@@ -190,7 +192,7 @@ export default function LPPage() {
 
           {/* モバイルメニュー */}
           {isMobileMenuOpen && (
-            <div 
+            <div
               className="md:hidden fixed inset-0 w-full h-full"
               style={{
                 background: '#FFF',
@@ -212,48 +214,48 @@ export default function LPPage() {
                 aria-label="メニューを閉じる"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
 
               <nav className="flex flex-col items-center gap-8 py-8">
-                <a 
-                  href="#about" 
+                <a
+                  href="#about"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  たまのみとは
+                  nomocaKagawaとは
                 </a>
-                <a 
-                  href="#features" 
+                <a
+                  href="#features"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   魅力
                 </a>
-                <a 
-                  href="#howto" 
+                <a
+                  href="#howto"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   使い方
                 </a>
-                <a 
-                  href="#pricing" 
+                <a
+                  href="#pricing"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   利用料金
                 </a>
-                <a 
-                  href="#stores" 
+                <a
+                  href="#stores"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   使えるお店
                 </a>
-                <Link 
-                  href="/lp/contact" 
+                <Link
+                  href="/lp/contact"
                   className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -270,7 +272,7 @@ export default function LPPage() {
 
             {/* Main Title */}
             <div className="mb-8 md:mb-6 relative">
-              <h1 
+              <h1
                 className="md:text-[80px] md:mt-[80px]"
                 style={{
                   alignSelf: 'stretch',
@@ -301,7 +303,7 @@ export default function LPPage() {
 
             {/* Sub Title */}
             <div className="mb-12 md:mb-10">
-              <h2 
+              <h2
                 style={{
                   color: '#FFF',
                   fontFamily: '"Shippori Antique"',
@@ -335,7 +337,7 @@ export default function LPPage() {
                 onClick={() => router.push('/email-registration')}
               >
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -347,7 +349,7 @@ export default function LPPage() {
                   >
                     今すぐ始める
                   </span>
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -360,11 +362,11 @@ export default function LPPage() {
                     一杯無料
                   </span>
                 </div>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="9" 
-                  height="16" 
-                  viewBox="0 0 9 16" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="9"
+                  height="16"
+                  viewBox="0 0 9 16"
                   fill="none"
                   style={{
                     position: 'absolute',
@@ -372,11 +374,11 @@ export default function LPPage() {
                     flexShrink: 0
                   }}
                 >
-                  <path 
-                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1" 
-                    stroke="#FFF" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
+                    stroke="#FFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
@@ -387,7 +389,7 @@ export default function LPPage() {
 
         {/* Decorative drink icons at bottom */}
         <div className="absolute bottom-2 md:bottom-4 left-0 w-full overflow-hidden">
-          <div 
+          <div
             className="flex justify-center items-end gap-3 sm:gap-4 md:gap-6 lg:gap-8"
           >
             <Image
@@ -460,7 +462,7 @@ export default function LPPage() {
 
       {/* Banner Carousel Section (Second Layer) */}
       <div className="w-full bg-white py-10 md:py-20">
-        <div 
+        <div
           className="w-full px-4 md:px-8 lg:px-20"
           style={{
             display: 'flex',
@@ -475,9 +477,9 @@ export default function LPPage() {
           <div className="relative w-full max-w-6xl" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* Banner Images Container */}
             <div className="relative overflow-hidden w-full max-w-[375px] h-[170px] md:max-w-[1157px] md:h-[210px]">
-              <div 
+              <div
                 className="flex absolute left-1/2"
-                style={{ 
+                style={{
                   gap: '16px',
                   transform: `translateX(calc(-50% - ${currentSlide * (carouselImageWidth + 16)}px))`,
                   transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
@@ -513,7 +515,7 @@ export default function LPPage() {
             </div>
 
             {/* Left Arrow */}
-            <button 
+            <button
               className="absolute z-10 hover:opacity-80 transition-opacity left-[12px] top-[69px] md:left-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
               onClick={() => handleScroll('left')}
               style={{
@@ -538,7 +540,7 @@ export default function LPPage() {
             </button>
 
             {/* Right Arrow */}
-            <button 
+            <button
               className="absolute z-10 hover:opacity-80 transition-opacity right-[12px] top-[69px] md:right-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
               onClick={() => handleScroll('right')}
               style={{
@@ -569,8 +571,8 @@ export default function LPPage() {
               // 現在のスライドがどの画像を表示しているかを計算
               const actualIndex = ((currentSlide % images.length) + images.length) % images.length
               return (
-                <button 
-                  key={index} 
+                <button
+                  key={index}
                   className="p-1 hover:opacity-80 transition-opacity"
                   onClick={() => goToSlide(index)}
                 >
@@ -596,7 +598,7 @@ export default function LPPage() {
           <div className="w-full h-1/2 lg:w-1/2 lg:h-full" style={{ backgroundColor: '#FFD93B' }}></div>
           <div className="w-full h-1/2 lg:w-1/2 lg:h-full" style={{ backgroundColor: '#6FC8E5' }}></div>
         </div>
-        
+
         {/* Content */}
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen px-4 md:px-8 py-16 md:py-24">
           {/* Left Content */}
@@ -605,13 +607,13 @@ export default function LPPage() {
             <div className="mb-6 md:mb-8 lg:hidden">
               <Image
                 src="/lp/images/about-text-logo.png"
-                alt="たまのみロゴ"
+                alt="nomocaKagawaロゴ"
                 width={1305}
                 height={453}
                 className="w-64 h-auto md:w-80"
               />
             </div>
-            
+
             <p
               className="md:text-4xl lg:text-5xl"
               style={{
@@ -624,11 +626,11 @@ export default function LPPage() {
                 lineHeight: '160%'
               }}
             >
-              たまのみ片手に
+              nomocaKagawa片手に
               <br />
               街を歩こう
             </p>
-            
+
             {/* Phone and Character - モバイル・タブレットのみ */}
             <div className="mt-8 lg:hidden">
               <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -650,11 +652,11 @@ export default function LPPage() {
                 <div className="-mt-6 md:-mt-8" style={{ zIndex: 21, position: 'relative' }}>
                   <Image
                     src="/lp/images/about-character.png"
-                    alt="たまのみキャラクター"
+                    alt="nomocaKagawaキャラクター"
                     width={1520}
                     height={602}
                     className="md:w-72"
-                    style={{ 
+                    style={{
                       width: '344px',
                       height: '136px',
                       aspectRatio: '43/17',
@@ -671,7 +673,7 @@ export default function LPPage() {
           <div className="hidden lg:absolute lg:left-1/2 lg:transform lg:-translate-x-1/2 lg:flex" style={{ zIndex: 20 }}>
             <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               {/* Text Logo - top center (PCのみ) */}
-              <div className="mb-4 md:mb-5" style={{ 
+              <div className="mb-4 md:mb-5" style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -679,7 +681,7 @@ export default function LPPage() {
               }}>
                 <Image
                   src="/lp/images/about-text-logo.png"
-                  alt="たまのみテキストロゴ"
+                  alt="nomocaKagawaテキストロゴ"
                   width={1305}
                   height={453}
                   className="w-48 h-auto md:w-60 lg:w-[326px]"
@@ -702,26 +704,26 @@ export default function LPPage() {
                     }}
                   />
                 </div>
-              {/* Character - overlapping bottom of phone */}
-              <div className="-mt-6 md:-mt-8 lg:-mt-10" style={{ zIndex: 21, position: 'relative' }}>
-                <Image
-                  src="/lp/images/about-character.png"
-                  alt="たまのみキャラクター"
-                  width={1520}
-                  height={602}
-                  className="w-56 h-auto md:w-72 lg:w-[380px]"
-                  style={{ 
-                    aspectRatio: '380.00/150.50',
-                    objectFit: 'cover'
-                  }}
-                />
-              </div>
+                {/* Character - overlapping bottom of phone */}
+                <div className="-mt-6 md:-mt-8 lg:-mt-10" style={{ zIndex: 21, position: 'relative' }}>
+                  <Image
+                    src="/lp/images/about-character.png"
+                    alt="nomocaKagawaキャラクター"
+                    width={1520}
+                    height={602}
+                    className="w-56 h-auto md:w-72 lg:w-[380px]"
+                    style={{
+                      aspectRatio: '380.00/150.50',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right Content */}
-          <div 
+          <div
             className="w-full md:w-1/2 flex flex-col justify-center items-center pl-0 order-2 md:order-2"
           >
             <div className="w-full max-w-sm px-4 md:px-0 flex flex-col justify-center items-center md:gap-8">
@@ -755,10 +757,10 @@ export default function LPPage() {
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  たまのみとは？
+                  nomocaKagawaとは？
                 </p>
               </div>
-              
+
               {/* Body Text */}
               <div
                 className="text-white w-full text-center md:text-justify md:max-w-[365px]"
@@ -773,7 +775,7 @@ export default function LPPage() {
                 }}
               >
                 <p className="mb-4" style={{ fontWeight: '500' }}>
-                  「たまのみ」は、毎日1軒につきドリンクが1杯無料になる新しい&ldquo;Welcomeドリンク&rdquo;サービスです。
+                  「nomocaKagawa」は、毎日1軒につきドリンクが1杯無料になる新しい&ldquo;Welcomeドリンク&rdquo;サービスです。
                 </p>
                 <p className="mb-4" style={{ fontWeight: '500' }}>
                   お酒でもソフトドリンクでもOK。
@@ -793,7 +795,7 @@ export default function LPPage() {
           {/* Features Title */}
           <div className="flex justify-center mb-12 md:mb-16">
             <div style={{ position: 'relative', display: 'inline-block' }}>
-              <h2 
+              <h2
                 className="md:text-5xl lg:text-6xl"
                 style={{
                   color: '#EFECE8',
@@ -806,7 +808,7 @@ export default function LPPage() {
               >
                 Features
               </h2>
-              <p 
+              <p
                 className="md:text-lg lg:text-xl"
                 style={{
                   position: 'absolute',
@@ -822,7 +824,7 @@ export default function LPPage() {
                   whiteSpace: 'nowrap'
                 }}
               >
-                たまのみの魅力
+                nomocaKagawaの魅力
               </p>
             </div>
           </div>
@@ -833,7 +835,7 @@ export default function LPPage() {
             <div className="flex flex-col items-center text-center gap-6 w-full md:w-[379px] mx-auto md:mx-0 md:justify-self-end">
               <div className="relative w-full aspect-square md:max-w-[379px]">
                 <div style={{ position: 'absolute', top: '0', left: '0', zIndex: 10 }}>
-                  <p 
+                  <p
                     style={{
                       color: 'var(--main, #6FC8E5)',
                       textAlign: 'left',
@@ -847,7 +849,7 @@ export default function LPPage() {
                   >
                     feature
                   </p>
-                  <h3 
+                  <h3
                     style={{
                       color: 'var(--main, #6FC8E5)',
                       textAlign: 'left',
@@ -869,7 +871,7 @@ export default function LPPage() {
                   height={379}
                   className="w-full h-full object-cover rounded-full"
                 />
-                <div 
+                <div
                   className="absolute bottom-6 md:bottom-10 left-6 px-3 md:px-4 py-1"
                   style={{
                     display: 'flex',
@@ -878,7 +880,7 @@ export default function LPPage() {
                     background: 'var(--main, #6FC8E5)'
                   }}
                 >
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -895,7 +897,7 @@ export default function LPPage() {
               </div>
               <div className="text-gray-700 text-sm md:text-base leading-relaxed w-full">
                 <p className="mb-2">お酒でもソフトドリンクでもOK。</p>
-                <p className="mb-2">「たまのみ」の掲載店なら、</p>
+                <p className="mb-2">「nomocaKagawa」の掲載店なら、</p>
                 <p className="mb-2">どこでも1杯が無料に！</p>
                 <p className="mb-2">ちょっと気になるお店に入ってみたり、</p>
                 <p className="mb-2">気分でバーに立ち寄ったり。</p>
@@ -907,7 +909,7 @@ export default function LPPage() {
             <div className="flex flex-col items-center text-center gap-6 w-full md:w-[379px] mx-auto md:mx-0 md:justify-self-start">
               <div className="relative w-full aspect-square md:max-w-[379px]">
                 <div style={{ position: 'absolute', top: '0', left: '0', zIndex: 10 }}>
-                  <p 
+                  <p
                     style={{
                       color: 'var(--main, #6FC8E5)',
                       textAlign: 'left',
@@ -921,7 +923,7 @@ export default function LPPage() {
                   >
                     feature
                   </p>
-                  <h3 
+                  <h3
                     style={{
                       color: 'var(--main, #6FC8E5)',
                       textAlign: 'left',
@@ -943,7 +945,7 @@ export default function LPPage() {
                   height={379}
                   className="w-full h-full object-cover rounded-full"
                 />
-                <div 
+                <div
                   className="absolute bottom-6 md:bottom-10 left-6 px-3 md:px-4 py-1"
                   style={{
                     display: 'flex',
@@ -952,7 +954,7 @@ export default function LPPage() {
                     background: 'var(--main, #6FC8E5)'
                   }}
                 >
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -969,11 +971,11 @@ export default function LPPage() {
               </div>
               <div className="text-gray-700 text-sm md:text-base leading-relaxed w-full">
                 <p className="mb-2">1店舗につき1杯無料だから、</p>
-                <p className="mb-2">1日で何軒もめぐれるのが「たまのみ」の魅力。</p>
+                <p className="mb-2">1日で何軒もめぐれるのが「nomocaKagawa」の魅力。</p>
                 <p className="mb-2">今日は気の合う仲間とカジュアルに、</p>
                 <p className="mb-2">明日はひとりでしっとり。</p>
                 <p className="mb-2">その日の気分で、</p>
-                <p>さいたまの街を自由にドリンクめぐり！</p>
+                <p>たかまつの街を自由にドリンクめぐり！</p>
               </div>
             </div>
 
@@ -1017,7 +1019,7 @@ export default function LPPage() {
                   height={379}
                   className="w-full h-full object-cover rounded-full"
                 />
-                <div 
+                <div
                   className="absolute bottom-6 md:bottom-10 left-6 px-3 md:px-4 py-1"
                   style={{
                     display: 'flex',
@@ -1026,7 +1028,7 @@ export default function LPPage() {
                     background: 'var(--main, #6FC8E5)'
                   }}
                 >
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -1042,7 +1044,7 @@ export default function LPPage() {
                 </div>
               </div>
               <div className="text-gray-700 text-sm md:text-base leading-relaxed w-full">
-                <p className="mb-2">「たまのみ」は&ldquo;飲める人だけ&rdquo;の</p>
+                <p className="mb-2">「nomocaKagawa」は&ldquo;飲める人だけ&rdquo;の</p>
                 <p className="mb-2">サービスじゃありません。</p>
                 <p className="mb-2">ソフトドリンクも対象だから、</p>
                 <p className="mb-2">ノンアル派や飲めない人も安心。</p>
@@ -1091,7 +1093,7 @@ export default function LPPage() {
                   height={379}
                   className="w-full h-full object-cover rounded-full"
                 />
-                <div 
+                <div
                   className="absolute bottom-6 md:bottom-10 left-6 px-3 md:px-4 py-1"
                   style={{
                     display: 'flex',
@@ -1100,7 +1102,7 @@ export default function LPPage() {
                     background: 'var(--main, #6FC8E5)'
                   }}
                 >
-                  <span 
+                  <span
                     style={{
                       color: '#FFF',
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -1120,7 +1122,7 @@ export default function LPPage() {
                 <p className="mb-2">1杯無料なら挑戦しやすい。</p>
                 <p className="mb-2">地元で愛される居酒屋から、</p>
                 <p className="mb-2">おしゃれなカフェ・バーまで。</p>
-                <p className="mb-2">「たまのみ」があれば、</p>
+                <p className="mb-2">「nomocaKagawa」があれば、</p>
                 <p className="mb-2">思わぬお気に入りの一軒に出会えます。</p>
                 <p>街歩きしながら、新しい発見を楽しもう！</p>
               </div>
@@ -1130,7 +1132,7 @@ export default function LPPage() {
       </div>
 
       {/* How to Use Section */}
-      <div 
+      <div
         id="howto"
         className="w-full py-16 md:py-24 lg:py-32"
         style={{ backgroundColor: 'rgba(239, 236, 232, 1)' }}
@@ -1168,14 +1170,14 @@ export default function LPPage() {
                   whiteSpace: 'nowrap'
                 }}
               >
-                たまのみの使い方
+                nomocaKagawaの使い方
               </p>
             </div>
           </div>
 
           {/* How to Use Subtitle */}
           <div className="text-center mb-8 md:mb-12">
-            <p 
+            <p
               className="text-base md:text-lg lg:text-xl"
               style={{
                 color: '#000',
@@ -1192,7 +1194,7 @@ export default function LPPage() {
           {/* Steps Grid */}
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 md:gap-[48px] max-w-5xl mx-auto">
             {/* Step 01 */}
-            <div 
+            <div
               className="bg-white rounded-lg md:w-[368px] mx-[39px] md:mx-0"
               style={{
                 display: 'flex',
@@ -1205,7 +1207,7 @@ export default function LPPage() {
               }}
             >
               <div className="text-center">
-                <p 
+                <p
                   className="mb-4"
                   style={{
                     color: '#000',
@@ -1220,7 +1222,7 @@ export default function LPPage() {
                 >
                   STEP.1
                 </p>
-                <h4 
+                <h4
                   className="font-bold text-gray-800 text-lg md:text-xl"
                 >
                   お店を見つける
@@ -1235,7 +1237,7 @@ export default function LPPage() {
                   className="w-full rounded-lg h-40 md:h-48 object-cover"
                 />
               </div>
-              <p 
+              <p
                 className="text-left w-full"
                 style={{
                   color: '#000',
@@ -1250,7 +1252,7 @@ export default function LPPage() {
             </div>
 
             {/* Step 02 */}
-            <div 
+            <div
               className="bg-white rounded-lg md:w-[368px] mx-[39px] md:mx-0"
               style={{
                 display: 'flex',
@@ -1263,7 +1265,7 @@ export default function LPPage() {
               }}
             >
               <div className="text-center">
-                <p 
+                <p
                   className="mb-4"
                   style={{
                     color: '#000',
@@ -1278,7 +1280,7 @@ export default function LPPage() {
                 >
                   STEP.2
                 </p>
-                <h4 
+                <h4
                   className="font-bold text-gray-800 text-lg md:text-xl"
                 >
                   スマホを見せる
@@ -1293,7 +1295,7 @@ export default function LPPage() {
                   className="w-full rounded-lg h-40 md:h-48 object-cover"
                 />
               </div>
-              <p 
+              <p
                 className="text-left w-full"
                 style={{
                   color: '#000',
@@ -1303,12 +1305,12 @@ export default function LPPage() {
                   lineHeight: '160%'
                 }}
               >
-                お店でたまのみクーポン画面を見せて、対象ドリンクが1杯無料！
+                お店でnomocaKagawaクーポン画面を見せて、対象ドリンクが1杯無料！
               </p>
             </div>
 
             {/* Step 03 */}
-            <div 
+            <div
               className="bg-white rounded-lg md:w-[368px] mx-[39px] md:mx-0"
               style={{
                 display: 'flex',
@@ -1321,7 +1323,7 @@ export default function LPPage() {
               }}
             >
               <div className="text-center">
-                <p 
+                <p
                   className="mb-4"
                   style={{
                     color: '#000',
@@ -1336,7 +1338,7 @@ export default function LPPage() {
                 >
                   STEP.3
                 </p>
-                <h4 
+                <h4
                   className="font-bold text-gray-800 text-lg md:text-xl"
                 >
                   はしごして楽しむ
@@ -1351,7 +1353,7 @@ export default function LPPage() {
                   className="w-full rounded-lg h-40 md:h-48 object-cover"
                 />
               </div>
-              <p 
+              <p
                 className="text-left w-full"
                 style={{
                   color: '#000',
@@ -1371,7 +1373,7 @@ export default function LPPage() {
       {/* Pricing Section */}
       <div id="pricing" className="w-full py-16 md:py-24 lg:py-32 relative overflow-hidden">
         {/* Background with confetti - スマホ用 */}
-        <div 
+        <div
           className="absolute md:hidden"
           style={{
             width: '875px',
@@ -1387,7 +1389,7 @@ export default function LPPage() {
           }}
         />
         {/* Background with confetti - PC用 */}
-        <div 
+        <div
           className="hidden md:block absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(/lp/images/pricing-confetti.png)',
@@ -1396,7 +1398,7 @@ export default function LPPage() {
         />
         {/* 背景色 */}
         <div className="absolute inset-0 -z-10" style={{ backgroundColor: '#6FC8E5' }} />
-        
+
         <div className="relative z-10 max-w-6xl mx-[39px] md:mx-auto px-0 md:px-8">
           {/* Pricing Title */}
           <div className="flex justify-center mb-8 md:mb-12">
@@ -1587,7 +1589,7 @@ export default function LPPage() {
                       lineHeight: '160%'
                     }}
                   >
-                    さいたま市みんなのアプリ会員なら
+                    高松市みんなのアプリ会員なら
                   </p>
                   <div className="flex items-end gap-2 justify-center">
                     <div
@@ -1640,9 +1642,9 @@ export default function LPPage() {
                       利用可能！
                     </p>
                   </div>
-                  
+
                 </div>
-                
+
                 {/* Phone Image - PC用（absolute配置で左側） */}
                 <Image
                   src="/lp/images/pricing-phone.png"
@@ -1660,7 +1662,7 @@ export default function LPPage() {
                     objectFit: 'cover'
                   }}
                 />
-                
+
                 {/* Phone Image - スマホ用（absolute配置で中央） */}
                 <Image
                   src="/lp/images/pricing-phone.png"
@@ -1684,7 +1686,7 @@ export default function LPPage() {
 
           {/* Disclaimers */}
           <div className="text-center">
-            <p 
+            <p
               className="mb-2 text-sm md:text-base"
               style={{
                 color: '#FFF',
@@ -1695,7 +1697,7 @@ export default function LPPage() {
             >
               ※対象ドリンクは店舗により異なります。
             </p>
-            <p 
+            <p
               className="text-sm md:text-base"
               style={{
                 color: '#FFF',
@@ -1711,7 +1713,7 @@ export default function LPPage() {
       </div>
 
       {/* Stores Section */}
-      <div 
+      <div
         id="stores"
         className="w-full py-16 md:py-24"
         style={{ backgroundColor: '#FFD93B' }}
@@ -1756,7 +1758,7 @@ export default function LPPage() {
 
           {/* Stores Content */}
           <div className="text-center">
-            <p 
+            <p
               className="mb-8 md:mb-12 text-base md:text-lg lg:text-xl"
               style={{
                 color: '#000',
@@ -1768,7 +1770,7 @@ export default function LPPage() {
             >
               掲載店、続々拡大中
             </p>
-            
+
             {/* Store List Button */}
             <div className="flex justify-center">
               <button
@@ -1777,7 +1779,7 @@ export default function LPPage() {
                   background: '#FF6B6B'
                 }}
               >
-                <span 
+                <span
                   className="text-base md:text-lg lg:text-xl"
                   style={{
                     color: '#FFF',
@@ -1789,19 +1791,19 @@ export default function LPPage() {
                 >
                   店舗一覧はこちら
                 </span>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="9" 
-                  height="16" 
-                  viewBox="0 0 9 16" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="9"
+                  height="16"
+                  viewBox="0 0 9 16"
                   fill="none"
                   className="absolute right-6 md:right-8 lg:right-10 flex-shrink-0"
                 >
-                  <path 
-                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1" 
-                    stroke="#FFF" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
+                    stroke="#FFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
@@ -1852,7 +1854,7 @@ export default function LPPage() {
 
             {/* FAQ Description */}
             <div className="mb-8 md:mb-12">
-              <p 
+              <p
                 className="text-base md:text-lg lg:text-xl"
                 style={{
                   color: '#000',
@@ -1877,7 +1879,7 @@ export default function LPPage() {
                   background: '#6FC8E5'
                 }}
               >
-                <span 
+                <span
                   className="text-base md:text-lg lg:text-xl"
                   style={{
                     color: '#FFF',
@@ -1889,19 +1891,19 @@ export default function LPPage() {
                 >
                   よくあるご質問はこちら
                 </span>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="9" 
-                  height="16" 
-                  viewBox="0 0 9 16" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="9"
+                  height="16"
+                  viewBox="0 0 9 16"
                   fill="none"
                   className="absolute right-6 md:right-8 lg:right-10 flex-shrink-0"
                 >
-                  <path 
-                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1" 
-                    stroke="#FFF" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
+                    stroke="#FFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
@@ -1912,7 +1914,7 @@ export default function LPPage() {
       </div>
 
       {/* Store Recruitment Section */}
-      <div 
+      <div
         id="recruitment"
         className="w-full py-16 md:py-24 -mt-24 md:-mt-32"
         style={{ backgroundColor: '#6FC8E5' }}
@@ -1920,7 +1922,7 @@ export default function LPPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-8 text-center">
           {/* Store Recruitment Title */}
           <div className="mb-8 md:mb-12">
-            <h2 
+            <h2
               className="text-xl md:text-2xl lg:text-3xl"
               style={{
                 color: 'var(--accent-yellow, #FFD93B)',
@@ -1943,7 +1945,7 @@ export default function LPPage() {
               }}
               onClick={() => router.push('/lp/merchant')}
             >
-              <span 
+              <span
                 className="text-base md:text-lg lg:text-xl"
                 style={{
                   color: '#000',
@@ -1956,19 +1958,19 @@ export default function LPPage() {
               >
                 お店の方はこちら
               </span>
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="9" 
-                height="16" 
-                viewBox="0 0 9 16" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="9"
+                height="16"
+                viewBox="0 0 9 16"
                 fill="none"
                 className="absolute right-6 md:right-8 lg:right-10 flex-shrink-0"
               >
-                <path 
-                  d="M0.999838 14.3333L7.6665 7.66667L0.999838 1" 
-                  stroke="#000" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <path
+                  d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
+                  stroke="#000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
@@ -1981,7 +1983,7 @@ export default function LPPage() {
       <div className="w-full bg-white">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           {/* Footer Menu */}
-          <div 
+          <div
             className="flex flex-col justify-center items-center gap-8 md:gap-10 pt-8 md:pt-12"
           >
             {/* Logo */}
@@ -2000,7 +2002,7 @@ export default function LPPage() {
 
             {/* Footer Links */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-              <Link 
+              <Link
                 href="/lp/faq"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
@@ -2010,8 +2012,8 @@ export default function LPPage() {
               >
                 よくあるご質問
               </Link>
-              <Link 
-                href="/lp/contact" 
+              <Link
+                href="/lp/contact"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -2020,8 +2022,10 @@ export default function LPPage() {
               >
                 お問い合わせ
               </Link>
-              <a 
-                href="#" 
+              <a
+                href="/プライバシーポリシー.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -2030,8 +2034,10 @@ export default function LPPage() {
               >
                 プライバシーポリシー
               </a>
-              <a 
-                href="#" 
+              <a
+                href="/特定商取引法.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -2040,8 +2046,8 @@ export default function LPPage() {
               >
                 特定商取引法に基づく表記
               </a>
-              <a 
-                href="#" 
+              <Link
+                href="/lp/terms"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -2049,9 +2055,9 @@ export default function LPPage() {
                 }}
               >
                 ご利用規約
-              </a>
-              <a 
-                href="#" 
+              </Link>
+              <a
+                href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -2064,7 +2070,7 @@ export default function LPPage() {
 
             {/* Copyright */}
             <div className="pb-6 md:pb-8">
-              <p 
+              <p
                 className="text-sm md:text-base"
                 style={{
                   color: '#000',
@@ -2075,7 +2081,7 @@ export default function LPPage() {
                   lineHeight: '100%'
                 }}
               >
-                ©2025 TAMANOMI
+                ©2025 nomocaKagawa
               </p>
             </div>
           </div>

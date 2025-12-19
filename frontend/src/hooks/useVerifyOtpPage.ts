@@ -10,62 +10,96 @@ export const useVerifyOtpPage = () => {
   const [error, setError] = useState<string>("")
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [isRedirecting, setIsRedirecting] = useState(false)
-  
-  // URLパラメータからemailとrequestIdを取得
-  const email = searchParams.get('email') || ""
+  const [email, setEmail] = useState<string>("")
+
+  // セキュリティ改善：URLパラメータからメールアドレスを取得せず、サーバーサイドセッションから取得
+  // requestIdのみをURLパラメータから取得
   const requestId = searchParams.get('requestId') || ""
 
-  // ログイン後のリダイレクトフラグをチェック
+  // Cookieベースのセッションからメールアドレスを取得
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const checkRedirecting = () => {
-        const loginRedirecting = sessionStorage.getItem('loginRedirecting')
-        const shouldRedirect = !!loginRedirecting
-        setIsRedirecting(shouldRedirect)
+    const fetchEmailFromSession = async () => {
+      if (!requestId) {
+        return
       }
-      
-      checkRedirecting()
-      const interval = setInterval(checkRedirecting, 50)
-      
-      return () => clearInterval(interval)
-    }
-  }, [])
 
-  // 認証状態チェック（既にログイン済みの場合はリダイレクト）
-  useEffect(() => {
-    const checkAuth = async () => {
       try {
-        const response = await fetch('/api/user/me')
+        // Cookieからセッション情報を取得
+        const response = await fetch('/api/auth/otp/session', {
+          method: 'GET',
+          credentials: 'include', // Cookieを送信
+        })
 
-        if (response.ok) {
-          const userData = await response.json()
-          const hasPlan = userData.plan !== null && userData.plan !== undefined
-          
-          const targetPath = hasPlan ? '/home' : '/plan-registration'
-          
-          sessionStorage.setItem('loginRedirecting', targetPath)
-          setIsRedirecting(true)
-          router.replace(targetPath)
+        if (!response.ok) {
+          await response.json().catch(() => ({}))
+          setError('セッションが無効です。再度ログインしてください。')
+          router.replace('/login?skip-auth-check=true')
+          return
+        }
+
+        const sessionData = await response.json()
+        const sessionEmail = sessionData.email as string | undefined
+        const sessionRequestId = sessionData.requestId as string | undefined
+
+        // requestIdが一致する場合のみメールアドレスを使用
+        if (sessionEmail && sessionRequestId === requestId) {
+          setEmail(sessionEmail)
         } else {
-          setIsCheckingAuth(false)
+          // セッションにメールアドレスがない、またはrequestIdが一致しない場合はエラー
+          setError('セッションが無効です。再度ログインしてください。')
+          router.replace('/login?skip-auth-check=true')
         }
       } catch {
-        setIsCheckingAuth(false)
+        setError('セッション情報の取得に失敗しました。再度ログインしてください。')
+        router.replace('/login?skip-auth-check=true')
       }
     }
 
-    checkAuth()
-  }, [router])
+    if (requestId) {
+      fetchEmailFromSession()
+    }
+  }, [requestId, router])
 
-  // emailまたはrequestIdが無い場合はログインページへリダイレクト
+  // ログイン後のリダイレクトフラグをチェック
+  // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
+  // リダイレクトは即座に実行されるため、このチェックは不要
   useEffect(() => {
-    if (!isCheckingAuth && (!email || !requestId)) {
+    setIsRedirecting(false)
+  }, [])
+
+  // 認証状態チェック（OTP入力画面ではスキップ）
+  // パスワード認証成功時にトークンが発行されるため、OTP認証完了まで認証チェックをスキップする
+  useEffect(() => {
+    // skip-auth-check パラメータがある場合は認証チェックをスキップ
+    const urlParams = new URLSearchParams(window.location.search)
+    const skipAuthCheck = urlParams.get('skip-auth-check')
+
+    if (skipAuthCheck === 'true') {
+      // URLパラメータをクリア
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('skip-auth-check')
+      window.history.replaceState({}, '', newUrl.toString())
+    }
+
+    // OTP入力画面では認証チェックをスキップ
+    // パスワード認証成功時にトークンが発行されるが、OTP認証が完了するまではログインを完了させない
+    setIsCheckingAuth(false)
+  }, [])
+
+  // requestIdが無い場合はログインページへリダイレクト
+  useEffect(() => {
+    if (!isCheckingAuth && !requestId) {
       router.replace('/login?skip-auth-check=true')
     }
-  }, [email, requestId, isCheckingAuth, router])
+  }, [requestId, isCheckingAuth, router])
 
   // OTP認証
   const handleOtpVerify = useCallback(async (otp: string) => {
+    // 連続押下を防ぐ
+    if (isLoading) {
+      return
+    }
+
     setIsLoading(true)
     setError("")
 
@@ -89,7 +123,7 @@ export const useVerifyOtpPage = () => {
       let hasPlan = false
       try {
         const userResponse = await fetch('/api/user/me')
-        
+
         if (userResponse.ok) {
           const userData = await userResponse.json()
           hasPlan = userData.plan !== null && userData.plan !== undefined
@@ -98,48 +132,48 @@ export const useVerifyOtpPage = () => {
         // エラー処理
       }
 
-      // リダイレクト
-      const redirectPath = sessionStorage.getItem('redirectAfterLogin')
-      
+      // リダイレクト先を決定
+      // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
       let targetPath: string
-      if (redirectPath) {
-        sessionStorage.removeItem('redirectAfterLogin')
-        targetPath = redirectPath
+      if (!hasPlan) {
+        targetPath = '/plan-registration'
       } else {
-        if (!hasPlan) {
-          targetPath = '/plan-registration'
-        } else {
-          targetPath = '/home'
-        }
+        targetPath = '/home'
       }
-      
-      // ローディング継続フラグをセッションストレージに設定
-      sessionStorage.setItem('loginRedirecting', targetPath)
-      
+
       // 遷移前にisRedirectingをtrueに設定
       setIsRedirecting(true)
-      
+
       // 少し待ってから遷移
       requestAnimationFrame(() => {
         router.replace(targetPath)
       })
-      
+
       // 成功時はsetIsLoading(false)を呼ばない（リダイレクト後に自動的にアンマウントされるため）
       return
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'ワンタイムパスワードの認証に失敗しました'
-      console.error('OTP verification error:', errorMessage)
       setError(errorMessage)
       setIsLoading(false)
     }
-  }, [email, requestId, router])
+  }, [email, requestId, router, isLoading])
 
   // OTP再送信
   const handleResendOtp = useCallback(async () => {
+    // 連続押下を防ぐ
+    if (isLoading) {
+      return
+    }
+
     setIsLoading(true)
     setError("")
 
     try {
+      // セキュリティ改善：メールアドレスはサーバーサイドセッションから取得
+      if (!email) {
+        throw new Error('メールアドレスが見つかりません')
+      }
+
       const response = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: {
@@ -153,10 +187,11 @@ export const useVerifyOtpPage = () => {
       }
 
       const data = await response.json()
-      
-      // 新しいrequestIdでURLパラメータを更新
+
+      // セキュリティ改善：メールアドレスをURLパラメータで送信しない
+      // 新しいrequestIdでURLパラメータを更新（requestIdのみ）
       if (data.requestId) {
-        const newUrl = `/login/verify-otp?email=${encodeURIComponent(email as string)}&requestId=${encodeURIComponent(data.requestId)}`
+        const newUrl = `/login/verify-otp?requestId=${encodeURIComponent(data.requestId)}`
         router.replace(newUrl)
       }
     } catch (err) {
@@ -164,7 +199,7 @@ export const useVerifyOtpPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }, [email, router])
+  }, [email, router, isLoading])
 
   // ログイン画面に戻る
   const handleBackToLogin = useCallback(() => {

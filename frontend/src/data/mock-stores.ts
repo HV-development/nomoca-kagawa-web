@@ -3,10 +3,10 @@ import type { Store } from "../types/store"
 export const mockStores: Store[] = [
   {
     id: "1",
-    name: "さいたま酒場 大宮店",
+    name: "たかまつ酒場 大宮店",
     genre: "izakaya",
     genreLabel: "居酒屋",
-    address: "埼玉県さいたま市大宮区桜木町1-7-5 大宮ビル2F",
+    address: "埼玉県高松市大宮区桜木町1-7-5 大宮ビル2F",
     phone: "048-123-4567",
     website: "https://example.com/saitama-sakaba",
     description:
@@ -43,7 +43,7 @@ export const mockStores: Store[] = [
     name: "イタリアン・ベラヴィスタ",
     genre: "italian",
     genreLabel: "イタリアン",
-    address: "埼玉県さいたま市浦和区高砂3-15-1 浦和駅前ビル1F",
+    address: "埼玉県高松市浦和区高砂3-15-1 浦和駅前ビル1F",
     phone: "048-234-5678",
     website: "https://example.com/bella-vista",
     description:
@@ -78,7 +78,7 @@ export const mockStores: Store[] = [
     name: "焼肉 牛角 大宮東口店",
     genre: "yakiniku",
     genreLabel: "焼肉",
-    address: "埼玉県さいたま市大宮区大門町2-118 大宮東口ビル3F",
+    address: "埼玉県高松市大宮区大門町2-118 大宮東口ビル3F",
     phone: "048-345-6789",
     description:
       "厳選された国産牛を使用した焼肉店。リーズナブルな価格で高品質なお肉をお楽しみいただけます。家族連れにも人気です。",
@@ -111,7 +111,7 @@ export const mockStores: Store[] = [
     name: "和食処 さくら",
     genre: "japanese",
     genreLabel: "和食",
-    address: "埼玉県さいたま市中央区本町東3-5-2 中央区役所前ビル1F",
+    address: "埼玉県高松市中央区本町東3-5-2 中央区役所前ビル1F",
     phone: "048-456-7890",
     website: "https://example.com/washoku-sakura",
     description:
@@ -145,7 +145,7 @@ export const mockStores: Store[] = [
     name: "バー・ムーンライト",
     genre: "bar",
     genreLabel: "バー",
-    address: "埼玉県さいたま市大宮区仲町2-25 ムーンライトビル地下1F",
+    address: "埼玉県高松市大宮区仲町2-25 ムーンライトビル地下1F",
     phone: "048-567-8901",
     description:
       "大人の隠れ家的なバー。マスターが作る本格カクテルと落ち着いた雰囲気が魅力。一人でも気軽に立ち寄れます。",
@@ -178,7 +178,7 @@ export const mockStores: Store[] = [
     name: "創作ダイニング アート",
     genre: "creative",
     genreLabel: "創作料理",
-    address: "埼玉県さいたま市浦和区仲町1-12-3 アートビル2F",
+    address: "埼玉県高松市浦和区仲町1-12-3 アートビル2F",
     phone: "048-678-9012",
     description:
       "シェフの独創性あふれる創作料理が楽しめるダイニング。季節の食材を使った斬新な料理で新しい味覚体験をお届けします。",
@@ -210,7 +210,7 @@ export const mockStores: Store[] = [
     name: "洋食レストラン グランド",
     genre: "western",
     genreLabel: "洋食",
-    address: "埼玉県さいたま市大宮区錦町2-8-15 グランドビル1F",
+    address: "埼玉県高松市大宮区錦町2-8-15 グランドビル1F",
     phone: "048-789-0123",
     description:
       "老舗の洋食レストラン。昔ながらのオムライスやハンバーグなど、懐かしい味を現代風にアレンジした料理が人気です。",
@@ -243,7 +243,7 @@ export const mockStores: Store[] = [
     name: "フレンチビストロ ル・ソレイユ",
     genre: "french",
     genreLabel: "フレンチ",
-    address: "埼玉県さいたま市浦和区常盤3-18-20 ソレイユビル2F",
+    address: "埼玉県高松市浦和区常盤3-18-20 ソレイユビル2F",
     phone: "048-890-1234",
     description:
       "本格フレンチを気軽に楽しめるビストロ。シェフ厳選のワインと共に、繊細で美しいフランス料理をお楽しみください。",
@@ -276,7 +276,7 @@ export const mockStores: Store[] = [
     name: "中華料理 龍王",
     genre: "chinese",
     genreLabel: "中華",
-    address: "埼玉県さいたま市南区南浦和2-35-8 龍王ビル1F",
+    address: "埼玉県高松市南区南浦和2-35-8 龍王ビル1F",
     phone: "048-901-2345",
     description:
       "本格四川料理から広東料理まで幅広い中華料理をご提供。熟練シェフが作る本場の味をお楽しみください。",
@@ -309,7 +309,7 @@ export const mockStores: Store[] = [
     name: "韓国料理 ソウル",
     genre: "korean",
     genreLabel: "韓国料理",
-    address: "埼玉県さいたま市北区宮原町3-506-1 ソウルビル1F",
+    address: "埼玉県高松市北区宮原町3-506-1 ソウルビル1F",
     phone: "048-012-3456",
     description:
       "本場韓国の味を再現した韓国料理専門店。キムチから焼肉、チゲまで豊富なメニューをご用意しています。",
@@ -341,7 +341,7 @@ export const mockStores: Store[] = [
     name: "アジアンキッチン スパイス",
     genre: "asian",
     genreLabel: "アジアン",
-    address: "埼玉県さいたま市西区指扇1-2-10 スパイスビル1F",
+    address: "埼玉県高松市西区指扇1-2-10 スパイスビル1F",
     phone: "048-123-4567",
     description:
       "タイ、ベトナム、インドなど様々なアジア料理が楽しめるレストラン。スパイスの効いた本格的な味をお楽しみください。",
@@ -374,7 +374,7 @@ export const mockStores: Store[] = [
     name: "ラーメン横丁 麺屋",
     genre: "ramen",
     genreLabel: "ラーメン",
-    address: "埼玉県さいたま市見沼区東大宮5-32-10",
+    address: "埼玉県高松市見沼区東大宮5-32-10",
     phone: "048-234-5678",
     description:
       "こだわりの豚骨スープと自家製麺が自慢のラーメン店。深夜まで営業しているので、仕事帰りにも最適です。",
@@ -407,7 +407,7 @@ export const mockStores: Store[] = [
     name: "手打ちそば 武蔵野",
     genre: "soba",
     genreLabel: "そば",
-    address: "埼玉県さいたま市桜区田島5-20-3",
+    address: "埼玉県高松市桜区田島5-20-3",
     phone: "048-345-6789",
     description:
       "毎朝手打ちする十割そばが自慢の老舗そば店。つゆにもこだわり、関東風の濃いめの味付けが人気です。",
@@ -440,7 +440,7 @@ export const mockStores: Store[] = [
     name: "讃岐うどん 麦の香",
     genre: "udon",
     genreLabel: "うどん",
-    address: "埼玉県さいたま市緑区東浦和2-15-8",
+    address: "埼玉県高松市緑区東浦和2-15-8",
     phone: "048-456-7890",
     description:
       "本場讃岐から取り寄せた小麦粉で作る本格讃岐うどん。コシの強い麺と出汁の効いたつゆが絶品です。",
@@ -473,7 +473,7 @@ export const mockStores: Store[] = [
     name: "ビストロ カフェ パリ",
     genre: "western",
     genreLabel: "洋食",
-    address: "埼玉県さいたま市中央区上落合2-3-5 パリビル1F",
+    address: "埼玉県高松市中央区上落合2-3-5 パリビル1F",
     phone: "048-567-8901",
     description:
       "カジュアルなビストロスタイルの洋食レストラン。ハンバーグやオムライスなど定番メニューが充実しています。",
@@ -506,7 +506,7 @@ export const mockStores: Store[] = [
     name: "タイ料理 バンコク",
     genre: "asian",
     genreLabel: "アジアン",
-    address: "埼玉県さいたま市岩槻区本町1-1-2 バンコクビル2F",
+    address: "埼玉県高松市岩槻区本町1-1-2 バンコクビル2F",
     phone: "048-678-9012",
     description:
       "本場タイ人シェフが作る本格タイ料理。トムヤムクンやガパオライスなど、スパイシーで香り豊かな料理が楽しめます。",

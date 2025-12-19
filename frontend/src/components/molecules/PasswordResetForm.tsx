@@ -70,7 +70,7 @@ export function PasswordResetForm({ onSubmit, onCancel, isLoading = false }: Pas
           placeholder="example@email.com"
           value={email}
           onChange={(e) => handleEmailChange(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent transition-colors"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent transition-colors"
         />
         {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
       </div>

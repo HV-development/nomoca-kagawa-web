@@ -70,31 +70,31 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
         status: 'active',
         limit: '50',
       })
-      
+
       if (saitamaAppLinked !== null) {
         queryParams.append('saitamaAppLinked', String(saitamaAppLinked))
       }
-      
+
       const apiUrl = `/api/plans?${queryParams.toString()}`
       const response = await fetch(apiUrl)
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`)
       }
-      
+
       const data = await response.json()
-      
+
       // APIから取得したプランをPlanOption形式に変換
-      const formattedPlans: PlanOption[] = data.plans.map((plan: { 
-        id: string; 
-        name: string; 
-        price: number; 
-        description?: string; 
-        features?: string[]; 
-        badge?: string; 
-        isRecommended?: boolean; 
-        originalPrice?: string 
+      const formattedPlans: PlanOption[] = data.plans.map((plan: {
+        id: string;
+        name: string;
+        price: number;
+        description?: string;
+        features?: string[];
+        badge?: string;
+        isRecommended?: boolean;
+        originalPrice?: string
       }) => ({
         id: plan.id,
         name: plan.name,
@@ -105,7 +105,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
         isRecommended: plan.isRecommended,
         originalPrice: plan.originalPrice,
       }))
-      
+
       setAvailablePlans(formattedPlans)
     } catch {
       setFetchError('プランの取得に失敗しました')
@@ -131,7 +131,7 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
   // プランリストを現在のプランを基準に並び替え
   const getSortedPlans = () => {
     if (availablePlans.length === 0) return []
-    
+
     const plans = [...availablePlans]
 
     // 現在のプランのインデックスを見つける
@@ -198,22 +198,22 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
       }
 
       const data = result.data as { pointsGranted?: number }
-      
+
       // 連携したIDを保存
       setLinkedSaitamaAppId(saitamaAppId)
-      
+
       // モーダル用のメッセージを作成
       const pointsMessage = typeof data.pointsGranted === 'number' && data.pointsGranted > 0
-        ? `${data.pointsGranted}ポイントを付与しました！` 
+        ? `${data.pointsGranted}ポイントを付与しました！`
         : 'ポイントが付与されました！'
       setModalMessage(`高松市みんなのアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
-      
+
       // モーダルを表示
       setShowSuccessModal(true)
-      
+
       // 入力フィールドをクリア
       setSaitamaAppId("")
-      
+
       // 連携成功後、プランを再取得
       await fetchUserInfo()
       await fetchPlans()
@@ -373,11 +373,11 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
         {sortedPlans.map((plan) => {
           const isCurrentPlan = plan.id === currentPlan.id
           const isSelected = selectedPlan === plan.id
-          
+
           // 高松市アプリ連携済みの場合の価格表示
           const isSaitamaLinked = saitamaAppLinked || linkedSaitamaAppId;
           const saitamaDiscountPrice = 480; // 高松市アプリ連携時の価格
-          
+
           // 高松市アプリ連携済みで、通常価格が980円の場合
           if (isSaitamaLinked && plan.price === 980) {
             return (
@@ -537,10 +537,10 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
                 }}
                 placeholder="saitamacity_xxxxxx"
                 disabled={isLinking}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#2B7A78] disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
-            <button 
+            <button
               onClick={handleLinkSaitamaApp}
               disabled={isLinking || !saitamaAppId}
               className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"

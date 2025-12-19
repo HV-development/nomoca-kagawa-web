@@ -19,8 +19,8 @@ const faqData: FAQSection[] = [
     title: '1) サービス全体について',
     items: [
       {
-        question: 'たまのみって何？',
-        answer: 'さいたま市を中心に"ちょい飲み"を楽しめる月額制（サブスク）サービスです。掲載店で提示すると「各店舗につき1日に1杯の対象ドリンクが無料」になり（※対象ドリンクや条件等は店舗・キャンペーンにより異なります）、地域ポイント「たまポン」の還元施策とも連動する場合があります。掲載費は店舗無料、ユーザーは月額課金で利用できます。'
+        question: 'nomocaKagawaって何？',
+        answer: '高松市を中心に"ちょい飲み"を楽しめる月額制（サブスク）サービスです。掲載店で提示すると「各店舗につき1日に1杯の対象ドリンクが無料」になり（※対象ドリンクや条件等は店舗・キャンペーンにより異なります）、地域ポイント「たまポン」の還元施策とも連動する場合があります。掲載費は店舗無料、ユーザーは月額課金で利用できます。'
       },
       {
         question: '料金は？',
@@ -32,7 +32,7 @@ const faqData: FAQSection[] = [
       },
       {
         question: 'だれが運営？出資・連携は？',
-        answer: '株式会社つなぐが運営。さいたま市、J:COM、JTB、イオンフィナンシャルサービス、埼玉りそな銀行、武蔵野銀行、埼玉縣信用金庫、さいたま商工会議所等が出資・連携しております（商連は出資なし）。最新の構成はさいたま市みんなのアプリの公式サイト等をご確認ください。'
+        answer: '株式会社つなぐが運営。高松市、J:COM、JTB、イオンフィナンシャルサービス、埼玉りそな銀行、武蔵野銀行、埼玉縣信用金庫、たかまつ商工会議所等が出資・連携しております（商連は出資なし）。最新の構成は高松市みんなのアプリの公式サイト等をご確認ください。'
       }
     ]
   },
@@ -45,7 +45,7 @@ const faqData: FAQSection[] = [
       },
       {
         question: 'どんなドリンクが無料対象？',
-        answer: '店舗ごとの「対象メニュー」からの提供が基本です（例：最初の1杯限定・指定銘柄・ソフトドリンク可など）。たまのみサイトのクーポンページで事前にご確認ください。'
+        answer: '店舗ごとの「対象メニュー」からの提供が基本です（例：最初の1杯限定・指定銘柄・ソフトドリンク可など）。nomocaKagawaサイトのクーポンページで事前にご確認ください。'
       },
       {
         question: '年齢制限は？',
@@ -57,15 +57,15 @@ const faqData: FAQSection[] = [
       },
       {
         question: '使い方の流れは？',
-        answer: '1) たまのみサイトで掲載店を検索 → 2) 入店 → 3) 店舗スタッフにたまのみサイトの「無料1杯」画面を提示 → 4) 店舗スタッフが確認 → 5) 無料ドリンクが提供 → 6) 会計時に値引。※提示タイミング・画面種別は店舗オペレーションにより多少異なります。'
+        answer: '1) nomocaKagawaサイトで掲載店を検索 → 2) 入店 → 3) 店舗スタッフにnomocaKagawaサイトの「無料1杯」画面を提示 → 4) 店舗スタッフが確認 → 5) 無料ドリンクが提供 → 6) 会計時に値引。※提示タイミング・画面種別は店舗オペレーションにより多少異なります。'
       },
       {
         question: 'たまポンのポイント還元を受けられる？',
-        answer: '実施中のキャンペーンにより、条件満たされた方にポイント還元されます。付与タイミング・上限・対象は企画ごとに異なるため、専用サイト等で告知をご確認ください。ポイント還元を受けるためには、さいたま市みんなのアプリのIDをたまのみサイト上で登録する必要があります。'
+        answer: '実施中のキャンペーンにより、条件満たされた方にポイント還元されます。付与タイミング・上限・対象は企画ごとに異なるため、専用サイト等で告知をご確認ください。ポイント還元を受けるためには、高松市みんなのアプリのIDをnomocaKagawaサイト上で登録する必要があります。'
       },
       {
         question: '支払い方法は？',
-        answer: 'たまのみサイト内の月額課金です。利用可能な決済手段（例：各種クレジットカード、コード決済等）を選択できます。詳細はサイト内の画面でご確認ください。'
+        answer: 'nomocaKagawaサイト内の月額課金です。利用可能な決済手段（例：各種クレジットカード、コード決済等）を選択できます。詳細はサイト内の画面でご確認ください。'
       },
       {
         question: '解約はどうする？更新日は？',
@@ -153,7 +153,7 @@ const faqData: FAQSection[] = [
     items: [
       {
         question: '「無料1杯」が反映されない/押下できない',
-        answer: '既に当日その店舗で1杯利用済みの可能性、通信不良／スマホの古いバージョン、店舗側の提供一時停止などが考えられます。たまのみサイト再起動、電波状況の確認、店舗スタッフへお知らせをお試しください。解決しない場合はサポート窓口へご連絡ください。'
+        answer: '既に当日その店舗で1杯利用済みの可能性、通信不良／スマホの古いバージョン、店舗側の提供一時停止などが考えられます。nomocaKagawaサイト再起動、電波状況の確認、店舗スタッフへお知らせをお試しください。解決しない場合はサポート窓口へご連絡ください。'
       },
       {
         question: '課金・請求金額がおかしい',
@@ -174,7 +174,7 @@ const faqData: FAQSection[] = [
     items: [
       {
         question: '利用時の注意事項は？',
-        answer: 'アルコール類の提供の場合、20歳未満の飲酒禁止／飲酒運転禁止。迷惑行為（長時間の占有、大声、他客・スタッフへの迷惑）は利用停止対象。たまのみサイト画面の不正転用・転売・貸与は禁止。健康状態に留意し、節度ある飲酒をお願いします。'
+        answer: 'アルコール類の提供の場合、20歳未満の飲酒禁止／飲酒運転禁止。迷惑行為（長時間の占有、大声、他客・スタッフへの迷惑）は利用停止対象。nomocaKagawaサイト画面の不正転用・転売・貸与は禁止。健康状態に留意し、節度ある飲酒をお願いします。'
       }
     ]
   },
@@ -217,7 +217,7 @@ export default function FAQPage() {
             <Link href="/lp">
               <Image
                 src="/lp/images/horizon-color-white.png"
-                alt="たまのみ"
+                alt="nomocaKagawa"
                 width={1312}
                 height={320}
                 className="w-32 h-8 md:w-[246px] md:h-[60px]"
@@ -232,7 +232,7 @@ export default function FAQPage() {
         <div className="max-w-4xl mx-auto px-4 md:px-[120px]">
           {/* Page Title */}
           <div className="text-center mb-12 md:mb-16">
-            <h1 
+            <h1
               className="text-4xl md:text-5xl mb-4"
               style={{
                 color: '#000',
@@ -243,7 +243,7 @@ export default function FAQPage() {
             >
               よくあるご質問
             </h1>
-            <p 
+            <p
               className="text-base md:text-lg"
               style={{
                 color: '#666',
@@ -262,14 +262,14 @@ export default function FAQPage() {
               <div key={sectionIndex}>
                 {/* Section Title */}
                 <div className="flex items-center gap-3 mb-6 md:mb-8">
-                  <div 
+                  <div
                     style={{
                       width: '5px',
                       height: '20px',
                       background: 'var(--main, #6FC8E5)'
                     }}
                   />
-                  <h2 
+                  <h2
                     className="text-xl md:text-2xl"
                     style={{
                       color: '#000',
@@ -291,7 +291,7 @@ export default function FAQPage() {
                     const isOpen = openItems[key]
 
                     return (
-                      <div 
+                      <div
                         key={itemIndex}
                         style={{
                           display: 'flex',
@@ -308,7 +308,7 @@ export default function FAQPage() {
                           className="w-full text-left flex items-center justify-between hover:opacity-80 transition-opacity"
                           onClick={() => toggleItem(sectionIndex, itemIndex)}
                         >
-                          <span 
+                          <span
                             className="text-sm md:text-base pr-4"
                             style={{
                               color: 'var(--main, #6FC8E5)',
@@ -320,7 +320,7 @@ export default function FAQPage() {
                           >
                             {item.question}
                           </span>
-                          <div 
+                          <div
                             className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full"
                             style={{
                               background: '#6FC8E5'
@@ -328,11 +328,11 @@ export default function FAQPage() {
                           >
                             {isOpen ? (
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M20.5 12H3.5" stroke="white" strokeLinecap="round"/>
+                                <path d="M20.5 12H3.5" stroke="white" strokeLinecap="round" />
                               </svg>
                             ) : (
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M12 3.5V20.5M20.5 12H3.5" stroke="white" strokeLinecap="round"/>
+                                <path d="M12 3.5V20.5M20.5 12H3.5" stroke="white" strokeLinecap="round" />
                               </svg>
                             )}
                           </div>
@@ -341,7 +341,7 @@ export default function FAQPage() {
                         {/* Answer */}
                         {isOpen && (
                           <div className="w-full">
-                            <p 
+                            <p
                               className="text-sm md:text-base"
                               style={{
                                 color: '#333',
@@ -363,13 +363,13 @@ export default function FAQPage() {
           </div>
 
           {/* Contact Section */}
-          <div 
+          <div
             className="mt-16 md:mt-20 p-8 md:p-12 rounded-lg text-center"
             style={{
               backgroundColor: '#F0F9FF'
             }}
           >
-            <h3 
+            <h3
               className="text-xl md:text-2xl mb-4"
               style={{
                 color: '#000',
@@ -380,7 +380,7 @@ export default function FAQPage() {
             >
               解決しない場合は
             </h3>
-            <p 
+            <p
               className="text-base md:text-lg mb-6"
               style={{
                 color: '#666',
@@ -426,7 +426,7 @@ export default function FAQPage() {
 
             {/* Footer Links */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-6">
-              <Link 
+              <Link
                 href="/lp/faq"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
@@ -436,7 +436,7 @@ export default function FAQPage() {
               >
                 よくあるご質問
               </Link>
-              <Link 
+              <Link
                 href="/lp/contact"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
@@ -446,7 +446,7 @@ export default function FAQPage() {
               >
                 お問い合わせ
               </Link>
-              <a 
+              <a
                 href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
@@ -456,7 +456,7 @@ export default function FAQPage() {
               >
                 プライバシーポリシー
               </a>
-              <a 
+              <a
                 href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{
@@ -469,7 +469,7 @@ export default function FAQPage() {
             </div>
 
             {/* Copyright */}
-            <p 
+            <p
               className="text-sm"
               style={{
                 color: '#666',
@@ -477,7 +477,7 @@ export default function FAQPage() {
                 fontWeight: '400'
               }}
             >
-              ©2025 TAMANOMI
+              ©2025 nomocaKagawa
             </p>
           </div>
         </div>

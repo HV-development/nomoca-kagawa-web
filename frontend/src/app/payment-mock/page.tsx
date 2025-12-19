@@ -30,32 +30,32 @@ function PaymentMockContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsProcessing(true)
-    
+
     try {
       const mockCustomerCardId = 'mock_' + Date.now()
-      
+
       // customer_idを取得（URLパラメータまたはフォームデータから）
       let currentCustomerId = customerId
-      
+
       // フォームデータからcustomer_idを取得
       const formData = new FormData(e.target as HTMLFormElement)
       const formCustomerId = formData.get('customer_id') as string
-      
+
       if (formCustomerId) {
         currentCustomerId = formCustomerId
         setCustomerId(formCustomerId)
       }
-      
+
       if (!currentCustomerId) {
         alert('エラー: customer_idパラメータが見つかりません')
         setIsProcessing(false)
         return
       }
-      
+
       // WebhookをAPIに送信（実際のPaygentと同じフロー）
       // ハッシュは64文字必要（SHA-256ハッシュの16進数表現）
       const mockHash = 'mock_hash_' + Date.now().toString().padEnd(54, '0') // 64文字にパディング
-      
+
       const webhookResponse = await fetch('/api/payment/webhook', {
         method: 'POST',
         headers: {
@@ -69,19 +69,19 @@ function PaymentMockContent() {
           hc: mockHash
         })
       })
-      
+
       if (!webhookResponse.ok) {
         alert('エラー: Webhook処理に失敗しました')
         setIsProcessing(false)
         return
       }
-      
+
       // 少し待ってから戻りURLへリダイレクト
       setTimeout(() => {
         const returnUrl = `/payment-return?customer_id=${currentCustomerId}&customer_card_id=${mockCustomerCardId}`
         router.push(returnUrl)
       }, 1000)
-      
+
     } catch {
       alert('エラーが発生しました')
       setIsProcessing(false)
@@ -100,13 +100,13 @@ function PaymentMockContent() {
           </p>
           <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
             <p className="text-xs text-blue-800">
-              <strong>Debug Info:</strong><br/>
-              customer_id: {customerId || searchParams.get('customer_id') || 'なし'}<br/>
+              <strong>Debug Info:</strong><br />
+              customer_id: {customerId || searchParams.get('customer_id') || 'なし'}<br />
               return_url: {searchParams.get('return_url') || 'なし'}
             </p>
           </div>
         </div>
-        
+
         <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
           <div className="flex">
             <div className="flex-shrink-0">
@@ -142,8 +142,8 @@ function PaymentMockContent() {
                 type="text"
                 placeholder="1234 5678 9012 3456"
                 value={cardInfo.cardNumber}
-                onChange={(e) => setCardInfo({...cardInfo, cardNumber: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                onChange={(e) => setCardInfo({ ...cardInfo, cardNumber: e.target.value })}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#2B7A78] focus:border-[#2B7A78]"
               />
             </div>
 
@@ -158,8 +158,8 @@ function PaymentMockContent() {
                   type="text"
                   placeholder="MM/YY"
                   value={cardInfo.expiryDate}
-                  onChange={(e) => setCardInfo({...cardInfo, expiryDate: e.target.value})}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  onChange={(e) => setCardInfo({ ...cardInfo, expiryDate: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#2B7A78] focus:border-[#2B7A78]"
                 />
               </div>
               <div>
@@ -172,8 +172,8 @@ function PaymentMockContent() {
                   type="text"
                   placeholder="123"
                   value={cardInfo.cvv}
-                  onChange={(e) => setCardInfo({...cardInfo, cvv: e.target.value})}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  onChange={(e) => setCardInfo({ ...cardInfo, cvv: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#2B7A78] focus:border-[#2B7A78]"
                 />
               </div>
             </div>
@@ -188,8 +188,8 @@ function PaymentMockContent() {
                 type="text"
                 placeholder="TARO YAMADA"
                 value={cardInfo.cardHolderName}
-                onChange={(e) => setCardInfo({...cardInfo, cardHolderName: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                onChange={(e) => setCardInfo({ ...cardInfo, cardHolderName: e.target.value })}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#2B7A78] focus:border-[#2B7A78]"
               />
             </div>
           </div>
@@ -198,7 +198,7 @@ function PaymentMockContent() {
             <button
               type="submit"
               disabled={isProcessing}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2B7A78] disabled:opacity-50"
             >
               {isProcessing ? (
                 <>

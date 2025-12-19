@@ -15,7 +15,7 @@ type ContactFormData = UserContactFormData | MerchantContactFormData
 function ContactFormContent() {
   const searchParams = useSearchParams()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -31,15 +31,15 @@ function ContactFormContent() {
   useEffect(() => {
     const typeParam = searchParams.get('type')
     const referrer = document.referrer
-    
+
     let detectedType: 'user' | 'merchant' = 'user'
-    
+
     if (typeParam === 'merchant') {
       detectedType = 'merchant'
     } else if (referrer.includes('/lp/merchant')) {
       detectedType = 'merchant'
     }
-    
+
     setFormData(prev => ({ ...prev, inquiryType: detectedType }))
   }, [searchParams])
 
@@ -47,7 +47,7 @@ function ContactFormContent() {
   const validateForm = (): boolean => {
     try {
       const schema = formData.inquiryType === 'merchant' ? merchantContactFormSchema : userContactFormSchema
-      
+
       schema.parse(formData)
       setErrors({})
       return true
@@ -115,7 +115,7 @@ function ContactFormContent() {
   }
 
   const nameLabel = formData.inquiryType === 'merchant' ? '掲載店名' : '氏名'
-  const namePlaceholder = formData.inquiryType === 'merchant' ? '例：居酒屋たまのみ' : '例：山田 太郎'
+  const namePlaceholder = formData.inquiryType === 'merchant' ? '例：居酒屋nomocaKagawa' : '例：山田 太郎'
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -125,23 +125,23 @@ function ContactFormContent() {
           <div className="flex items-center w-full max-w-6xl mx-auto">
             <Link href="/lp" className="flex items-center">
               <Image
-                src="/lp/images/logo.png"
-                alt="たまのみ"
-                width={328}
-                height={329}
-                className="w-20 h-20 md:w-24 md:h-24"
+                src="/logo.svg"
+                alt="TAMANOMI"
+                width={576}
+                height={96}
+                className="w-32 h-auto md:w-40"
               />
             </Link>
             <div style={{ flex: 1 }}></div>
             <div className="flex items-center gap-4 md:gap-8">
               <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-                <Link href="/lp#about" className="text-gray-700 hover:text-blue-600 transition-colors">たまのみとは</Link>
+                <Link href="/lp#about" className="text-gray-700 hover:text-blue-600 transition-colors">nomocaKagawaとは</Link>
                 <Link href="/lp#features" className="text-gray-700 hover:text-blue-600 transition-colors">魅力</Link>
                 <Link href="/lp#howto" className="text-gray-700 hover:text-blue-600 transition-colors">使い方</Link>
                 <Link href="/lp#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">利用料金</Link>
               </nav>
-              
-              <Link 
+
+              <Link
                 href="/lp/merchant"
                 className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm px-4 py-2 md:px-6 md:py-3 rounded-full"
                 style={{
@@ -167,7 +167,7 @@ function ContactFormContent() {
 
         {/* モバイルメニュー */}
         {isMobileMenuOpen && (
-          <div 
+          <div
             className="md:hidden fixed inset-0 w-full h-full bg-white"
             style={{
               display: 'flex',
@@ -185,34 +185,34 @@ function ContactFormContent() {
               aria-label="メニューを閉じる"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
 
             <nav className="flex flex-col items-center gap-8 py-8">
-              <Link 
-                href="/lp#about" 
+              <Link
+                href="/lp#about"
                 className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                たまのみとは
+                nomocaKagawaとは
               </Link>
-              <Link 
-                href="/lp#features" 
+              <Link
+                href="/lp#features"
                 className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 魅力
               </Link>
-              <Link 
-                href="/lp#howto" 
+              <Link
+                href="/lp#howto"
                 className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 使い方
               </Link>
-              <Link 
-                href="/lp#pricing" 
+              <Link
+                href="/lp#pricing"
                 className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -228,17 +228,17 @@ function ContactFormContent() {
         <div className="max-w-3xl mx-auto px-4 md:px-8">
           {/* Title */}
           <div className="text-center mb-8 md:mb-12">
-            <h1 
+            <h1
               className="text-3xl md:text-4xl lg:text-5xl mb-4"
               style={{
-                color: '#007D4F',
+                color: '#2B7A78',
                 fontFamily: '"Zen Kaku Gothic New"',
                 fontWeight: '700',
               }}
             >
               お問い合わせ
             </h1>
-            <p 
+            <p
               className="text-base md:text-lg"
               style={{
                 color: '#666',
@@ -251,14 +251,14 @@ function ContactFormContent() {
 
           {/* Success Message */}
           {submitSuccess && (
-            <div 
+            <div
               className="mb-8 p-6 rounded-lg border-2"
               style={{
                 backgroundColor: '#f0fdf4',
                 borderColor: '#22c55e',
               }}
             >
-              <p 
+              <p
                 className="text-center text-lg"
                 style={{
                   color: '#16a34a',
@@ -274,14 +274,14 @@ function ContactFormContent() {
 
           {/* Error Message */}
           {submitError && (
-            <div 
+            <div
               className="mb-8 p-6 rounded-lg border-2"
               style={{
                 backgroundColor: '#fef2f2',
                 borderColor: '#ef4444',
               }}
             >
-              <p 
+              <p
                 className="text-center text-base"
                 style={{
                   color: '#dc2626',
@@ -297,7 +297,7 @@ function ContactFormContent() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Inquiry Type Radio Buttons */}
             <div>
-              <label 
+              <label
                 className="block mb-3 text-sm md:text-base"
                 style={{
                   color: '#333',
@@ -317,7 +317,7 @@ function ContactFormContent() {
                     onChange={(e) => setFormData(prev => ({ ...prev, inquiryType: e.target.value as 'user' | 'merchant' }))}
                     className="w-4 h-4 text-blue-600 cursor-pointer"
                   />
-                  <span 
+                  <span
                     className="text-sm md:text-base"
                     style={{
                       color: '#333',
@@ -336,7 +336,7 @@ function ContactFormContent() {
                     onChange={(e) => setFormData(prev => ({ ...prev, inquiryType: e.target.value as 'user' | 'merchant' }))}
                     className="w-4 h-4 text-blue-600 cursor-pointer"
                   />
-                  <span 
+                  <span
                     className="text-sm md:text-base"
                     style={{
                       color: '#333',
@@ -351,7 +351,7 @@ function ContactFormContent() {
 
             {/* Name Field */}
             <div>
-              <label 
+              <label
                 htmlFor="name"
                 className="block mb-2 text-sm md:text-base"
                 style={{
@@ -368,7 +368,7 @@ function ContactFormContent() {
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 placeholder={namePlaceholder}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
                 style={{
                   borderColor: errors.name ? '#ef4444' : '#d1d5db',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -381,7 +381,7 @@ function ContactFormContent() {
 
             {/* Email Field */}
             <div>
-              <label 
+              <label
                 htmlFor="email"
                 className="block mb-2 text-sm md:text-base"
                 style={{
@@ -398,7 +398,7 @@ function ContactFormContent() {
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                 placeholder="例：example@tamanomi.com"
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
                 style={{
                   borderColor: errors.email ? '#ef4444' : '#d1d5db',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -411,7 +411,7 @@ function ContactFormContent() {
 
             {/* Message Field */}
             <div>
-              <label 
+              <label
                 htmlFor="message"
                 className="block mb-2 text-sm md:text-base"
                 style={{
@@ -428,7 +428,7 @@ function ContactFormContent() {
                 onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                 placeholder="お問い合わせ内容をご記入ください"
                 rows={8}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] resize-vertical"
                 style={{
                   borderColor: errors.message ? '#ef4444' : '#d1d5db',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -467,53 +467,59 @@ function ContactFormContent() {
             {/* Logo */}
             <div className="mb-4 md:mb-8">
               <Image
-                src="/lp/images/logo.png"
+                src="/logo.svg"
                 alt="TAMANOMI"
-                width={328}
-                height={329}
-                className="w-48 h-auto md:w-64 lg:w-[328px]"
+                width={576}
+                height={96}
+                className="w-48 h-auto md:w-64 lg:w-[320px]"
               />
             </div>
 
             {/* Footer Links */}
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-              <Link 
+              <Link
                 href="/lp/faq"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 よくあるご質問
               </Link>
-              <Link 
+              <Link
                 href="/lp/contact"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 お問い合わせ
               </Link>
-              <a 
-                href="#" 
+              <a
+                href="/プライバシーポリシー.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 プライバシーポリシー
               </a>
-              <a 
-                href="#" 
+              <a
+                href="/特定商取引法.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 特定商取引法に基づく表記
               </a>
-              <a 
-                href="#" 
+              <a
+                href="/nomocakagawaサービス利用規約.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 ご利用規約
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
                 style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
@@ -523,7 +529,7 @@ function ContactFormContent() {
 
             {/* Copyright */}
             <div className="pb-6 md:pb-8">
-              <p 
+              <p
                 className="text-sm md:text-base"
                 style={{
                   color: '#000',
@@ -531,7 +537,7 @@ function ContactFormContent() {
                   fontFamily: 'Rubik',
                 }}
               >
-                ©2025 TAMANOMI
+                ©2025 nomocaKagawa
               </p>
             </div>
           </div>

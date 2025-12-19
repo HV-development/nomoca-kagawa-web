@@ -20,6 +20,7 @@ export function LoginForm({ onLogin, onSignup, onForgotPassword, isLoading = fal
     password: ""
   })
   const [errors, setErrors] = useState<Partial<Record<keyof AdminLoginInput, string>>>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateField = (fieldName: keyof AdminLoginInput, value: string) => {
     try {
@@ -77,15 +78,22 @@ export function LoginForm({ onLogin, onSignup, onForgotPassword, isLoading = fal
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // 連続押下を防ぐ
+    if (isSubmitting || isLoading) {
+      return
+    }
+
     // バリデーションを実行してエラーを表示
     const isValid = validateForm()
 
     if (isValid) {
+      setIsSubmitting(true)
       // Fast Refresh対策: 直接APIを呼び出してページ遷移
       try {
         const loginResponse = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // Cookieを送信
           body: JSON.stringify(formData),
         })
         const loginData = await loginResponse.json()
@@ -97,6 +105,7 @@ export function LoginForm({ onLogin, onSignup, onForgotPassword, isLoading = fal
         const otpResponse = await fetch('/api/auth/send-otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include', // Cookieを送信
           body: JSON.stringify({ email: formData.email }),
         })
         const otpData = await otpResponse.json()
@@ -105,11 +114,14 @@ export function LoginForm({ onLogin, onSignup, onForgotPassword, isLoading = fal
           throw new Error('OTPの送信に失敗しました')
         }
 
-        // ページ遷移
-        const targetUrl = `/login/verify-otp?email=${encodeURIComponent(formData.email)}&requestId=${encodeURIComponent(otpData.requestId)}`
+        // セキュリティ改善：メールアドレスをURLパラメータで送信しない
+        // requestIdのみをURLパラメータで送信（メールアドレスはサーバーサイドセッションに保存済み）
+        // skip-auth-checkパラメータを追加して、OTP入力画面での認証チェックをスキップ
+        const targetUrl = `/login/verify-otp?requestId=${encodeURIComponent(otpData.requestId)}&skip-auth-check=true`
         window.location.href = targetUrl
       } catch {
         // エラーは親コンポーネントに渡す
+        setIsSubmitting(false)
         onLogin(formData)
       }
     } else {
@@ -153,10 +165,10 @@ export function LoginForm({ onLogin, onSignup, onForgotPassword, isLoading = fal
       <div className="space-y-4">
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isSubmitting || isLoading}
           className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-base font-medium"
         >
-          {isLoading ? "ログイン中..." : "ログイン"}
+          {isSubmitting || isLoading ? "ログイン中..." : "ログイン"}
         </Button>
 
         <Button type="button" onClick={handleSignupClick} variant="secondary" className="w-full py-3 text-base font-medium">

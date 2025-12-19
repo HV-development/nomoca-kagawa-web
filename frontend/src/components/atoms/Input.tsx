@@ -47,7 +47,7 @@ export function Input({
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
           disabled={disabled}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
         />
         {type === "password" && (
           <button

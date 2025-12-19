@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,26 +17,24 @@ export async function GET(request: NextRequest) {
       status,
       limit,
     })
-    
+
     if (saitamaAppLinked !== null) {
       queryParams.append('saitamaAppLinked', saitamaAppLinked)
     }
 
     const fullUrl = `${buildApiUrl('/plans')}?${queryParams.toString()}`
 
-
-    const response = await fetch(fullUrl, {
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+      headerOptions: {
+        requireAuth: false, // プラン一覧は認証不要（公開エンドポイント）
       },
-      cache: 'no-store',  // キャッシュを無効化
     })
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
       console.error('Plans API error:', errorData)
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: errorData.message || 'プランの取得に失敗しました' },
         { status: response.status }
       )
@@ -42,10 +42,10 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
 
-    return NextResponse.json(data)
+    return createNoCacheResponse(data)
   } catch (error) {
     console.error('Plans API fetch error:', error)
-    return NextResponse.json(
+    return createNoCacheResponse(
       { error: 'プランの取得中にエラーが発生しました' },
       { status: 500 }
     )

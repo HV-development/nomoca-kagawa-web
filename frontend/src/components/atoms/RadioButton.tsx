@@ -36,9 +36,10 @@ export function RadioButton({
             key={option.value}
             type="button"
             onClick={() => onChange(option.value)}
-            className={`px-2 py-3 rounded-lg border border-gray-300 text-xs sm:text-sm font-medium transition-all duration-200 min-w-0 ${value === option.value
-              ? "bg-green-50 text-green-700 border-green-500"
-              : "bg-white text-gray-700 hover:border-green-600 hover:bg-green-50"
+            aria-pressed={value === option.value}
+            className={`px-3 py-3 rounded-lg border text-xs sm:text-sm font-medium transition-all duration-200 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-[#3A8A88] ${value === option.value
+              ? "bg-[#2B7A78] text-white border-[#2B7A78] shadow-sm"
+              : "bg-white text-gray-700 border-gray-300 hover:border-[#3A8A88] hover:bg-green-50"
               }`}
           >
             <span className="truncate block">{option.label}</span>

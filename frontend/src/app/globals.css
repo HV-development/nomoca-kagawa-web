@@ -14,7 +14,8 @@ body {
 /* PCブラウザでもスマホサイズのレイアウトを維持 */
 @media (min-width: 768px) {
   body {
-    max-width: 28rem; /* 448px - スマホサイズ */
+    max-width: 28rem;
+    /* 448px - スマホサイズ */
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -25,7 +26,7 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-  
+
   @media (min-width: 768px) {
     .md\:w-365 {
       width: 365px !important;
@@ -70,7 +71,10 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --nomoca-brand: #3A8A88;
+    --nomoca-brand-strong: #2B7A78;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -109,20 +113,44 @@ body {
 
 /* スクロールバーを非表示にする */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
+[class*="border-green-"] {
+  border-color: var(--nomoca-brand) !important;
+}
 
+[class*="hover:border-green-"]:hover {
+  border-color: var(--nomoca-brand) !important;
+}
+
+[class*="focus:border-green-"]:focus,
+[class*="focus-visible:border-green-"]:focus-visible {
+  border-color: var(--nomoca-brand) !important;
+}
+
+.nomoca-border {
+  border-color: var(--nomoca-brand) !important;
+}
+
+.nomoca-border-strong {
+  border-color: var(--nomoca-brand-strong) !important;
+}

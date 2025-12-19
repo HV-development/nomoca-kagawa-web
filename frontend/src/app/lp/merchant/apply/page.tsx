@@ -53,7 +53,7 @@ export default function MerchantApplyPage() {
 
   const handleInputChange = (field: keyof MerchantApplyFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
-    
+
     // リアルタイムバリデーション
     validateField(field, value)
   }
@@ -83,7 +83,7 @@ export default function MerchantApplyPage() {
           fieldSchema.parse(value)
         }
       }
-      
+
       // バリデーション成功 - エラーをクリア
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -101,12 +101,12 @@ export default function MerchantApplyPage() {
 
   const handleAddressSearch = async () => {
     const cleanedPostalCode = formData.postalCode.replace(/-/g, '')
-    
+
     // スキーマベースのバリデーションを使用
     try {
       const postalCodeSchema = MerchantFormSchema.shape.postalCode
       postalCodeSchema.parse(cleanedPostalCode)
-      
+
       // バリデーション成功 - エラーをクリア
       setErrors(prev => {
         const newErrors = { ...prev }
@@ -171,7 +171,7 @@ export default function MerchantApplyPage() {
       // CreateMerchantSchemaを使用してバリデーション
       CreateMerchantSchema.parse({
         ...formData,
-        applications: ['たまのみ'] // デフォルト値
+        applications: ['nomocaKagawa'] // デフォルト値
       })
       return true
     } catch (error) {
@@ -191,7 +191,7 @@ export default function MerchantApplyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       // 最初のエラーフィールドにスクロール
       const firstErrorField = Object.keys(errors)[0]
@@ -261,7 +261,7 @@ export default function MerchantApplyPage() {
           </div>
         </div>
         <div className="mt-8">
-          <Link 
+          <Link
             href="/lp/merchant"
             className="inline-block bg-green-600 text-white px-8 py-3 rounded-full font-bold hover:bg-green-700 transition-colors"
           >
@@ -278,7 +278,7 @@ export default function MerchantApplyPage() {
           <Link href="/lp/merchant" className="inline-flex items-center">
             <Image
               src="/lp/images/logo.png"
-              alt="たまのみ"
+              alt="nomocaKagawa"
               width={160}
               height={160}
               className="h-10 w-auto"
@@ -318,195 +318,187 @@ export default function MerchantApplyPage() {
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h3 className="text-lg font-medium text-gray-900 mb-6">基本情報</h3>
 
-            {/* 事業者名 */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
-                事業者名 <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                onBlur={() => handleBlur('name')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.name ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="株式会社たまのみ"
-              />
-              <div className="mt-1">
-                {errors.name && (
-                  <p className="text-sm text-red-600">{errors.name}</p>
-                )}
-              </div>
-            </div>
-
-            {/* 事業者名（カナ） */}
-            <div>
-              <label htmlFor="nameKana" className="block text-sm font-bold text-gray-700 mb-2">
-                事業者名（カナ） <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="nameKana"
-                value={formData.nameKana}
-                onChange={(e) => handleInputChange('nameKana', e.target.value)}
-                onBlur={() => handleBlur('nameKana')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.nameKana ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="カブシキガイシャタマノミ"
-              />
-              <div className="mt-1">
-                {errors.nameKana && (
-                  <p className="text-sm text-red-600">{errors.nameKana}</p>
-                )}
-              </div>
-            </div>
-
-            {/* 代表者名（姓・名） */}
-            <div className="flex gap-4">
-              <div className="w-50">
-                <label htmlFor="representativeNameLast" className="block text-sm font-bold text-gray-700 mb-2">
-                  代表者名（姓） <span className="text-red-600">*</span>
+              {/* 事業者名 */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
+                  事業者名 <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
-                  id="representativeNameLast"
-                  value={formData.representativeNameLast}
-                  onChange={(e) => handleInputChange('representativeNameLast', e.target.value)}
-                  onBlur={() => handleBlur('representativeNameLast')}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                    errors.representativeNameLast ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="たまのみ"
-                  maxLength={25}
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  onBlur={() => handleBlur('name')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="株式会社nomocaKagawa"
                 />
                 <div className="mt-1">
-                  {errors.representativeNameLast && (
-                    <p className="text-sm text-red-600">{errors.representativeNameLast}</p>
+                  {errors.name && (
+                    <p className="text-sm text-red-600">{errors.name}</p>
                   )}
                 </div>
               </div>
 
-              <div className="w-50">
-                <label htmlFor="representativeNameFirst" className="block text-sm font-bold text-gray-700 mb-2">
-                  代表者名（名） <span className="text-red-600">*</span>
+              {/* 事業者名（カナ） */}
+              <div>
+                <label htmlFor="nameKana" className="block text-sm font-bold text-gray-700 mb-2">
+                  事業者名（カナ） <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
-                  id="representativeNameFirst"
-                  value={formData.representativeNameFirst}
-                  onChange={(e) => handleInputChange('representativeNameFirst', e.target.value)}
-                  onBlur={() => handleBlur('representativeNameFirst')}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                    errors.representativeNameFirst ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="太郎"
-                  maxLength={25}
+                  id="nameKana"
+                  value={formData.nameKana}
+                  onChange={(e) => handleInputChange('nameKana', e.target.value)}
+                  onBlur={() => handleBlur('nameKana')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.nameKana ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="カブシキガイシャタマノミ"
                 />
                 <div className="mt-1">
-                  {errors.representativeNameFirst && (
-                    <p className="text-sm text-red-600">{errors.representativeNameFirst}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* 代表者名（姓・名 / カナ） */}
-            <div className="flex gap-4">
-              <div className="w-50">
-                <label htmlFor="representativeNameLastKana" className="block text-sm font-bold text-gray-700 mb-2">
-                  代表者名（姓 / カナ） <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="representativeNameLastKana"
-                  value={formData.representativeNameLastKana}
-                  onChange={(e) => handleInputChange('representativeNameLastKana', e.target.value)}
-                  onBlur={() => handleBlur('representativeNameLastKana')}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                    errors.representativeNameLastKana ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="タマノミ"
-                  maxLength={50}
-                />
-                <div className="mt-1">
-                  {errors.representativeNameLastKana && (
-                    <p className="text-sm text-red-600">{errors.representativeNameLastKana}</p>
+                  {errors.nameKana && (
+                    <p className="text-sm text-red-600">{errors.nameKana}</p>
                   )}
                 </div>
               </div>
 
-              <div className="w-50">
-                <label htmlFor="representativeNameFirstKana" className="block text-sm font-bold text-gray-700 mb-2">
-                  代表者名（名 / カナ） <span className="text-red-600">*</span>
+              {/* 代表者名（姓・名） */}
+              <div className="flex gap-4">
+                <div className="w-50">
+                  <label htmlFor="representativeNameLast" className="block text-sm font-bold text-gray-700 mb-2">
+                    代表者名（姓） <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="representativeNameLast"
+                    value={formData.representativeNameLast}
+                    onChange={(e) => handleInputChange('representativeNameLast', e.target.value)}
+                    onBlur={() => handleBlur('representativeNameLast')}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativeNameLast ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    placeholder="nomocaKagawa"
+                    maxLength={25}
+                  />
+                  <div className="mt-1">
+                    {errors.representativeNameLast && (
+                      <p className="text-sm text-red-600">{errors.representativeNameLast}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-50">
+                  <label htmlFor="representativeNameFirst" className="block text-sm font-bold text-gray-700 mb-2">
+                    代表者名（名） <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="representativeNameFirst"
+                    value={formData.representativeNameFirst}
+                    onChange={(e) => handleInputChange('representativeNameFirst', e.target.value)}
+                    onBlur={() => handleBlur('representativeNameFirst')}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativeNameFirst ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    placeholder="太郎"
+                    maxLength={25}
+                  />
+                  <div className="mt-1">
+                    {errors.representativeNameFirst && (
+                      <p className="text-sm text-red-600">{errors.representativeNameFirst}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* 代表者名（姓・名 / カナ） */}
+              <div className="flex gap-4">
+                <div className="w-50">
+                  <label htmlFor="representativeNameLastKana" className="block text-sm font-bold text-gray-700 mb-2">
+                    代表者名（姓 / カナ） <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="representativeNameLastKana"
+                    value={formData.representativeNameLastKana}
+                    onChange={(e) => handleInputChange('representativeNameLastKana', e.target.value)}
+                    onBlur={() => handleBlur('representativeNameLastKana')}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativeNameLastKana ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    placeholder="タマノミ"
+                    maxLength={50}
+                  />
+                  <div className="mt-1">
+                    {errors.representativeNameLastKana && (
+                      <p className="text-sm text-red-600">{errors.representativeNameLastKana}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-50">
+                  <label htmlFor="representativeNameFirstKana" className="block text-sm font-bold text-gray-700 mb-2">
+                    代表者名（名 / カナ） <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="representativeNameFirstKana"
+                    value={formData.representativeNameFirstKana}
+                    onChange={(e) => handleInputChange('representativeNameFirstKana', e.target.value)}
+                    onBlur={() => handleBlur('representativeNameFirstKana')}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativeNameFirstKana ? 'border-red-500' : 'border-gray-300'
+                      }`}
+                    placeholder="タロウ"
+                    maxLength={50}
+                  />
+                  <div className="mt-1">
+                    {errors.representativeNameFirstKana && (
+                      <p className="text-sm text-red-600">{errors.representativeNameFirstKana}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* 電話番号 */}
+              <div className="w-100">
+                <label htmlFor="representativePhone" className="block text-sm font-bold text-gray-700 mb-2">
+                  代表者電話番号 <span className="text-red-600">*</span>
                 </label>
                 <input
-                  type="text"
-                  id="representativeNameFirstKana"
-                  value={formData.representativeNameFirstKana}
-                  onChange={(e) => handleInputChange('representativeNameFirstKana', e.target.value)}
-                  onBlur={() => handleBlur('representativeNameFirstKana')}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                    errors.representativeNameFirstKana ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                  placeholder="タロウ"
-                  maxLength={50}
+                  type="tel"
+                  id="representativePhone"
+                  value={formData.representativePhone}
+                  onChange={(e) => handleInputChange('representativePhone', e.target.value.replace(/\D/g, ''))}
+                  onBlur={() => handleBlur('representativePhone')}
+                  className={`w-100 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativePhone ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="0312345678"
                 />
                 <div className="mt-1">
-                  {errors.representativeNameFirstKana && (
-                    <p className="text-sm text-red-600">{errors.representativeNameFirstKana}</p>
+                  {errors.representativePhone && (
+                    <p className="text-sm text-red-600">{errors.representativePhone}</p>
                   )}
                 </div>
               </div>
-            </div>
 
-            {/* 電話番号 */}
-            <div className="w-100">
-              <label htmlFor="representativePhone" className="block text-sm font-bold text-gray-700 mb-2">
-                代表者電話番号 <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="tel"
-                id="representativePhone"
-                value={formData.representativePhone}
-                onChange={(e) => handleInputChange('representativePhone', e.target.value.replace(/\D/g, ''))}
-                onBlur={() => handleBlur('representativePhone')}
-                className={`w-100 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.representativePhone ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="0312345678"
-              />
-              <div className="mt-1">
-                {errors.representativePhone && (
-                  <p className="text-sm text-red-600">{errors.representativePhone}</p>
-                )}
+              {/* メールアドレス */}
+              <div className="w-full md:w-[640px]">
+                <label htmlFor="accountEmail" className="block text-sm font-bold text-gray-700 mb-2">
+                  メールアドレス <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="accountEmail"
+                  value={formData.accountEmail}
+                  onChange={(e) => handleInputChange('accountEmail', e.target.value)}
+                  onBlur={() => handleBlur('accountEmail')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.accountEmail ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="example@example.com"
+                />
+                <div className="mt-1">
+                  {errors.accountEmail && (
+                    <p className="text-sm text-red-600">{errors.accountEmail}</p>
+                  )}
+                </div>
               </div>
-            </div>
-
-            {/* メールアドレス */}
-            <div className="w-full md:w-[640px]">
-              <label htmlFor="accountEmail" className="block text-sm font-bold text-gray-700 mb-2">
-                メールアドレス <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="email"
-                id="accountEmail"
-                value={formData.accountEmail}
-                onChange={(e) => handleInputChange('accountEmail', e.target.value)}
-                onBlur={() => handleBlur('accountEmail')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.accountEmail ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="example@example.com"
-              />
-              <div className="mt-1">
-                {errors.accountEmail && (
-                  <p className="text-sm text-red-600">{errors.accountEmail}</p>
-                )}
-              </div>
-            </div>
 
             </div>
 
@@ -514,131 +506,127 @@ export default function MerchantApplyPage() {
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
               <h3 className="text-lg font-medium text-gray-900 mb-6">住所情報</h3>
               {/* 郵便番号 */}
-            <div>
-              <label htmlFor="postalCode" className="block text-sm font-bold text-gray-700 mb-2">
-                郵便番号 <span className="text-red-600">*</span>
-              </label>
-              <div className="flex gap-4">
-                <div className="w-40">
-                  <input
-                    type="text"
-                    id="postalCode"
-                    value={formData.postalCode}
-                    onChange={(e) => handleInputChange('postalCode', e.target.value.replace(/\D/g, ''))}
-                    onBlur={() => handleBlur('postalCode')}
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                      errors.postalCode ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="1234567"
-                    maxLength={7}
-                  />
-                  <div className="mt-1">
-                    {errors.postalCode && (
-                      <p className="text-sm text-red-600">{errors.postalCode}</p>
-                    )}
+              <div>
+                <label htmlFor="postalCode" className="block text-sm font-bold text-gray-700 mb-2">
+                  郵便番号 <span className="text-red-600">*</span>
+                </label>
+                <div className="flex gap-4">
+                  <div className="w-40">
+                    <input
+                      type="text"
+                      id="postalCode"
+                      value={formData.postalCode}
+                      onChange={(e) => handleInputChange('postalCode', e.target.value.replace(/\D/g, ''))}
+                      onBlur={() => handleBlur('postalCode')}
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.postalCode ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      placeholder="1234567"
+                      maxLength={7}
+                    />
+                    <div className="mt-1">
+                      {errors.postalCode && (
+                        <p className="text-sm text-red-600">{errors.postalCode}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-end">
+                    <button
+                      type="button"
+                      onClick={handleAddressSearch}
+                      disabled={isSearchingAddress || formData.postalCode.length !== 7}
+                      className="w-32 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 disabled:bg-gray-200 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {isSearchingAddress ? '検索中...' : '住所検索'}
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-end">
-                  <button
-                    type="button"
-                    onClick={handleAddressSearch}
-                    disabled={isSearchingAddress || formData.postalCode.length !== 7}
-                    className="w-32 px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 disabled:bg-gray-200 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isSearchingAddress ? '検索中...' : '住所検索'}
-                  </button>
+              </div>
+
+              {/* 都道府県 */}
+              <div className="w-60">
+                <label htmlFor="prefecture" className="block text-sm font-bold text-gray-700 mb-2">
+                  都道府県 <span className="text-red-600">*</span>
+                </label>
+                <select
+                  id="prefecture"
+                  value={formData.prefecture}
+                  onChange={(e) => handleInputChange('prefecture', e.target.value)}
+                  onBlur={() => handleBlur('prefecture')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.prefecture ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                >
+                  <option value="">選択してください</option>
+                  {prefectures.map((pref) => (
+                    <option key={pref} value={pref}>
+                      {pref}
+                    </option>
+                  ))}
+                </select>
+                <div className="mt-1">
+                  {errors.prefecture && (
+                    <p className="text-sm text-red-600">{errors.prefecture}</p>
+                  )}
                 </div>
               </div>
-            </div>
 
-            {/* 都道府県 */}
-            <div className="w-60">
-              <label htmlFor="prefecture" className="block text-sm font-bold text-gray-700 mb-2">
-                都道府県 <span className="text-red-600">*</span>
-              </label>
-              <select
-                id="prefecture"
-                value={formData.prefecture}
-                onChange={(e) => handleInputChange('prefecture', e.target.value)}
-                onBlur={() => handleBlur('prefecture')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.prefecture ? 'border-red-500' : 'border-gray-300'
-                }`}
-              >
-                <option value="">選択してください</option>
-                {prefectures.map((pref) => (
-                  <option key={pref} value={pref}>
-                    {pref}
-                  </option>
-                ))}
-              </select>
-              <div className="mt-1">
-                {errors.prefecture && (
-                  <p className="text-sm text-red-600">{errors.prefecture}</p>
-                )}
+              {/* 市区町村 */}
+              <div>
+                <label htmlFor="city" className="block text-sm font-bold text-gray-700 mb-2">
+                  市区町村 <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="city"
+                  value={formData.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  onBlur={() => handleBlur('city')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.city ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="高松市桜区"
+                />
+                <div className="mt-1">
+                  {errors.city && (
+                    <p className="text-sm text-red-600">{errors.city}</p>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* 市区町村 */}
-            <div>
-              <label htmlFor="city" className="block text-sm font-bold text-gray-700 mb-2">
-                市区町村 <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="city"
-                value={formData.city}
-                onChange={(e) => handleInputChange('city', e.target.value)}
-                onBlur={() => handleBlur('city')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.city ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="さいたま市桜区"
-              />
-              <div className="mt-1">
-                {errors.city && (
-                  <p className="text-sm text-red-600">{errors.city}</p>
-                )}
+              {/* 住所1 */}
+              <div>
+                <label htmlFor="address1" className="block text-sm font-bold text-gray-700 mb-2">
+                  町名・番地 <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="address1"
+                  value={formData.address1}
+                  onChange={(e) => handleInputChange('address1', e.target.value)}
+                  onBlur={() => handleBlur('address1')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.address1 ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  placeholder="西堀1-2-3"
+                />
+                <div className="mt-1">
+                  {errors.address1 && (
+                    <p className="text-sm text-red-600">{errors.address1}</p>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* 住所1 */}
-            <div>
-              <label htmlFor="address1" className="block text-sm font-bold text-gray-700 mb-2">
-                町名・番地 <span className="text-red-600">*</span>
-              </label>
-              <input
-                type="text"
-                id="address1"
-                value={formData.address1}
-                onChange={(e) => handleInputChange('address1', e.target.value)}
-                onBlur={() => handleBlur('address1')}
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
-                  errors.address1 ? 'border-red-500' : 'border-gray-300'
-                }`}
-                placeholder="西堀1-2-3"
-              />
-              <div className="mt-1">
-                {errors.address1 && (
-                  <p className="text-sm text-red-600">{errors.address1}</p>
-                )}
+              {/* 住所2 */}
+              <div>
+                <label htmlFor="address2" className="block text-sm font-bold text-gray-700 mb-2">
+                  建物名・部屋番号
+                </label>
+                <input
+                  type="text"
+                  id="address2"
+                  value={formData.address2 || ''}
+                  onChange={(e) => handleInputChange('address2', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78]"
+                  placeholder="〇〇ビル 3F"
+                />
               </div>
-            </div>
-
-            {/* 住所2 */}
-            <div>
-              <label htmlFor="address2" className="block text-sm font-bold text-gray-700 mb-2">
-                建物名・部屋番号
-              </label>
-              <input
-                type="text"
-                id="address2"
-                value={formData.address2 || ''}
-                onChange={(e) => handleInputChange('address2', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                placeholder="〇〇ビル 3F"
-              />
-            </div>
 
             </div>
 

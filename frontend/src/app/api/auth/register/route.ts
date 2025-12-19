@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,7 +13,7 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text()
 
     if (!rawBody || rawBody.trim().length === 0) {
-      return NextResponse.json(
+      return createNoCacheResponse(
         {
           success: false,
           message: 'リクエストボディが空です。フォームから再度送信してください。'
@@ -20,12 +22,26 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    let body: any
+    interface RequestBody {
+      password?: string;
+      passwordConfirm?: string;
+      nickname?: string;
+      postalCode?: string;
+      address?: string;
+      birthDate?: string;
+      gender?: string;
+      phone?: string;
+      saitamaAppId?: string;
+      referrerUserId?: string;
+      shopId?: string;
+      token?: string;
+    }
+    let body: RequestBody
     try {
-      body = JSON.parse(rawBody)
+      body = JSON.parse(rawBody) as RequestBody
     } catch (parseError) {
       console.error('Register API: JSON parse error', parseError)
-      return NextResponse.json(
+      return createNoCacheResponse(
         {
           success: false,
           message: 'リクエスト形式が正しくありません。',
@@ -36,21 +52,59 @@ export async function POST(request: NextRequest) {
     }
 
     // バックエンドが期待するデータ構造に変換
+    // セキュリティ改善：メールアドレスはリクエストボディに含めず、トークンから取得される
     // 空文字列のsaitamaAppIdとreferrerUserIdは除外
-    const validatedData = {
-      email: body.email,
+    // 生年月日をISO形式（YYYY-MM-DD）に変換（スラッシュ区切りから変換）
+    const formatBirthDate = (dateStr: string | undefined): string | undefined => {
+      if (!dateStr) return undefined
+      // yyyy/MM/dd形式をyyyy-MM-dd形式に変換
+      return dateStr.replace(/\//g, '-')
+    }
+
+    // 郵便番号からハイフンとスペースを削除（7桁の数字のみを許可）
+    const formatPostalCode = (postalCode: string | undefined): string | undefined => {
+      if (!postalCode) return undefined
+      // ハイフンやスペースを削除して数字のみにする
+      return postalCode.replace(/[-\s]/g, '')
+    }
+
+    interface ValidatedData {
+      password?: string;
+      passwordConfirm?: string;
+      nickname?: string;
+      postalCode?: string;
+      address?: string;
+      birthDate?: string;
+      gender?: string;
+      phone?: string;
+      saitamaAppId?: string;
+      referrerUserId?: string;
+      shopId?: string;
+      token?: string;
+    }
+    const validatedData: ValidatedData = {
+      // emailはスキーマでオプショナルになったため、送信しない（トークンから取得される）
       password: body.password,
       passwordConfirm: body.passwordConfirm,
       nickname: body.nickname,
-      postalCode: body.postalCode,
+      postalCode: formatPostalCode(body.postalCode),
       address: body.address,
-      birthDate: body.birthDate,
+      birthDate: formatBirthDate(body.birthDate),
       gender: body.gender,
-      phone: body.phone,
-      ...(body.saitamaAppId && body.saitamaAppId.trim() !== '' ? { saitamaAppId: body.saitamaAppId.trim() } : {}),
-      ...(body.referrerUserId && body.referrerUserId.trim() !== '' ? { referrerUserId: body.referrerUserId.trim() } : {}),
+      phone: body.phone ? body.phone.trim() : '',
       token: body.token
     };
+
+    // オプショナルフィールドを追加（存在する場合のみ）
+    if (body.saitamaAppId && body.saitamaAppId.trim() !== '') {
+      validatedData.saitamaAppId = body.saitamaAppId.trim()
+    }
+    if (body.referrerUserId && body.referrerUserId.trim() !== '') {
+      validatedData.referrerUserId = body.referrerUserId.trim()
+    }
+    if (body.shopId) {
+      validatedData.shopId = body.shopId
+    }
 
     // タイムアウト設定付きのfetch
     const controller = new AbortController()
@@ -58,11 +112,16 @@ export async function POST(request: NextRequest) {
 
     const fullUrl = buildApiUrl('/register/complete');
 
+    // #region agent log
+    // eslint-disable-next-line no-restricted-syntax
+    fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'route.ts:93', message: 'Request body before sending', data: { validatedData, bodyKeys: Object.keys(validatedData), phoneValue: validatedData.phone, postalCodeValue: validatedData.postalCode }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'A' }) }).catch(() => { });
+    // #endregion
+
     try {
-      const response = await fetch(fullUrl, {
+      const response = await secureFetchWithCommonHeaders(request, fullUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+        headerOptions: {
+          requireAuth: false, // 登録エンドポイントは認証不要
         },
         body: JSON.stringify(validatedData),
         signal: controller.signal,
@@ -72,48 +131,75 @@ export async function POST(request: NextRequest) {
 
       // レスポンスのステータスをチェック
       if (!response.ok) {
-        let errorData: any = {}
+        interface ErrorData {
+          error?: {
+            code?: string;
+            message?: string;
+            details?: unknown;
+            errors?: unknown;
+          };
+          errorCode?: string;
+          message?: string;
+          errors?: unknown;
+        }
+        let errorData: ErrorData = {}
+        let responseText: string = ''
         try {
+          // まずテキストとして取得（JSONパースに失敗する可能性があるため）
+          responseText = await response.text()
+
+          // #region agent log
+          console.error('[DEBUG] Error response text:', responseText);
+          console.error('[DEBUG] Response status:', response.status);
+          console.error('[DEBUG] Response headers:', Object.fromEntries(response.headers.entries()));
+          // #endregion
+
           const contentType = response.headers.get('content-type')
           if (contentType && contentType.includes('application/json')) {
-            errorData = await response.json()
+            try {
+              errorData = JSON.parse(responseText)
+              // #region agent log
+              console.error('[DEBUG] Parsed error data:', errorData);
+              // #endregion
+            } catch (jsonParseError) {
+              errorData = { message: responseText.substring(0, 200) }
+              // #region agent log
+              console.error('[DEBUG] JSON parse error:', jsonParseError);
+              // #endregion
+            }
           } else {
-            const text = await response.text()
-            console.error('[api/auth/register] backend returned non-JSON response:', text.substring(0, 200))
-            errorData = { message: text.substring(0, 200) }
+            errorData = { message: responseText.substring(0, 200) }
           }
         } catch (parseError) {
-          console.error('[api/auth/register] failed to parse error response:', parseError)
           errorData = { message: 'レスポンスの解析に失敗しました' }
+          // #region agent log
+          console.error('[DEBUG] Parse error:', parseError);
+          // #endregion
         }
-
-        console.error('[api/auth/register] backend error:', {
-          status: response.status,
-          errorData,
-        })
 
         // エラーコードを取得
         const errorCode = errorData?.error?.code || errorData?.errorCode
         const errorMessage = errorData?.error?.message || errorData?.message
+        const errorDetails = errorData?.error?.details || errorData?.error?.errors || errorData?.errors
 
         // 409エラー（既存アカウント・重複ID）の場合は特別な処理
         if (response.status === 409) {
           if (errorCode === 'SAITAMA_APP_ID_ALREADY_EXISTS') {
-            return NextResponse.json(
+            return createNoCacheResponse(
               {
                 success: false,
-                message: errorMessage || 'このさいたま市アプリIDは既に登録されています',
+                message: errorMessage || 'この高松市アプリIDは既に登録されています',
                 errorCode: 'SAITAMA_APP_ID_ALREADY_EXISTS',
                 error: {
                   code: 'SAITAMA_APP_ID_ALREADY_EXISTS',
-                  message: errorMessage || 'このさいたま市アプリIDは既に登録されています'
+                  message: errorMessage || 'この高松市アプリIDは既に登録されています'
                 }
               },
               { status: 409 }
             )
           }
           // USER_ALREADY_EXISTSの場合
-          return NextResponse.json(
+          return createNoCacheResponse(
             {
               success: false,
               message: errorMessage || 'このメールアドレスは既に登録されています。ログイン画面からログインしてください。',
@@ -129,7 +215,7 @@ export async function POST(request: NextRequest) {
 
         // 500エラー（ポイント付与失敗）の場合
         if (response.status === 500 && errorCode === 'POINT_GRANT_FAILED') {
-          return NextResponse.json(
+          return createNoCacheResponse(
             {
               success: false,
               message: errorMessage || 'ポイント付与に失敗しました。しばらく経ってから再度お試しください。',
@@ -143,15 +229,65 @@ export async function POST(request: NextRequest) {
           )
         }
 
+        // バリデーションエラーの場合は特別な処理
+        if (errorCode === 'VALIDATION_ERROR' && errorDetails) {
+          // #region agent log
+          console.error('[DEBUG] Validation error details:', { errorCode, errorMessage, errorDetails, errorData, validatedData });
+          // eslint-disable-next-line no-restricted-syntax
+          fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'route.ts:167', message: 'Validation error details from API', data: { errorCode, errorMessage, errorDetails, errorData, validatedData }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'B' }) }).catch(() => { });
+          // #endregion
+          // バリデーションエラーの詳細を返す
+          return createNoCacheResponse(
+            {
+              success: false,
+              message: errorMessage || '入力データが無効です',
+              errorCode: 'VALIDATION_ERROR',
+              error: {
+                code: 'VALIDATION_ERROR',
+                message: errorMessage || '入力データが無効です',
+                details: errorDetails
+              }
+            },
+            { status: 400 }
+          )
+        }
+
         // その他のエラー
-        return NextResponse.json(
+        // エラーレスポンスの構造を確認して、適切にエラー情報を返す
+        const finalErrorCode = errorCode || errorData?.error?.code || 'API_ERROR'
+        const finalErrorMessage = errorMessage || errorData?.error?.message || `サーバーエラーが発生しました (${response.status})`
+        const finalErrorDetails = errorData?.error?.details || errorData?.error?.errors || errorData?.error
+
+        // #region agent log
+        console.error('[DEBUG] Final error response:', {
+          status: response.status,
+          errorCode: finalErrorCode,
+          errorMessage: finalErrorMessage,
+          errorDetails: finalErrorDetails,
+          fullErrorData: errorData,
+          validatedData
+        });
+        // eslint-disable-next-line no-restricted-syntax
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'route.ts:190', message: 'Final error response', data: { status: response.status, errorCode: finalErrorCode, errorMessage: finalErrorMessage, errorDetails: finalErrorDetails, fullErrorData: errorData, validatedData }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'E' }) }).catch(() => { });
+        // #endregion
+
+        console.error('[api/auth/register] Final error response:', {
+          status: response.status,
+          errorCode: finalErrorCode,
+          errorMessage: finalErrorMessage,
+          errorDetails: finalErrorDetails,
+          fullErrorData: errorData
+        })
+
+        return createNoCacheResponse(
           {
             success: false,
-            message: errorMessage || `サーバーエラーが発生しました (${response.status})`,
-            errorCode: errorCode,
-            error: errorData?.error || {
-              code: errorCode || 'API_ERROR',
-              message: errorMessage || `サーバーエラーが発生しました (${response.status})`
+            message: finalErrorMessage,
+            errorCode: finalErrorCode,
+            error: {
+              code: finalErrorCode,
+              message: finalErrorMessage,
+              ...(finalErrorDetails && Object.keys(finalErrorDetails).length > 0 && { details: finalErrorDetails })
             }
           },
           { status: response.status }
@@ -159,30 +295,27 @@ export async function POST(request: NextRequest) {
       }
 
       const data = await response.json()
-      
+
       // トークンをCookieに保存（ログイン時と同様に）
-      const nextResponse = NextResponse.json(data, { status: response.status })
+      const nextResponse = createNoCacheResponse(data, { status: response.status })
       const isSecure = (() => {
         try { return new URL(request.url).protocol === 'https:' } catch { return process.env.NODE_ENV === 'production' }
       })()
-      
-      nextResponse.headers.set('Cache-Control', 'no-store')
-      nextResponse.headers.set('Pragma', 'no-cache')
-      
+
       if (data.accessToken) {
         nextResponse.cookies.set('accessToken', data.accessToken, {
           httpOnly: true,
           secure: isSecure,
           sameSite: 'strict',
           path: '/',
-          maxAge: 60 * 15, // 15分
+          maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
         })
         nextResponse.cookies.set('__Host-accessToken', data.accessToken, {
           httpOnly: true,
           secure: isSecure,
           sameSite: 'strict',
           path: '/',
-          maxAge: 60 * 15,
+          maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
         })
       }
       if (data.refreshToken) {
@@ -191,17 +324,17 @@ export async function POST(request: NextRequest) {
           secure: isSecure,
           sameSite: 'strict',
           path: '/',
-          maxAge: 60 * 60 * 24 * 30, // 30日
+          maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
         })
         nextResponse.cookies.set('__Host-refreshToken', data.refreshToken, {
           httpOnly: true,
           secure: isSecure,
           sameSite: 'strict',
           path: '/',
-          maxAge: 60 * 60 * 24 * 30,
+          maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
         })
       }
-      
+
       return nextResponse
     } catch (fetchError) {
       clearTimeout(timeoutId)
@@ -218,21 +351,21 @@ export async function POST(request: NextRequest) {
     // エラーの種類に応じて適切なメッセージを返す
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        return NextResponse.json(
+        return createNoCacheResponse(
           { success: false, message: 'リクエストがタイムアウトしました。しばらくしてから再度お試しください。' },
           { status: 408 }
         )
       }
 
       if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
-        return NextResponse.json(
+        return createNoCacheResponse(
           { success: false, message: 'サーバーに接続できません。ネットワーク接続を確認してください。' },
           { status: 503 }
         )
       }
     }
 
-    return NextResponse.json(
+    return createNoCacheResponse(
       {
         success: false,
         message: 'リクエストの処理に失敗しました。しばらくしてから再度お試しください。',

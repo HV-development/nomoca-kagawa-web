@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,10 +11,10 @@ export async function POST(request: NextRequest) {
 
     const fullUrl = buildApiUrl('/payment/qr/pay')
 
-    const response = await fetch(fullUrl, {
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      headerOptions: {
+        requireAuth: true, // 決済は認証が必要
       },
       body: JSON.stringify(body),
     })
@@ -24,20 +26,18 @@ export async function POST(request: NextRequest) {
         status: response.status,
         errorData: responseData,
       })
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: { code: responseData.code || 'API_ERROR', message: responseData.message || 'イオンペイ決済の申込に失敗しました' } },
         { status: response.status },
       )
     }
 
-    return NextResponse.json(responseData)
+    return createNoCacheResponse(responseData)
   } catch (error) {
     console.error('QR payment API error:', error)
-    return NextResponse.json(
+    return createNoCacheResponse(
       { error: { code: 'NETWORK_ERROR', message: 'イオンペイ決済の申込中にエラーが発生しました' } },
       { status: 500 },
     )
   }
 }
-
-

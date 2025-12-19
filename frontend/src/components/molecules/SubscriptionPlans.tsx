@@ -40,7 +40,7 @@ export function SubscriptionPlans({ onSubscribe, isLoading = false }: Subscripti
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">プランを選択してください</h2>
-        <p className="text-gray-600">TAMAYOIで高松の夜をもっと楽しく</p>
+        <p className="text-gray-600">TAMAYOIでたかまつの夜をもっと楽しく</p>
       </div>
 
       {/* プラン選択 */}

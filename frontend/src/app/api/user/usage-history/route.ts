@@ -1,53 +1,48 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
-import { getAuthHeader, getRefreshToken } from '@/lib/auth-header'
+import { getRefreshToken } from '@/lib/auth-header'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = getAuthHeader(request)
-    
-    if (!authHeader) {
-      return NextResponse.json(
+    const fullUrl = buildApiUrl('/users/me/usage-history')
+
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
+      method: 'GET',
+      headerOptions: {
+        requireAuth: true, // 認証が必要
+      },
+    })
+
+    // 認証エラーの場合は401を返す
+    if (response.status === 401) {
+      return createNoCacheResponse(
         { error: '認証が必要です' },
         { status: 401 }
       )
     }
-
-
-    const fullUrl = buildApiUrl('/users/me/usage-history')
-
-    const response = await fetch(fullUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader,
-      },
-      cache: 'no-store',
-    })
-
 
     const data = await response.json()
 
     if (!response.ok) {
       console.error('❌ [usage-history] Backend API error:', data)
       
-      // 401エラーの場合、リフレッシュトークンで再試行
-      if (response.status === 401) {
+      // 401または403エラーの場合、リフレッシュトークンで再試行
+      if (response.status === 401 || response.status === 403) {
         const refreshToken = getRefreshToken(request)
         
         if (refreshToken) {
-          
           // リフレッシュトークンでトークン更新
           const refreshUrl = buildApiUrl('/auth/refresh')
-          const refreshResponse = await fetch(refreshUrl, {
+          const refreshResponse = await secureFetchWithCommonHeaders(request, refreshUrl, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+            headerOptions: {
+              requireAuth: false, // リフレッシュトークンは認証不要
             },
             body: JSON.stringify({ refreshToken }),
-            cache: 'no-store',
           })
           
           if (refreshResponse.ok) {
@@ -55,19 +50,20 @@ export async function GET(request: NextRequest) {
             
             // リフレッシュ成功、新しいトークンで元のリクエストを再試行
             const newAuthHeader = `Bearer ${refreshData.accessToken}`
-            const retryResponse = await fetch(fullUrl, {
+            const retryResponse = await secureFetchWithCommonHeaders(request, fullUrl, {
               method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': newAuthHeader,
+              headerOptions: {
+                requireAuth: true,
+                customHeaders: {
+                  'Authorization': newAuthHeader,
+                },
               },
-              cache: 'no-store',
             })
             
             if (retryResponse.ok) {
               const retryData = await retryResponse.json()
               // リフレッシュされたトークンをCookieに反映
-              const res = NextResponse.json(retryData, { status: 200 })
+              const res = createNoCacheResponse(retryData, { status: 200 })
               const isSecure = (() => {
                 try { return new URL(request.url).protocol === 'https:'; } catch { return process.env.NODE_ENV === 'production'; }
               })()
@@ -79,14 +75,14 @@ export async function GET(request: NextRequest) {
                   secure: isSecure,
                   sameSite: 'strict',
                   path: '/',
-                  maxAge: 60 * 15, // 15分
+                  maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
                 })
                 res.cookies.set('__Host-accessToken', refreshData.accessToken, {
                   httpOnly: true,
                   secure: isSecure,
                   sameSite: 'strict',
                   path: '/',
-                  maxAge: 60 * 15,
+                  maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
                 })
               }
               if (refreshData.refreshToken) {
@@ -95,14 +91,14 @@ export async function GET(request: NextRequest) {
                   secure: isSecure,
                   sameSite: 'strict',
                   path: '/',
-                  maxAge: 60 * 60 * 24 * 30, // 30日
+                  maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
                 })
                 res.cookies.set('__Host-refreshToken', refreshData.refreshToken, {
                   httpOnly: true,
                   secure: isSecure,
                   sameSite: 'strict',
                   path: '/',
-                  maxAge: 60 * 60 * 24 * 30,
+                  maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
                 })
               }
               
@@ -112,21 +108,19 @@ export async function GET(request: NextRequest) {
         }
       }
       
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: data.message || data.error?.message || '利用履歴の取得に失敗しました' },
         { status: response.status }
       )
     }
     
-    return NextResponse.json(data)
+    return createNoCacheResponse(data)
 
   } catch (error) {
     console.error('❌ [usage-history] Route error:', error)
-    return NextResponse.json(
+    return createNoCacheResponse(
       { error: '利用履歴の取得中にエラーが発生しました' },
       { status: 500 }
     )
   }
 }
-
-

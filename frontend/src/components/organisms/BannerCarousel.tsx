@@ -13,13 +13,13 @@ const banners: Banner[] = [
   {
     id: "banner-1",
     title: "おいしい酒場。",
-    subtitle: "高松の夜を彩る特別な一杯",
+    subtitle: "たかまつの夜を彩る特別な一杯",
     imageUrl: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
     backgroundColor: "bg-gradient-to-r from-orange-600 to-red-600",
     textColor: "text-white"
   },
   {
-    id: "banner-2", 
+    id: "banner-2",
     title: "新店舗オープン！",
     subtitle: "大宮駅前に新しいイタリアンレストラン",
     imageUrl: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
@@ -31,7 +31,7 @@ const banners: Banner[] = [
     title: "週末限定キャンペーン",
     subtitle: "金土日はドリンク2杯目半額",
     imageUrl: "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    backgroundColor: "bg-gradient-to-r from-purple-600 to-pink-600", 
+    backgroundColor: "bg-gradient-to-r from-purple-600 to-pink-600",
     textColor: "text-white"
   }
 ]
@@ -79,7 +79,7 @@ export function BannerCarousel({ className = "" }: BannerCarouselProps) {
       {/* バナー表示エリア（横長 3:1 固定） */}
       <div className="relative w-full aspect-[3/1] overflow-hidden">
         {/* バナー画像とコンテンツ */}
-        <div 
+        <div
           className={`absolute inset-0 ${currentBanner.backgroundColor} transition-all duration-500`}
         >
           {/* 背景画像 */}
@@ -91,10 +91,10 @@ export function BannerCarousel({ className = "" }: BannerCarouselProps) {
               className="object-cover"
             />
           </div>
-          
+
           {/* グラデーションオーバーレイ */}
           <div className="absolute inset-0 bg-black/20"></div>
-          
+
           {/* テキストコンテンツ */}
           <div className="relative z-10 flex items-center justify-center h-full px-6">
             <div className="text-center">
@@ -134,11 +134,10 @@ export function BannerCarousel({ className = "" }: BannerCarouselProps) {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
                   ? "bg-white scale-125"
                   : "bg-white/50 hover:bg-white/70"
-              }`}
+                }`}
               aria-label={`バナー  ${index + 1} に移動`}
             />
           ))}

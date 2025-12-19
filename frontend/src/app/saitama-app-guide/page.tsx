@@ -63,7 +63,7 @@ export default function SaitamaAppGuidePage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* ヘッダー */}
         <div className="mb-8 text-center">
-          <Link 
+          <Link
             href="/plan-registration"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"
           >
@@ -114,21 +114,21 @@ export default function SaitamaAppGuidePage() {
                 ダウンロードした「高松市みんなのアプリ」を開いてください。
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-2 text-sm">2. マイページにアクセス</h3>
               <p className="text-gray-700 text-xs">
                 画面下部のメニューバーから「メニュー」をタップしてください。
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-2 text-sm">3. ユーザーIDを確認</h3>
               <p className="text-gray-700 text-xs">
                 メニュー内に「ユーザーID」が表示されます。
               </p>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-2 text-sm">4. IDをコピー</h3>
               <p className="text-gray-700 text-xs">
@@ -166,7 +166,7 @@ export default function SaitamaAppGuidePage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
-            <button 
+            <button
               onClick={handleLinkSaitamaApp}
               disabled={isLinking || !saitamaAppId}
               className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
@@ -219,7 +219,7 @@ export default function SaitamaAppGuidePage() {
 
         {/* フッター */}
         <div className="mt-8 pt-6 border-t border-gray-200 text-center">
-          <Link 
+          <Link
             href="/plan-registration"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800"
           >

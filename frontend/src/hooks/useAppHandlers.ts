@@ -97,6 +97,7 @@ export const useAppHandlers = (
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Cookieを送信
                 body: JSON.stringify({ email: loginData.email, password: loginData.password }),
             })
 
@@ -112,6 +113,7 @@ export const useAppHandlers = (
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Cookieを送信
                 body: JSON.stringify({ email: loginData.email }),
             })
 
@@ -160,7 +162,9 @@ export const useAppHandlers = (
             // ログイン成功 - トークンはCookieに保存されているため、プラン登録状況を確認してauth状態を更新
             let hasPlan = false
             try {
-                const userResponse = await fetch('/api/user/me')
+                const userResponse = await fetch('/api/user/me', {
+                    credentials: 'include', // Cookieを送信
+                })
 
                 if (userResponse.ok) {
                     const userData = await userResponse.json()
@@ -189,12 +193,8 @@ export const useAppHandlers = (
                 targetPath = '/home'
             }
 
-            // ローディング継続フラグをセッションストレージに設定
-            // 遷移先のページで完全に表示されたらクリアされる
-            if (typeof window !== 'undefined') {
-                sessionStorage.setItem('loginRedirecting', targetPath)
-            }
-
+            // メモリ内stateのみで管理（sessionStorageは使用しない）
+            // リダイレクト先のページでstateを管理する
             router.replace(targetPath)
 
             dispatch({ type: 'RESET_LOGIN_STATE' })
@@ -376,14 +376,20 @@ export const useAppHandlers = (
     }, [dispatch])
 
     const handleMenuItemClick = useCallback((itemId: string) => {
+        if (typeof window === "undefined") return
+
         switch (itemId) {
             case "terms":
+                window.location.href = "/lp/terms"
                 break
             case "privacy":
+                window.open("/プライバシーポリシー.pdf", "_blank")
                 break
             case "commercial-law":
+                window.open("/特定商取引法.pdf", "_blank")
                 break
             case "contact":
+                window.location.href = "/lp/contact"
                 break
             case "login":
                 navigation.navigateToView("login", "map")
@@ -426,12 +432,16 @@ export const useAppHandlers = (
     }, [dispatch])
 
     const handleFavoriteToggle = useCallback(async (storeId: string) => {
+        // Cookieの存在を確認
+        const hasCookie = typeof document !== 'undefined' && document.cookie.includes('accessToken')
+
         // 現在の状態を確認（UIの状態ではなく、データの状態を確認）
         const currentStore = state.stores.find((s: { id: string; isFavorite?: boolean }) => s.id === storeId)
         const currentIsFavorite = currentStore?.isFavorite ?? false
 
-        // 未認証の場合はセッションストレージに保存（モーダルは表示しない）
-        if (!auth.isAuthenticated) {
+        // Cookieが存在する場合は認証済みとして扱い、API呼び出しを試みる
+        // 未認証かつCookieもない場合はセッションストレージに保存
+        if (!auth.isAuthenticated && !hasCookie) {
             try {
                 // セッションストレージの状態も確認
                 const { isFavoriteInStorage, addFavoriteToStorage, removeFavoriteFromStorage } = await import('@/lib/favorites-storage')
@@ -452,10 +462,10 @@ export const useAppHandlers = (
             return
         }
 
-        // 認証済みの場合は楽観的更新：UIを先に更新
+        // 認証済みまたはCookieが存在する場合は楽観的更新：UIを先に更新
         dispatch({ type: 'TOGGLE_FAVORITE', payload: storeId })
 
-        // 認証済みの場合はAPI呼び出し
+        // 認証済みまたはCookieが存在する場合はAPI呼び出し
         try {
             // API呼び出し
             let response: Response
@@ -542,6 +552,30 @@ export const useAppHandlers = (
                         dispatch({ type: 'TOGGLE_FAVORITE', payload: storeId })
                     }
                 }
+            }
+
+            // お気に入り一覧を再取得して状態を同期
+            try {
+                const syncResponse = await fetch('/api/favorites', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    cache: 'no-store',
+                    credentials: 'include',
+                })
+
+                if (syncResponse.ok) {
+                    const syncData = await syncResponse.json()
+                    const favoriteShopIds = (syncData.shops || []).map((shop: { id: string }) => shop.id) as string[]
+
+                    dispatch({
+                        type: 'SYNC_FAVORITES',
+                        payload: favoriteShopIds
+                    })
+                }
+            } catch (syncError) {
+                console.error('お気に入り一覧の同期エラー:', syncError)
             }
         } catch (error) {
             // トークン期限切れエラー（403など）は既に処理済みなので、ここでは処理しない
@@ -776,11 +810,10 @@ export const useAppHandlers = (
 
             // Cookieベースの認証のみを使用（localStorageは廃止）
 
-            // ユーザー情報とプラン情報を取得
+            // ユーザー情報を取得（プラン情報は必須ではない）
             const user = auth.user
-            const plan = auth.plan
 
-            if (!user || !plan) {
+            if (!user) {
                 throw new Error('ユーザー情報が見つかりません')
             }
 
@@ -805,11 +838,24 @@ export const useAppHandlers = (
 
             if (!runningId) {
                 if (!userPlanId) {
-                    console.error('❌ [handleWithdrawConfirm] userPlanId not found:', {
-                        plan: userData.plan,
-                        userPlan: userData.userPlan,
+                    // プラン登録していない場合は、アカウントのstatusを直接suspendedに更新
+                    console.log('🔄 [handleWithdrawConfirm] No userPlan found, withdrawing account directly')
+                    const withdrawResponse = await fetch('/api/user/withdraw', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({}),
+                        credentials: 'include',
                     })
-                    throw new Error('退会に必要な契約情報が見つかりません。サポートへお問い合わせください。')
+
+                    if (!withdrawResponse.ok) {
+                        const errorData = await withdrawResponse.json().catch(() => ({}))
+                        throw new Error(errorData.error?.message || errorData.message || '退会処理に失敗しました')
+                    }
+
+                    navigation.navigateToMyPage("withdrawal-complete")
+                    return
                 }
 
                 // PAYGENT未連携（または単発決済）の場合は、ユーザープランを直接削除して退会扱いとする
@@ -830,7 +876,7 @@ export const useAppHandlers = (
             }
 
             // 次回課金日を取得（userPlanまたはplanから、userPlanを優先）
-            const nextBillingDate = userData.userPlan?.nextBillingDate || userData.plan?.nextBillingDate || plan.nextBillingDate
+            const nextBillingDate = userData.userPlan?.nextBillingDate || userData.plan?.nextBillingDate
 
             if (!nextBillingDate) {
                 throw new Error('次回課金日が見つかりません')
@@ -848,6 +894,7 @@ export const useAppHandlers = (
             const endScheduled = formatDate(nextBillingDate)
 
             // 退会処理APIを呼び出し（Paygent継続課金ありの場合）
+            // userEmailはバックエンドで認証トークンから取得するため、送信しない
             const response = await fetch('/api/payment/update', {
                 method: 'POST',
                 headers: {
@@ -856,7 +903,6 @@ export const useAppHandlers = (
                 body: JSON.stringify({
                     customerId: user.paymentCard?.paygentCustomerId,
                     customerCardId: user.paymentCard?.paygentCustomerCardId,
-                    userEmail: user.email,
                     runningId: runningId,
                     endScheduled: endScheduled,
                     description: '退会処理',
@@ -1383,5 +1429,5 @@ export const useAppHandlers = (
         handlePasswordChangeComplete,
         handleStoreIntroduction,
         handleStoreIntroductionSubmit,
-    } as AppHandlers & { handleEmailChangeSuccessModalClose: () => void; handleStoreIntroduction: () => void; handleStoreIntroductionSubmit: (data: any) => Promise<void> }
+    } as AppHandlers & { handleEmailChangeSuccessModalClose: () => void; handleStoreIntroduction: () => void; handleStoreIntroductionSubmit: (data: { referrerUserId?: string; shopId?: string }) => Promise<void> }
 }

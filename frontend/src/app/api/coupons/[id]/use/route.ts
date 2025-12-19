@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
-import { getAuthHeader } from '@/lib/auth-header'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,59 +10,52 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const authHeader = getAuthHeader(request)
-    
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: '認証が必要です' },
-        { status: 401 }
-      )
-    }
-
     const { id } = await params
     const body = await request.json()
     const { shopId } = body
     
     if (!shopId) {
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: 'shopIdパラメータが必要です' },
         { status: 400 }
       )
     }
 
-
     const fullUrl = buildApiUrl(`/coupons/${id}/use`)
 
-    const response = await fetch(fullUrl, {
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader,
+      headerOptions: {
+        requireAuth: true, // 認証が必要
       },
       body: JSON.stringify({ shopId }),
-      cache: 'no-store',
     })
 
+    // 認証エラーの場合は401を返す
+    if (response.status === 401) {
+      return createNoCacheResponse(
+        { error: '認証が必要です' },
+        { status: 401 }
+      )
+    }
 
     const data = await response.json()
 
     if (!response.ok) {
       console.error('❌ [coupons/[id]/use] Backend API error:', data)
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: data.message || data.error?.message || 'クーポンの使用に失敗しました' },
         { status: response.status }
       )
     }
     
-    return NextResponse.json(data)
+    return createNoCacheResponse(data)
 
   } catch (error) {
     console.error('❌ [coupons/[id]/use] Route error:', error)
-    return NextResponse.json(
+    return createNoCacheResponse(
       { error: 'クーポンの使用中にエラーが発生しました' },
       { status: 500 }
     )
   }
 }
-
-

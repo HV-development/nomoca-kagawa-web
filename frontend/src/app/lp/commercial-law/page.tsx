@@ -19,7 +19,7 @@ const commercialLawData: CommercialLawItem[] = [
   },
   {
     label: '所在地',
-    value: '〒000-0000\n埼玉県さいたま市〇〇区〇〇〇〇〇〇'
+    value: '〒000-0000\n埼玉県高松市〇〇区〇〇〇〇〇〇'
   },
   {
     label: '電話番号',
@@ -65,7 +65,7 @@ export default function CommercialLawPage() {
             <Link href="/lp">
               <Image
                 src="/lp/images/horizon-color-white.png"
-                alt="たまのみ"
+                alt="nomocaKagawa"
                 width={1312}
                 height={320}
                 className="w-32 h-8 md:w-[246px] md:h-[60px]"
@@ -80,7 +80,7 @@ export default function CommercialLawPage() {
         <div className="max-w-4xl mx-auto px-4 md:px-[120px]">
           {/* Page Title */}
           <div className="text-center mb-12 md:mb-16">
-            <h1 
+            <h1
               className="text-4xl md:text-5xl mb-4"
               style={{
                 color: '#000',
@@ -91,7 +91,7 @@ export default function CommercialLawPage() {
             >
               特定商取引法に基づく表記
             </h1>
-            <p 
+            <p
               className="text-base md:text-lg"
               style={{
                 color: '#666',
@@ -100,19 +100,19 @@ export default function CommercialLawPage() {
                 lineHeight: '160%'
               }}
             >
-              たまのみサービスに関する特定商取引法に基づく表記です。
+              nomocaKagawaサービスに関する特定商取引法に基づく表記です。
             </p>
           </div>
 
           {/* Commercial Law Items */}
           <div className="space-y-8 md:space-y-10">
             {commercialLawData.map((item, index) => (
-              <div 
+              <div
                 key={index}
                 className="border-b border-gray-200 pb-8 md:pb-10 last:border-b-0"
               >
                 <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
-                  <div 
+                  <div
                     className="w-full md:w-48 flex-shrink-0"
                     style={{
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -124,7 +124,7 @@ export default function CommercialLawPage() {
                   >
                     {item.label}
                   </div>
-                  <div 
+                  <div
                     className="flex-1 whitespace-pre-line"
                     style={{
                       fontFamily: '"Zen Kaku Gothic New"',
@@ -142,7 +142,7 @@ export default function CommercialLawPage() {
           </div>
 
           {/* Footer Note */}
-          <div 
+          <div
             className="mt-12 md:mt-16 pt-8 md:pt-12 border-t border-gray-200"
             style={{
               fontFamily: '"Zen Kaku Gothic New"',
@@ -163,7 +163,7 @@ export default function CommercialLawPage() {
       <footer className="w-full bg-gray-50 border-t border-gray-200 mt-16 md:mt-24">
         <div className="max-w-6xl mx-auto px-4 py-8 md:px-[120px] md:py-12">
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-            <Link 
+            <Link
               href="/lp/faq"
               className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
               style={{
@@ -173,8 +173,8 @@ export default function CommercialLawPage() {
             >
               よくあるご質問
             </Link>
-            <Link 
-              href="/lp/contact" 
+            <Link
+              href="/lp/contact"
               className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
               style={{
                 fontFamily: '"Zen Kaku Gothic New"',
@@ -183,7 +183,7 @@ export default function CommercialLawPage() {
             >
               お問い合わせ
             </Link>
-            <a 
+            <a
               href="/プライバシーポリシー.pdf"
               target="_blank"
               rel="noopener noreferrer"
@@ -195,7 +195,7 @@ export default function CommercialLawPage() {
             >
               プライバシーポリシー
             </a>
-            <Link 
+            <Link
               href="/lp/commercial-law"
               className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
               style={{
@@ -205,10 +205,8 @@ export default function CommercialLawPage() {
             >
               特定商取引法に基づく表記
             </Link>
-            <a 
-              href="/たまのみサービス利用規約.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/lp/terms"
               className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
               style={{
                 fontFamily: '"Zen Kaku Gothic New"',
@@ -216,12 +214,12 @@ export default function CommercialLawPage() {
               }}
             >
               ご利用規約
-            </a>
+            </Link>
           </div>
 
           {/* Copyright */}
           <div className="pb-6 md:pb-8">
-            <p 
+            <p
               className="text-sm md:text-base"
               style={{
                 color: '#000',
@@ -232,7 +230,7 @@ export default function CommercialLawPage() {
                 lineHeight: '100%'
               }}
             >
-              ©2025 TAMANOMI
+              ©2025 nomocaKagawa
             </p>
           </div>
         </div>

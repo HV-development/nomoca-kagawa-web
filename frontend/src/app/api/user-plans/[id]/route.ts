@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
-import { getAuthHeader } from '@/lib/auth-header'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,18 +13,9 @@ interface RouteParams {
 
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    const authHeader = getAuthHeader(request)
-
-    if (!authHeader) {
-      return NextResponse.json(
-        { success: false, message: '認証が必要です' },
-        { status: 401 }
-      )
-    }
-
     const { id: userPlanId } = await params
     if (!userPlanId) {
-      return NextResponse.json(
+      return createNoCacheResponse(
         { success: false, message: 'ユーザープランIDが指定されていません' },
         { status: 400 }
       )
@@ -31,14 +23,20 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     const fullUrl = buildApiUrl(`/plans/user-plans/${userPlanId}`)
 
-    const response = await fetch(fullUrl, {
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'DELETE',
-      headers: {
-        'Authorization': authHeader,
-        'Content-Type': 'application/json',
+      headerOptions: {
+        requireAuth: true, // 認証が必要
       },
-      cache: 'no-store',
     })
+
+    // 認証エラーの場合は401を返す
+    if (response.status === 401) {
+      return createNoCacheResponse(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
@@ -47,7 +45,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         errorData.message ||
         'ユーザープランの解約に失敗しました'
 
-      return NextResponse.json(
+      return createNoCacheResponse(
         { success: false, message, error: errorData },
         { status: response.status }
       )
@@ -55,16 +53,15 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     const data = await response.json().catch(() => ({}))
 
-    return NextResponse.json(
+    return createNoCacheResponse(
       { success: true, data },
       { status: 200 }
     )
   } catch (error) {
     console.error('❌ [user-plans/:id] DELETE error:', error)
-    return NextResponse.json(
+    return createNoCacheResponse(
       { success: false, message: 'ユーザープランの解約中にエラーが発生しました' },
       { status: 500 }
     )
   }
 }
-

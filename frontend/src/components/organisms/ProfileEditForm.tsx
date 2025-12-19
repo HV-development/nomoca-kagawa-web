@@ -115,15 +115,15 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // ローディング中は処理を停止
     if (isLoading) {
       return
     }
-    
+
     if (validateForm()) {
       const updatedFields = getUpdatedFieldsWithValues()
-      
+
       // 変更がない場合は直接API呼び出し
       if (updatedFields.length === 0) {
         onSubmit(formData)
@@ -146,24 +146,24 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
 
   const getUpdatedFieldsWithValues = () => {
     const fields: Array<{ label: string; newValue: string }> = []
-    
+
     Object.keys(formData).forEach((key) => {
       const fieldKey = key as keyof ProfileEditInput
       // 生年月日と住所は編集不可なので除外
       if (fieldKey === 'birthDate' || fieldKey === 'address') {
         return
       }
-      
+
       if (formData[fieldKey] !== originalData[fieldKey]) {
         if (fieldKey in fieldLabels) {
           let displayValue = String(formData[fieldKey] || "")
-          
+
           // 性別を日本語に変換
           if (fieldKey === 'gender') {
             const genderOption = genderOptions.find(opt => opt.value === formData[fieldKey])
             displayValue = genderOption?.label || displayValue
           }
-          
+
           fields.push({
             label: fieldLabels[fieldKey as keyof typeof fieldLabels],
             newValue: displayValue
@@ -171,7 +171,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
         }
       }
     })
-    
+
     return fields
   }
 
@@ -278,7 +278,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
   const handleBlur = (field: keyof ProfileEditInput) => {
     // フォーカスが外れた時に必須チェックを含む完全なバリデーションを実行
     const value = formData[field]
-    
+
     try {
       // フィールドごとに適切なバリデーションを実行
       if (field === 'nickname') {
@@ -334,7 +334,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
               value={formData.postalCode}
               onChange={(e) => updateFormData("postalCode", e.target.value)}
               onBlur={() => handleBlur("postalCode")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] transition-colors"
             />
           </div>
           <button

@@ -6,17 +6,14 @@ import { RegisterConfirmationContainer } from '@/components/organisms/RegisterCo
 import { UserRegistrationComplete } from "@hv-development/schemas"
 import { Modal } from '@/components/atoms/Modal'
 import { Button } from '@/components/atoms/Button'
-import { 
-  getRegisterSession, 
-  setRegisterSessionItem, 
-  clearRegisterSession 
-} from '@/lib/register-session'
+import { useRegisterStore } from '@/stores/register-store'
 
 export default function RegisterConfirmationPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingEmail, setIsLoadingEmail] = useState(true)
   const [formData, setFormData] = useState<UserRegistrationComplete | null>(null)
-  const [email, setEmail] = useState<string>('')
+  // セキュリティ改善：メールアドレスはAPIから取得せず、表示も不要
+  const [email] = useState<string>('')
   const [token, setToken] = useState<string>('')
   const [isClient, setIsClient] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
@@ -24,15 +21,20 @@ export default function RegisterConfirmationPage() {
   const [pointsGranted, setPointsGranted] = useState<number | null>(null)
   const [shopId, setShopId] = useState<string | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
-  const [referrerUserId, setReferrerUserId] = useState<string | null>(null)
   const router = useRouter()
-  // セッションデータを保持するref（handleRegisterで使用）
-  const sessionDataRef = useRef<{ referrerUserId?: string } | null>(null)
+  const clearFormData = useRegisterStore((state) => state.clearFormData)
+  const initializedRef = useRef(false)
 
   // クライアントサイドでのみ searchParams を取得
   useEffect(() => {
+    // React Strict Modeでの二重実行を防ぐ
+    if (initializedRef.current) {
+      return
+    }
+    initializedRef.current = true
+
     setIsClient(true)
-    
+
     const initializePage = async () => {
       if (typeof window === 'undefined') return
 
@@ -51,79 +53,13 @@ export default function RegisterConfirmationPage() {
 
       setToken(tokenParam)
 
-      // サーバーサイドセッションからデータを取得
-      const sessionData = await getRegisterSession()
-      
-      // 紹介者IDをrefに保存（handleRegisterで使用）
-      if (sessionData?.referrerUserId) {
-        sessionDataRef.current = { referrerUserId: sessionData.referrerUserId }
-        setReferrerUserId(sessionData.referrerUserId)
-      }
-      
-      const storedData = sessionData?.registerFormData
-
-      if (storedData) {
-        // サーバーサイドセッションにデータがある場合（通常フロー）
-        try {
-          const parsedData = storedData as UserRegistrationComplete
-          // shop_idがURLパラメータにある場合は上書き
-          if (shopIdParam) {
-            parsedData.shopId = shopIdParam
-          }
-          setFormData(parsedData)
-
-          // メールアドレスをサーバーサイドセッションから取得
-          const storedEmail = sessionData?.registerEmail
-          if (storedEmail) {
-            setEmail(storedEmail)
-            setIsLoadingEmail(false)
-            return
-          }
-
-          // サーバーサイドセッションにメールアドレスがない場合、APIから取得（POSTでトークンをボディ送信）
-          try {
-            const response = await fetch('/api/auth/register/token-info', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ token: tokenParam }),
-            })
-            if (response.ok) {
-              const data = await response.json()
-              setEmail(data.email)
-              await setRegisterSessionItem('registerEmail', data.email)
-            } else {
-              throw new Error('Failed to fetch email')
-            }
-          } catch {
-            // APIからも取得できない場合、登録画面に戻す
-            alert('セッションが切れました。お手数ですが、再度情報を入力してください。')
-            const shopIdParamForRedirect = shopIdParam ? `&shop_id=${encodeURIComponent(shopIdParam)}` : ''
-            router.push(`/register?token=${encodeURIComponent(tokenParam)}${shopIdParamForRedirect}`)
-            return
-          }
-          
-          setIsLoadingEmail(false)
-          return
-        } catch (err) {
-          console.error('Session data parse error:', err)
-          // パースエラーの場合は次の処理へ
-        }
-      }
-
-      // サーバーサイドセッションがない場合、APIからメールアドレスを取得して登録画面に戻す（POSTでトークンをボディ送信）
+      // セキュリティ改善：メールアドレスはAPIから取得せず、トークンの有効性のみをチェック
       try {
-        const response = await fetch('/api/auth/register/token-info', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: tokenParam }),
-        })
-        
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
+        // トークンの有効性をチェック
+        const tokenResponse = await fetch(`/api/auth/register/token-info?token=${encodeURIComponent(tokenParam)}`)
+
+        if (!tokenResponse.ok) {
+          const errorData = await tokenResponse.json().catch(() => ({}))
           if (errorData.error?.code === 'REGISTRATION_TOKEN_EXPIRED') {
             setError('トークンの有効期限が切れています。再度メール登録からやり直してください。')
           } else {
@@ -134,10 +70,44 @@ export default function RegisterConfirmationPage() {
           return
         }
 
-        // ユーザーに情報を再入力してもらうため、登録画面に戻す
-        alert('セッションが切れました。お手数ですが、再度情報を入力してください。')
-        const shopIdParamForRedirect = shopIdParam ? `&shop_id=${encodeURIComponent(shopIdParam)}` : ''
-        router.push(`/register?token=${encodeURIComponent(tokenParam)}${shopIdParamForRedirect}`)
+        // トークンが有効であることを確認（メールアドレスは取得しない）
+        const tokenData = await tokenResponse.json()
+        if (!tokenData.valid) {
+          setError('トークンが無効です。再度メール登録からやり直してください。')
+          setTimeout(() => router.push('/email-registration'), 3000)
+          setIsLoadingEmail(false)
+          return
+        }
+
+        // Zustandストアからフォームデータを取得
+        // 直接インポートしたストアから取得（動的インポートでは異なるインスタンスになる可能性があるため）
+        // 少し待ってから取得することで、前のページからのデータ保存が確実に完了する
+        // 最大3回までリトライ（React Strict Modeでの二重実行に対応）
+        let currentFormData = null
+        for (let i = 0; i < 3; i++) {
+          await new Promise(resolve => setTimeout(resolve, 50 * (i + 1)))
+          currentFormData = useRegisterStore.getState().formData
+          if (currentFormData) {
+            break
+          }
+        }
+
+        // デバッグ: 取得したデータを確認
+        console.log('[register-confirmation/page] Form data from Zustand store:', currentFormData ? 'Data exists' : 'No data')
+        console.log('[register-confirmation/page] Form data keys:', currentFormData ? Object.keys(currentFormData) : 'No data')
+
+        if (!currentFormData) {
+          // フォームデータがない場合は登録画面に戻す
+          console.warn('[register-confirmation/page] No form data found in Zustand store, redirecting to register page')
+          const shopIdParamForRedirect = shopIdParam ? `&shop_id=${encodeURIComponent(shopIdParam)}` : ''
+          router.push(`/register?token=${encodeURIComponent(tokenParam)}${shopIdParamForRedirect}`)
+          setIsLoadingEmail(false)
+          return
+        }
+
+        // ローカルstateに保存してから、セキュリティ: データ取得後、即座にストアから削除（メモリからも削除）
+        setFormData(currentFormData)
+        clearFormData()
       } catch {
         setError('エラーが発生しました。再度お試しください。')
         setTimeout(() => router.push('/email-registration'), 3000)
@@ -147,27 +117,34 @@ export default function RegisterConfirmationPage() {
     }
 
     initializePage()
-  }, [router])
+  }, [router, clearFormData])
 
   const handleRegister = async () => {
+    // 連続押下を防ぐ
+    if (isLoading) {
+      return
+    }
+
     if (!formData || !token) return
 
     setIsLoading(true)
 
     try {
       const saitamaAppIdValue = formData.saitamaAppId && formData.saitamaAppId.trim() !== '' ? formData.saitamaAppId.trim() : undefined;
-      
-      // サーバーサイドセッションから取得した紹介者IDを使用
-      const referrerUserIdValue = sessionDataRef.current?.referrerUserId || referrerUserId;
+
+      // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
+      // referrerUserIdはURLパラメータから取得するか、Cookieから取得する
+      // 必要に応じてCookieから取得する実装を追加
+      const referrerUserId: string | undefined = undefined
 
       // バックエンドAPIに登録リクエストを送信
+      // セキュリティ改善：メールアドレスはリクエストボディに含めず、トークンから取得される
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: email,
           password: formData.password,
           passwordConfirm: formData.passwordConfirm,
           nickname: formData.nickname,
@@ -179,41 +156,35 @@ export default function RegisterConfirmationPage() {
           // 空文字列の場合はundefinedとして送信しない
           saitamaAppId: saitamaAppIdValue,
           // 紹介者IDを追加
-          referrerUserId: referrerUserIdValue && referrerUserIdValue.trim() !== '' ? referrerUserIdValue.trim() : undefined,
+          referrerUserId: referrerUserId,
           token: token,
           shopId: shopId,
         }),
       })
 
-      let result: any
-      try {
-        result = await response.json()
-      } catch (jsonError) {
-        console.error('❌ [register-confirmation] Failed to parse JSON:', jsonError)
-        const text = await response.text().catch(() => '')
-        console.error('❌ [register-confirmation] Response text:', text.substring(0, 500))
-        alert('サーバーエラーが発生しました。再度お試しください。')
-        setIsLoading(false)
-        return
-      }
-
-      console.log('🔍 [register-confirmation] Response status:', response.status)
-      console.log('🔍 [register-confirmation] Response result:', result)
+      const result = await response.json()
 
       if (response.ok) {
+        // セキュリティ: 登録成功後、Zustandストアからフォームデータを削除（既に削除済みだが念のため）
+        clearFormData()
+
         // Cookieベースの認証のみを使用（localStorageは廃止）
         // トークンはサーバー側でCookieに設定されるため、フロントエンドでの保存は不要
+        // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
 
-        // 登録成功後はサーバーサイドセッションをクリア
-        await clearRegisterSession()
+        // 高松市アプリ連携が失敗した場合（ポイント付与API失敗）
+        if (result.saitamaAppLinkFailed) {
+          setShowSaitamaFailedModal(true)
+          return
+        }
 
         // 高松市アプリ連携でポイント付与があった場合はモーダルを表示
         if (result.pointsGranted) {
           setPointsGranted(result.pointsGranted)
           setShowSuccessModal(true)
         } else {
-          // ポイント付与がない場合は直接プラン登録画面に遷移（サーバーサイドセッションにメールアドレスを保存）
-          await setRegisterSessionItem('userEmail', email)
+          // ポイント付与がない場合は直接プラン登録画面に遷移
+          // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
           // window.location.hrefを使用して強制的に遷移
           if (typeof window !== 'undefined') {
             window.location.href = '/plan-registration'
@@ -223,53 +194,13 @@ export default function RegisterConfirmationPage() {
         }
       } else {
         // エラーハンドリング
-        const errorCode = result.error?.code || result.errorCode
         const errorMessage = result.message || result.error?.message || '登録に失敗しました'
 
-        console.error('❌ [register-confirmation] Registration failed:', {
-          status: response.status,
-          errorCode,
-          errorMessage,
-          result
-        })
-
         // 409エラー（既存アカウント）の場合は特別な処理
-        if (response.status === 409 && (errorCode === 'USER_ALREADY_EXISTS' || errorCode === 'SAITAMA_APP_ID_ALREADY_EXISTS')) {
-          if (errorCode === 'USER_ALREADY_EXISTS') {
-            // ログイン画面にリダイレクト
-            router.push(`/?error=already_registered`)
-          } else {
-            // 高松市アプリID重複の場合は新規登録画面に戻す
-            const tokenParam = token ? `?token=${encodeURIComponent(token)}` : ''
-            const shopIdParam = shopId ? `&shop_id=${encodeURIComponent(shopId)}` : ''
-            const errorParam = `&error=${encodeURIComponent(errorMessage)}`
-            const redirectUrl = `/register${tokenParam}${shopIdParam}${errorParam}`
-            console.log('🔍 [register-confirmation] Redirecting to register page with error:', errorMessage)
-            console.log('🔍 [register-confirmation] Redirect URL:', redirectUrl)
-            // 強制的にリダイレクト
-            if (typeof window !== 'undefined') {
-              window.location.href = redirectUrl
-            } else {
-              router.push(redirectUrl)
-            }
-          }
-        } else if (response.status === 500 && errorCode === 'POINT_GRANT_FAILED') {
-          // ポイント付与失敗の場合は新規登録画面に戻す
-          const tokenParam = token ? `?token=${encodeURIComponent(token)}` : ''
-          const shopIdParam = shopId ? `&shop_id=${encodeURIComponent(shopId)}` : ''
-          const errorParam = `&error=${encodeURIComponent(errorMessage)}`
-          const redirectUrl = `/register${tokenParam}${shopIdParam}${errorParam}`
-          console.log('🔍 [register-confirmation] Redirecting to register page with point grant error:', errorMessage)
-          console.log('🔍 [register-confirmation] Redirect URL:', redirectUrl)
-          // 強制的にリダイレクト
-          if (typeof window !== 'undefined') {
-            window.location.href = redirectUrl
-          } else {
-            router.push(redirectUrl)
-          }
+        if (response.status === 409 && result.errorCode === 'USER_ALREADY_EXISTS') {
+          // ログイン画面にリダイレクト
+          router.push(`/?error=already_registered`)
         } else {
-          // その他のエラー
-          console.error('❌ [register-confirmation] Unknown error:', { status: response.status, errorCode, errorMessage })
           alert(errorMessage)
         }
       }
@@ -280,21 +211,19 @@ export default function RegisterConfirmationPage() {
     }
   }
 
-  const handleEdit = async () => {
-    // フォームデータをサーバーサイドセッションに保存してから登録画面に戻る（emailパラメータは含めない - セキュリティ改善）
-    if (formData) {
-      await setRegisterSessionItem('editFormData', formData)
-    }
+  const handleEdit = () => {
+    // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
+    // 編集モードで登録画面に戻る（フォームデータは再入力してもらう）
     const shopIdParam = formData?.shopId ? `&shop_id=${encodeURIComponent(formData?.shopId)}` : ''
     router.push(`/register?token=${encodeURIComponent(token)}&edit=true${shopIdParam}`)
   }
 
   const handleLogoClick = () => router.push('/')
 
-  const handleModalClose = async () => {
+  const handleModalClose = () => {
     setShowSuccessModal(false)
-    // モーダルを閉じた後、プラン登録画面に遷移（サーバーサイドセッションにメールアドレスを保存）
-    await setRegisterSessionItem('userEmail', email)
+    // モーダルを閉じた後、プラン登録画面に遷移
+    // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     // window.location.hrefを使用して強制的に遷移
     if (typeof window !== 'undefined') {
       window.location.href = '/plan-registration?saitamaAppLinked=true'
@@ -303,10 +232,10 @@ export default function RegisterConfirmationPage() {
     }
   }
 
-  const handleSaitamaFailedModalClose = async () => {
+  const handleSaitamaFailedModalClose = () => {
     setShowSaitamaFailedModal(false)
     // 高松市アプリ連携なしでプラン登録画面に遷移
-    await setRegisterSessionItem('userEmail', email)
+    // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     if (typeof window !== 'undefined') {
       window.location.href = '/plan-registration'
     } else {

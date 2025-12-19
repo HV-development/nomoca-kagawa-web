@@ -35,32 +35,13 @@ if [ -f "package.json" ]; then
 fi
 
 # node_modulesが存在しない、またはpackage.jsonが変更された場合にインストール
-if [ ! -d "node_modules/next" ] || [ ! -f "$HASH_FILE" ] || [ "$(cat $HASH_FILE 2>/dev/null)" != "$PACKAGE_JSON_HASH" ]; then
+if [ ! -d "node_modules/next" ] || [ ! -f "$HASH_FILE" ] || [ "$(cat "$HASH_FILE" 2>/dev/null)" != "$PACKAGE_JSON_HASH" ]; then
   echo "📦 Installing dependencies..."
   cd /app
-  # @hv-development/schemasはローカルでビルドされるため、一時的にpackage.jsonとpnpm-lock.yamlから除外
-  if [ -f "package.json" ]; then
-    cp package.json package.json.backup
-    # package.jsonから@hv-development/schemasの行を削除
-    sed -i '/"@hv-development\/schemas"/d' package.json || \
-    grep -v '"@hv-development/schemas"' package.json.backup > package.json || \
-    cp package.json.backup package.json
-  fi
-  # pnpm-lock.yamlを一時的に削除（@hv-development/schemasの参照を避けるため）
-  if [ -f "pnpm-lock.yaml" ]; then
-    rm -f pnpm-lock.yaml.backup 2>/dev/null || true
-    cp pnpm-lock.yaml pnpm-lock.yaml.backup || true
-    rm -f pnpm-lock.yaml
-  fi
-  # 依存関係をインストール（@hv-development/schemasを除く、lockfileなし）
+  # ホストからマウントされているpackage.json / pnpm-lock.yamlを直接書き換えると
+  # WSL2 + Docker環境で「Resource busy」になることがあるため、ここでは編集せずに
+  # そのままインストールのみ行う
   pnpm install --no-frozen-lockfile --prefer-offline || pnpm install --no-frozen-lockfile || true
-  # package.jsonとpnpm-lock.yamlを復元
-  if [ -f "package.json.backup" ]; then
-    mv package.json.backup package.json
-  fi
-  if [ -f "pnpm-lock.yaml.backup" ]; then
-    mv pnpm-lock.yaml.backup pnpm-lock.yaml
-  fi
   echo "$PACKAGE_JSON_HASH" > "$HASH_FILE"
   echo "✅ Dependencies installed"
 else
@@ -68,31 +49,31 @@ else
 fi
 
 # schemas のビルドとコピー
-echo "🔨 Building nomoca-kagawa-schemas..."
-cd /app/nomoca-kagawa-schemas
-# nomoca-kagawa-schemas ディレクトリにも .npmrc をコピー
+echo "🔨 Building tamanomi-schemas..."
+cd /app/tamanomi-schemas
+# tamanomi-schemas ディレクトリにも .npmrc をコピー
 if [ -f /app/.npmrc ]; then
-  cp /app/.npmrc /app/nomoca-kagawa-schemas/.npmrc
+  cp /app/.npmrc /app/tamanomi-schemas/.npmrc
 fi
 # node_modulesの中身を確認（空または不完全な場合は再インストール）
 if [ ! -d "node_modules" ] || [ ! -d "node_modules/typescript" ]; then
-  echo "📦 Installing nomoca-kagawa-schemas dependencies..."
+  echo "📦 Installing tamanomi-schemas dependencies..."
   pnpm install --prefer-offline || pnpm install || {
-    echo "❌ Failed to install nomoca-kagawa-schemas dependencies"
+    echo "❌ Failed to install tamanomi-schemas dependencies"
     exit 1
   }
-  echo "✅ nomoca-kagawa-schemas dependencies installed"
+  echo "✅ tamanomi-schemas dependencies installed"
 fi
 pnpm run build || {
-  echo "❌ Failed to build nomoca-kagawa-schemas"
+  echo "❌ Failed to build tamanomi-schemas"
   exit 1
 }
 
 echo "📋 Copying schemas to node_modules..."
 cd /app
 mkdir -p /app/node_modules/@hv-development/schemas
-cp -r /app/nomoca-kagawa-schemas/dist /app/node_modules/@hv-development/schemas/
-cp /app/nomoca-kagawa-schemas/package.json /app/node_modules/@hv-development/schemas/
+cp -r /app/tamanomi-schemas/dist /app/node_modules/@hv-development/schemas/
+cp /app/tamanomi-schemas/package.json /app/node_modules/@hv-development/schemas/
 echo "✅ Schemas built and copied"
 
 echo "🎉 Setup complete! Starting application..."

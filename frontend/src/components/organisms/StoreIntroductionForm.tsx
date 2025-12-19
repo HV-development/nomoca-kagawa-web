@@ -96,7 +96,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName1}
                   onChange={(e) => handleChange('storeName1', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName1 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.storeName1 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: カフェ nomocaKagawa"
                   disabled={isLoading}
@@ -114,7 +114,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu1}
                   onChange={(e) => handleChange('recommendedMenu1', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu1 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.recommendedMenu1 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: 特製パスタランチ"
                   disabled={isLoading}
@@ -137,7 +137,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName2}
                   onChange={(e) => handleChange('storeName2', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName2 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.storeName2 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: 居酒屋 さくら"
                   disabled={isLoading}
@@ -155,7 +155,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu2}
                   onChange={(e) => handleChange('recommendedMenu2', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu2 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.recommendedMenu2 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: 刺身盛り合わせ"
                   disabled={isLoading}
@@ -178,7 +178,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.storeName3}
                   onChange={(e) => handleChange('storeName3', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.storeName3 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.storeName3 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: ラーメン 一番"
                   disabled={isLoading}
@@ -196,7 +196,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
                   type="text"
                   value={formData.recommendedMenu3}
                   onChange={(e) => handleChange('recommendedMenu3', e.target.value)}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent ${errors.recommendedMenu3 ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-transparent ${errors.recommendedMenu3 ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="例: 特製味噌ラーメン"
                   disabled={isLoading}

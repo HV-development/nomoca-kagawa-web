@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+import { HeaderLogo } from "../atoms/HeaderLogo"
 import { Clock } from "lucide-react"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
@@ -34,25 +34,11 @@ export function UsageHistoryList(props: UsageHistoryListProps) {
     return (
       <div className={`min-h-screen ${backgroundColorClass} ${className}`}>
         {/* ヘッダー */}
-        <div className="bg-white border-b border-gray-200 px-4 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={onBackToMyPage}
-              className="flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors"
-            >
-              ← 戻る
-            </button>
-            <div className="w-12"></div>
-            <Image
-              src="/logo.svg"
-              alt="TAMAYOI"
-              width={360}
-              height={80}
-              className="h-20 object-contain"
-            />
-            <div className="w-12"></div>
-          </div>
-        </div>
+        <HeaderLogo
+          onLogoClick={onBackToMyPage ?? (() => { })}
+          showBackButton={Boolean(onBackToMyPage)}
+          onBackClick={onBackToMyPage}
+        />
 
         {/* メインコンテンツ */}
         <div className="p-6">
@@ -74,25 +60,11 @@ export function UsageHistoryList(props: UsageHistoryListProps) {
   return (
     <div className={`min-h-screen ${backgroundColorClass} ${className}`}>
       {/* ヘッダー */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={onBackToMyPage}
-            className="flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors"
-          >
-            ← 戻る
-          </button>
-          <div className="w-12"></div>
-          <Image
-            src="/logo.svg"
-            alt="TAMAYOI"
-            width={144}
-            height={32}
-            className="h-8 object-contain"
-          />
-          <div className="w-12"></div>
-        </div>
-      </div>
+      <HeaderLogo
+        onLogoClick={onBackToMyPage ?? (() => { })}
+        showBackButton={Boolean(onBackToMyPage)}
+        onBackClick={onBackToMyPage}
+      />
 
       {/* メインコンテンツ */}
       <div className="p-6">

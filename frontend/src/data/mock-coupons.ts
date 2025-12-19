@@ -10,7 +10,7 @@ export const mockCoupons: Record<string, Coupon[]> = {
       imageUrl: "https://images.pexels.com/photos/1089930/pexels-photo-1089930.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
       drinkType: "alcohol",
       storeId: "1",
-      storeName: "高松酒場 大宮店",
+      storeName: "たかまつ酒場 大宮店",
       uuid: "uuid-1-1",
     },
     {
@@ -21,7 +21,7 @@ export const mockCoupons: Record<string, Coupon[]> = {
       imageUrl: "https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
       drinkType: "alcohol",
       storeId: "1",
-      storeName: "高松酒場 大宮店",
+      storeName: "たかまつ酒場 大宮店",
       uuid: "uuid-1-2",
     },
   ],

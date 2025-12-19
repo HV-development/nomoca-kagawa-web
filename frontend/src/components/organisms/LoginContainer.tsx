@@ -46,7 +46,7 @@ export function LoginContainer({
             {/* 説明文 */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">ログイン</h2>
-              <p className="text-gray-600">nomocaKagawaで高松の美味しいお店を見つけよう</p>
+              <p className="text-gray-600">nomocaKagawaでたかまつの美味しいお店を見つけよう</p>
             </div>
 
             {/* ログインフォーム */}

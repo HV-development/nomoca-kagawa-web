@@ -25,10 +25,10 @@ interface PlanRegistrationFormProps {
 }
 
 // プラン表示完了を検知するコンポーネント
-const PlanFadeIn = ({ children, delay, onDisplayed }: { 
+const PlanFadeIn = ({ children, delay, onDisplayed }: {
   children: React.ReactNode
   delay: number
-  onDisplayed: () => void 
+  onDisplayed: () => void
 }) => {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -58,8 +58,8 @@ const PlanFadeIn = ({ children, delay, onDisplayed }: {
   )
 }
 
-export function PlanRegistrationForm({ 
-  onPaymentMethodRegister, 
+export function PlanRegistrationForm({
+  onPaymentMethodRegister,
   isLoading = false,
   plans,
   error,
@@ -137,22 +137,22 @@ export function PlanRegistrationForm({
       }
 
       const data = result.data as { pointsGranted?: number }
-      
+
       // 連携したIDを保存
       setLinkedSaitamaAppId(saitamaAppId)
-      
+
       // モーダル用のメッセージを作成
       const pointsMessage = typeof data.pointsGranted === 'number' && data.pointsGranted > 0
-        ? `${data.pointsGranted}ポイントを付与しました！` 
+        ? `${data.pointsGranted}ポイントを付与しました！`
         : 'ポイントが付与されました！'
       setModalMessage(`高松市みんなのアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
-      
+
       // モーダルを表示
       setShowSuccessModal(true)
-      
+
       // 入力フィールドをクリア
       setSaitamaAppId("")
-      
+
       // 連携成功後、プランを再取得するために親コンポーネントに通知
       if (onSaitamaAppLinked) {
         await onSaitamaAppLinked()
@@ -210,49 +210,49 @@ export function PlanRegistrationForm({
               <p className="text-gray-500">利用可能なプランがありません</p>
             </div>
           ) : (
-          plans.map((plan, index) => {
-            // 割引価格は現在のスキーマでは未対応のため、通常価格のみ表示
-            const displayPrice = plan.price;
-            const hasDiscount = false;
-            
-            // 高松市アプリ連携済みの場合の価格表示
-            const isSaitamaLinked = saitamaAppLinked || linkedSaitamaAppId;
-            const saitamaDiscountPrice = 480; // 高松市アプリ連携時の価格
-            
-            // 高松市アプリ連携済みで、通常価格が980円の場合
-            if (isSaitamaLinked && plan.price === 980) {
+            plans.map((plan, index) => {
+              // 割引価格は現在のスキーマでは未対応のため、通常価格のみ表示
+              const displayPrice = plan.price;
+              const hasDiscount = false;
+
+              // 高松市アプリ連携済みの場合の価格表示
+              const isSaitamaLinked = saitamaAppLinked || linkedSaitamaAppId;
+              const saitamaDiscountPrice = 480; // 高松市アプリ連携時の価格
+
+              // 高松市アプリ連携済みで、通常価格が980円の場合
+              if (isSaitamaLinked && plan.price === 980) {
+                return (
+                  <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
+                    <PlanCard
+                      title={plan.name}
+                      description={plan.description || ''}
+                      features={plan.plan_content?.features || []}
+                      price={`¥${saitamaDiscountPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
+                      originalPrice={`¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
+                      badge={plan.status === 'active' ? '高松市アプリ連携でお得' : undefined}
+                      isSelected={selectedPlan === plan.id}
+                      onSelect={() => handlePlanSelect(plan.id)}
+                    />
+                  </PlanFadeIn>
+                );
+              }
+
               return (
                 <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
                   <PlanCard
                     title={plan.name}
                     description={plan.description || ''}
                     features={plan.plan_content?.features || []}
-                    price={`¥${saitamaDiscountPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                    originalPrice={`¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                    badge={plan.status === 'active' ? '高松市アプリ連携でお得' : undefined}
+                    price={`¥${displayPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
+                    originalPrice={hasDiscount ? `¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}` : undefined}
+                    badge={plan.status === 'active' ? '利用可能' : undefined}
                     isSelected={selectedPlan === plan.id}
                     onSelect={() => handlePlanSelect(plan.id)}
                   />
                 </PlanFadeIn>
               );
-            }
-            
-            return (
-              <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
-                <PlanCard
-                  title={plan.name}
-                  description={plan.description || ''}
-                  features={plan.plan_content?.features || []}
-                  price={`¥${displayPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                  originalPrice={hasDiscount ? `¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}` : undefined}
-                  badge={plan.status === 'active' ? '利用可能' : undefined}
-                  isSelected={selectedPlan === plan.id}
-                  onSelect={() => handlePlanSelect(plan.id)}
-                />
-              </PlanFadeIn>
-            );
-          })
-        )}
+            })
+          )}
         </div>
       )}
 
@@ -283,95 +283,95 @@ export function PlanRegistrationForm({
               </div>
             </div>
 
-          {/* アプリ説明とダウンロードリンク */}
-          <div className="bg-white rounded-lg p-4 space-y-3">
-            <div>
-              <h4 className="font-bold text-gray-900 text-sm mb-1">高松市みんなのアプリ</h4>
-              <p className="text-xs text-gray-700 leading-relaxed">
-                高松市が提供する公式アプリです。<br />
-                アプリと連携することで、特別な割引価格でご利用いただけます。
+            {/* アプリ説明とダウンロードリンク */}
+            <div className="bg-white rounded-lg p-4 space-y-3">
+              <div>
+                <h4 className="font-bold text-gray-900 text-sm mb-1">高松市みんなのアプリ</h4>
+                <p className="text-xs text-gray-700 leading-relaxed">
+                  高松市が提供する公式アプリです。<br />
+                  アプリと連携することで、特別な割引価格でご利用いただけます。
+                </p>
+              </div>
+
+              {/* ダウンロードリンク */}
+              <div className="space-y-3">
+                <div className="flex justify-center gap-3">
+                  <a
+                    href="https://apps.apple.com/jp/app/%E3%81%95%E3%81%84%E3%81%9F%E3%81%BE%E5%B8%82%E3%81%BF%E3%82%93%E3%81%AA%E3%81%AE%E3%82%A2%E3%83%97%E3%83%AA/id6502677802"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <Image src="/app-store.svg" alt="App Storeからダウンロード" width={100} height={48} className="h-12" />
+                  </a>
+                  <a
+                    href="http://play.google.com/store/apps/details?id=jp.saitamacity.rsa&hl=ja&pli=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                  >
+                    <Image src="/google-play.svg" alt="Google Playで手に入れよう" width={120} height={48} className="h-12" />
+                  </a>
+                </div>
+                <div className="text-center">
+                  <a
+                    href="/saitama-app-guide"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline"
+                  >
+                    ユーザーID取得手順はこちら
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* エラー表示 */}
+            {linkError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500" />
+                <p className="text-red-700 text-sm">{linkError}</p>
+              </div>
+            )}
+
+            {/* 入力フォーム */}
+            <div className="space-y-3 bg-white rounded-lg p-4">
+              <Input
+                label={
+                  <>
+                    高松市みんなのアプリ
+                    <br />
+                    ユーザーID
+                  </>
+                }
+                value={saitamaAppId}
+                onChange={(value) => {
+                  setSaitamaAppId(value)
+                  setLinkError("")
+                }}
+                placeholder="saitamacity_xxxxxx"
+                disabled={isLinking}
+              />
+              <button
+                onClick={handleLinkSaitamaApp}
+                disabled={isLinking || !saitamaAppId}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLinking ? (
+                  <>
+                    <span className="animate-spin">⏳</span>
+                    連携処理中...
+                  </>
+                ) : (
+                  <span className="text-center">
+                    アプリと連携して
+                    <br />
+                    500円OFFで利用する
+                  </span>
+                )}
+              </button>
+              <p className="text-xs text-center text-gray-600">
+                ※ 連携後すぐに割引価格が適用されます
               </p>
             </div>
-
-            {/* ダウンロードリンク */}
-            <div className="space-y-3">
-              <div className="flex justify-center gap-3">
-                <a
-                  href="https://apps.apple.com/jp/app/%E3%81%95%E3%81%84%E3%81%9F%E3%81%BE%E5%B8%82%E3%81%BF%E3%82%93%E3%81%AA%E3%81%AE%E3%82%A2%E3%83%97%E3%83%AA/id6502677802"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <Image src="/app-store.svg" alt="App Storeからダウンロード" width={100} height={48} className="h-12" />
-                </a>
-                <a
-                  href="http://play.google.com/store/apps/details?id=jp.saitamacity.rsa&hl=ja&pli=1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <Image src="/google-play.svg" alt="Google Playで手に入れよう" width={120} height={48} className="h-12" />
-                </a>
-              </div>
-              <div className="text-center">
-                <a
-                  href="/saitama-app-guide"
-                  className="text-xs text-blue-600 hover:text-blue-800 underline"
-                >
-                  ユーザーID取得手順はこちら
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* エラー表示 */}
-          {linkError && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-500" />
-              <p className="text-red-700 text-sm">{linkError}</p>
-            </div>
-          )}
-
-          {/* 入力フォーム */}
-          <div className="space-y-3 bg-white rounded-lg p-4">
-            <Input
-              label={
-                <>
-                  高松市みんなのアプリ
-                  <br />
-                  ユーザーID
-                </>
-              }
-              value={saitamaAppId}
-              onChange={(value) => {
-                setSaitamaAppId(value)
-                setLinkError("")
-              }}
-              placeholder="saitamacity_xxxxxx"
-              disabled={isLinking}
-            />
-            <button 
-              onClick={handleLinkSaitamaApp}
-              disabled={isLinking || !saitamaAppId}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {isLinking ? (
-                <>
-                  <span className="animate-spin">⏳</span>
-                  連携処理中...
-                </>
-              ) : (
-                <span className="text-center">
-                  アプリと連携して
-                  <br />
-                  500円OFFで利用する
-                </span>
-              )}
-            </button>
-            <p className="text-xs text-center text-gray-600">
-              ※ 連携後すぐに割引価格が適用されます
-            </p>
-          </div>
           </div>
         </FadeInComponent>
       )}
@@ -385,11 +385,10 @@ export function PlanRegistrationForm({
             <button
               type="button"
               onClick={() => setSelectedPaymentMethod('CreditCard')}
-              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${
-                selectedPaymentMethod === 'CreditCard'
+              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${selectedPaymentMethod === 'CreditCard'
                   ? 'border-green-500 bg-green-50'
-                  : 'border-gray-200 bg-white hover:border-green-600'
-              }`}
+                  : 'border-gray-200 bg-white hover:border-green-300'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <CreditCard className="w-5 h-5 text-green-600" />
@@ -404,13 +403,12 @@ export function PlanRegistrationForm({
               type="button"
               onClick={() => !isSubscriptionPlan && setSelectedPaymentMethod('AeonPay')}
               disabled={isSubscriptionPlan}
-              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${
-                isSubscriptionPlan
+              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${isSubscriptionPlan
                   ? 'border-gray-200 bg-gray-100 cursor-not-allowed opacity-60'
                   : selectedPaymentMethod === 'AeonPay'
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 bg-white hover:border-blue-300'
-              }`}
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200 bg-white hover:border-blue-300'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <QrCode className={`w-5 h-5 ${isSubscriptionPlan ? 'text-gray-400' : 'text-blue-600'}`} />
@@ -428,13 +426,12 @@ export function PlanRegistrationForm({
               type="button"
               onClick={() => !isSubscriptionPlan && setSelectedPaymentMethod('PayPay')}
               disabled={isSubscriptionPlan}
-              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${
-                isSubscriptionPlan
+              className={`flex items-center justify-between rounded-lg border p-3 text-left transition-colors ${isSubscriptionPlan
                   ? 'border-gray-200 bg-gray-100 cursor-not-allowed opacity-60'
                   : selectedPaymentMethod === 'PayPay'
-                  ? 'border-red-500 bg-red-50'
-                  : 'border-gray-200 bg-white hover:border-red-300'
-              }`}
+                    ? 'border-red-500 bg-red-50'
+                    : 'border-gray-200 bg-white hover:border-red-300'
+                }`}
             >
               <div className="flex items-center gap-3">
                 <Smartphone className={`w-5 h-5 ${isSubscriptionPlan ? 'text-gray-400' : 'text-red-500'}`} />
@@ -460,13 +457,13 @@ export function PlanRegistrationForm({
           <CreditCard className="w-5 h-5" />
           {isLoading ? "処理中..." : isPaymentMethodChangeOnly ? "支払い方法を変更する" : (hasPaymentMethod ? "プランに登録する" : "支払い方法を登録する")}
         </Button>
-        
+
         {/* 支払い方法変更ボタン（カード登録済みの場合のみ表示、支払い方法変更のみの場合は非表示） */}
         {hasPaymentMethod && !isPaymentMethodChangeOnly && (
           <Button
             onClick={() => {
               // 既存プランを選択せず、支払い方法のみ変更
-            onPaymentMethodRegister("", 'CreditCard')
+              onPaymentMethodRegister("", 'CreditCard')
             }}
             disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-base font-medium flex items-center justify-center gap-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -480,17 +477,17 @@ export function PlanRegistrationForm({
       {/* カードブランドロゴ */}
       <div className="flex flex-col items-center gap-3 py-4 border-t border-gray-200">
         <div className="flex items-center justify-center gap-4">
-          <Image 
-            src="/visa.png" 
-            alt="VISA" 
-            width={60} 
+          <Image
+            src="/visa.png"
+            alt="VISA"
+            width={60}
             height={40}
             className="object-contain"
           />
-          <Image 
-            src="/master.png" 
-            alt="Mastercard" 
-            width={60} 
+          <Image
+            src="/master.png"
+            alt="Mastercard"
+            width={60}
             height={40}
             className="object-contain"
           />

@@ -1,5 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
+import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,10 +13,10 @@ export async function POST(request: NextRequest) {
 
     const fullUrl = buildApiUrl('/otp/verify')
 
-    const response = await fetch(fullUrl, {
+    const response = await secureFetchWithCommonHeaders(request, fullUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+      headerOptions: {
+        requireAuth: false, // OTP検証は認証不要
       },
       body: JSON.stringify({ email, otp, requestId }),
     })
@@ -23,7 +25,7 @@ export async function POST(request: NextRequest) {
       const errorData = await response.json().catch(() => ({}))
       
 
-      return NextResponse.json(
+      return createNoCacheResponse(
         { error: errorData.error?.message || errorData.message || 'OTP検証に失敗しました' },
         { status: response.status }
       )
@@ -32,53 +34,57 @@ export async function POST(request: NextRequest) {
     const data = await response.json()
 
     // トークンをhttpOnly Cookieに保存し、ボディでは返却しない
-    const res = NextResponse.json({ message: 'OTP verification successful' })
+    const res = createNoCacheResponse({ message: 'OTP verification successful' })
     const isSecure = (() => {
       try { return new URL(request.url).protocol === 'https:'; } catch { return process.env.NODE_ENV === 'production'; }
     })()
     
-    res.headers.set('Cache-Control', 'no-store')
-    res.headers.set('Pragma', 'no-cache')
-    
     if (data.accessToken) {
+      // 通常のCookie（開発環境・本番環境の両方で動作）
       res.cookies.set('accessToken', data.accessToken, {
         httpOnly: true,
         secure: isSecure,
         sameSite: 'strict',
         path: '/',
-        maxAge: 60 * 15, // 15分
+        maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
       })
-      res.cookies.set('__Host-accessToken', data.accessToken, {
-        httpOnly: true,
-        secure: isSecure,
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 60 * 15,
-      })
+      // __Host-プレフィックス付きCookie（HTTPS環境でのみ有効）
+      if (isSecure) {
+        res.cookies.set('__Host-accessToken', data.accessToken, {
+          httpOnly: true,
+          secure: true, // __Host-プレフィックスにはsecure: trueが必須
+          sameSite: 'strict',
+          path: '/',
+          maxAge: 60 * 60 * 2, // 2時間（バックエンドのJWT_ACCESS_TOKEN_EXPIRES_INに合わせる）
+        })
+      }
     }
     if (data.refreshToken) {
+      // 通常のCookie（開発環境・本番環境の両方で動作）
       res.cookies.set('refreshToken', data.refreshToken, {
         httpOnly: true,
         secure: isSecure,
         sameSite: 'strict',
         path: '/',
-        maxAge: 60 * 60 * 24 * 30, // 30日
+        maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
       })
-      res.cookies.set('__Host-refreshToken', data.refreshToken, {
-        httpOnly: true,
-        secure: isSecure,
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30,
-      })
+      // __Host-プレフィックス付きCookie（HTTPS環境でのみ有効）
+      if (isSecure) {
+        res.cookies.set('__Host-refreshToken', data.refreshToken, {
+          httpOnly: true,
+          secure: true, // __Host-プレフィックスにはsecure: trueが必須
+          sameSite: 'strict',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7, // 7日（バックエンドのJWT_REFRESH_TOKEN_EXPIRES_INに合わせる）
+        })
+      }
     }
     
     return res
   } catch {
-    return NextResponse.json(
+    return createNoCacheResponse(
       { error: 'OTP検証処理中にエラーが発生しました' },
       { status: 500 }
     )
   }
 }
-

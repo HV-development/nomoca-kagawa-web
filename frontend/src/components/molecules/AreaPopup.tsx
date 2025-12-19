@@ -37,9 +37,9 @@ export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClea
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-900">エリアを選択</h3>
-            <button 
-              onClick={onClose} 
-              className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-700"
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
               aria-label="閉じる"
             >
               ✕
