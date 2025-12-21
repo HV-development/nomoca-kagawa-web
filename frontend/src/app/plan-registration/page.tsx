@@ -14,7 +14,7 @@ export default function PlanRegistrationPage() {
   const [email, setEmail] = useState<string>('')
   const [isClient, setIsClient] = useState(false)
   const [error, setError] = useState<string>('')
-  const [saitamaAppLinked, setSaitamaAppLinked] = useState<boolean | null>(null)
+  const [mydigiAppLinked, setMydigiAppLinked] = useState<boolean | null>(null)
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false)
   const [isPaymentMethodChangeOnly, setIsPaymentMethodChangeOnly] = useState<boolean>(false)
   const router = useRouter()
@@ -40,8 +40,8 @@ export default function PlanRegistrationPage() {
           setError('メールアドレスが見つかりません。新規登録画面からやり直してください。')
         }
 
-        const newLinkedState = userData.saitamaAppLinked === true
-        setSaitamaAppLinked(newLinkedState)
+        const newLinkedState = userData.mydigiAppLinked === true
+        setMydigiAppLinked(newLinkedState)
 
         // カード登録状態を確認（userDataから取得）
         // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
@@ -50,7 +50,7 @@ export default function PlanRegistrationPage() {
       } else {
         const errorData = await response.json().catch(() => ({}))
         console.error('❌ [fetchUserInfo] API error:', response.status, errorData)
-        setSaitamaAppLinked(false)
+        setMydigiAppLinked(false)
         if (response.status === 401) {
           setError('アクセストークンが必要です。新規登録画面からやり直してください。')
         } else if (response.status === 404) {
@@ -61,7 +61,7 @@ export default function PlanRegistrationPage() {
       }
     } catch (error) {
       console.error('❌ [fetchUserInfo] Error:', error)
-      setSaitamaAppLinked(false)
+      setMydigiAppLinked(false)
       setError('ユーザー情報の取得中にエラーが発生しました。')
     }
   }, [])
@@ -71,7 +71,7 @@ export default function PlanRegistrationPage() {
     setIsClient(true)
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search)
-      const saitamaAppLinkedParam = urlParams.get('saitamaAppLinked')
+      const mydigiAppLinkedParam = urlParams.get('mydigiAppLinked')
       const refreshParam = urlParams.get('refresh')
       const paymentMethodChangeParam = urlParams.get('payment-method-change')
 
@@ -83,9 +83,9 @@ export default function PlanRegistrationPage() {
         setIsPaymentMethodChangeOnly(true)
       }
 
-      // URLパラメータでsaitamaAppLinked=trueが指定されている場合（ポイント付与後）
-      if (saitamaAppLinkedParam === 'true') {
-        setSaitamaAppLinked(true)
+      // URLパラメータでmydigiAppLinked=trueが指定されている場合（ポイント付与後）
+      if (mydigiAppLinkedParam === 'true') {
+        setMydigiAppLinked(true)
       }
 
       // refreshパラメータがある場合、ユーザー情報を再取得（ガイドページからの戻り）
@@ -117,16 +117,16 @@ export default function PlanRegistrationPage() {
       setIsLoading(true)
 
       // 明示的に渡された状態を優先、なければ現在の状態を使用
-      const linkedState = explicitLinkedState !== undefined ? explicitLinkedState : saitamaAppLinked
+      const linkedState = explicitLinkedState !== undefined ? explicitLinkedState : mydigiAppLinked
 
-      // 高松市アプリ連携状態に応じてクエリパラメータを構築
+      // マイデジアプリ連携状態に応じてクエリパラメータを構築
       const queryParams = new URLSearchParams({
         status: 'active',
         limit: '50',
       })
 
       if (linkedState !== null) {
-        queryParams.append('saitamaAppLinked', String(linkedState))
+        queryParams.append('mydigiAppLinked', String(linkedState))
       }
 
       const apiUrl = `/api/plans?${queryParams.toString()}`
@@ -147,22 +147,22 @@ export default function PlanRegistrationPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [saitamaAppLinked])
+  }, [mydigiAppLinked])
 
-  // ユーザー情報を取得して高松市アプリ連携状態を確認
+  // ユーザー情報を取得してマイデジアプリ連携状態を確認
   useEffect(() => {
-    if (isClient && saitamaAppLinked === null) {
-      // URLパラメータでsaitamaAppLinkedが設定されていない場合のみ取得
+    if (isClient && mydigiAppLinked === null) {
+      // URLパラメータでmydigiAppLinkedが設定されていない場合のみ取得
       fetchUserInfo()
     }
-  }, [isClient, saitamaAppLinked, fetchUserInfo])
+  }, [isClient, mydigiAppLinked, fetchUserInfo])
 
   // プラン一覧を取得（連携状態が確定した後）
   useEffect(() => {
-    if (isClient && saitamaAppLinked !== null) {
+    if (isClient && mydigiAppLinked !== null) {
       fetchPlans()
     }
-  }, [isClient, saitamaAppLinked, fetchPlans])
+  }, [isClient, mydigiAppLinked, fetchPlans])
 
   const handlePaymentMethodRegister = async (planId: string) => {
     // 連続押下を防ぐ
@@ -180,7 +180,7 @@ export default function PlanRegistrationPage() {
       if (!isPaymentMethodChangeOnly) {
         const selectedPlan = plans.find(p => p.id === planId)
         if (selectedPlan) {
-          const isLinked = saitamaAppLinked === true
+          const isLinked = mydigiAppLinked === true
           const discountPrice = selectedPlan.discountPrice ?? null
           const rawAmount = isLinked && discountPrice != null
             ? discountPrice
@@ -313,7 +313,7 @@ export default function PlanRegistrationPage() {
     }
   }
 
-  const handleSaitamaAppLinked = async () => {
+  const handleMydigiAppLinked = async () => {
     try {
       // Cookieベースの認証のみを使用（localStorageは廃止）
       const response = await fetch('/api/user/me', {
@@ -323,10 +323,10 @@ export default function PlanRegistrationPage() {
 
       if (response.ok) {
         const userData = await response.json()
-        const newLinkedState = userData.saitamaAppLinked === true
+        const newLinkedState = userData.mydigiAppLinked === true
 
         // 状態を更新
-        setSaitamaAppLinked(newLinkedState)
+        setMydigiAppLinked(newLinkedState)
 
         // 状態更新を待たずに、明示的に新しい状態でプランを再取得
         await fetchPlans(newLinkedState)
@@ -340,7 +340,7 @@ export default function PlanRegistrationPage() {
     // 状態をリセット
     setEmail('')
     setError('')
-    setSaitamaAppLinked(null)
+    setMydigiAppLinked(null)
     setHasPaymentMethod(false)
     setIsPaymentMethodChangeOnly(false)
 
@@ -370,8 +370,8 @@ export default function PlanRegistrationPage() {
       isLoading={isLoading}
       plans={plans}
       error={error}
-      saitamaAppLinked={saitamaAppLinked || false}
-      onSaitamaAppLinked={handleSaitamaAppLinked}
+      mydigiAppLinked={mydigiAppLinked || false}
+      onMydigiAppLinked={handleMydigiAppLinked}
       hasPaymentMethod={hasPaymentMethod}
       isPaymentMethodChangeOnly={isPaymentMethodChangeOnly}
     />

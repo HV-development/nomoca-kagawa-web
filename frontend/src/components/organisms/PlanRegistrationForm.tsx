@@ -18,8 +18,8 @@ interface PlanRegistrationFormProps {
   isLoading?: boolean
   plans: PlanListResponse['plans']
   error?: string
-  saitamaAppLinked?: boolean
-  onSaitamaAppLinked?: () => void
+  mydigiAppLinked?: boolean
+  onMydigiAppLinked?: () => void
   hasPaymentMethod?: boolean
   isPaymentMethodChangeOnly?: boolean
 }
@@ -63,14 +63,14 @@ export function PlanRegistrationForm({
   isLoading = false,
   plans,
   error,
-  saitamaAppLinked = false,
-  onSaitamaAppLinked,
+  mydigiAppLinked = false,
+  onMydigiAppLinked,
   hasPaymentMethod = false,
   isPaymentMethodChangeOnly = false,
 }: PlanRegistrationFormProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>(plans.length > 0 ? plans[0].id : "")
-  const [saitamaAppId, setSaitamaAppId] = useState<string>("")
-  const [linkedSaitamaAppId, setLinkedSaitamaAppId] = useState<string>("")
+  const [mydigiAppId, setMydigiAppId] = useState<string>("")
+  const [linkedMydigiAppId, setLinkedMydigiAppId] = useState<string>("")
   const [linkError, setLinkError] = useState<string>("")
   const [isLinking, setIsLinking] = useState<boolean>(false)
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
@@ -116,9 +116,9 @@ export function PlanRegistrationForm({
     }
   }
 
-  const handleLinkSaitamaApp = async () => {
-    if (!saitamaAppId || saitamaAppId.trim() === "") {
-      setLinkError("高松市アプリIDを入力してください")
+  const handleLinkMydigiApp = async () => {
+    if (!mydigiAppId || mydigiAppId.trim() === "") {
+      setLinkError("マイデジアプリIDを入力してください")
       return
     }
 
@@ -126,8 +126,8 @@ export function PlanRegistrationForm({
     setLinkError("")
 
     try {
-      const result = await ApiClient.post('/api/user/link-saitama-app', {
-        saitamaAppId: saitamaAppId.trim()
+      const result = await ApiClient.post('/api/user/link-mydigi-app', {
+        mydigiAppId: mydigiAppId.trim()
       })
 
       if (result.error) {
@@ -139,26 +139,26 @@ export function PlanRegistrationForm({
       const data = result.data as { pointsGranted?: number }
 
       // 連携したIDを保存
-      setLinkedSaitamaAppId(saitamaAppId)
+      setLinkedMydigiAppId(mydigiAppId)
 
       // モーダル用のメッセージを作成
       const pointsMessage = typeof data.pointsGranted === 'number' && data.pointsGranted > 0
         ? `${data.pointsGranted}ポイントを付与しました！`
         : 'ポイントが付与されました！'
-      setModalMessage(`高松市みんなのアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
+      setModalMessage(`マイデジアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
 
       // モーダルを表示
       setShowSuccessModal(true)
 
       // 入力フィールドをクリア
-      setSaitamaAppId("")
+      setMydigiAppId("")
 
       // 連携成功後、プランを再取得するために親コンポーネントに通知
-      if (onSaitamaAppLinked) {
-        await onSaitamaAppLinked()
+      if (onMydigiAppLinked) {
+        await onMydigiAppLinked()
       }
     } catch {
-      setLinkError('高松市アプリ連携中にエラーが発生しました')
+      setLinkError('マイデジアプリ連携中にエラーが発生しました')
     } finally {
       setIsLinking(false)
     }
@@ -185,16 +185,16 @@ export function PlanRegistrationForm({
       )}
 
       {/* 連携完了表示（連携済みまたは連携したIDがある場合、支払い方法変更のみの場合は非表示） */}
-      {!isPaymentMethodChangeOnly && (saitamaAppLinked || linkedSaitamaAppId) && (
+      {!isPaymentMethodChangeOnly && (mydigiAppLinked || linkedMydigiAppId) && (
         <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
           <div className="flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
             <div className="flex-1">
               <p className="text-sm text-gray-900">
-                <span className="font-medium">高松市みんなのアプリ連携:</span>
+                <span className="font-medium">マイデジアプリ連携:</span>
               </p>
               <p className="text-xs text-gray-600 font-mono break-all mt-1">
-                {linkedSaitamaAppId || '連携済み'}
+                {linkedMydigiAppId || '連携済み'}
               </p>
               <p className="text-xs text-green-600 font-medium mt-1">✓ 連携完了</p>
             </div>
@@ -215,21 +215,21 @@ export function PlanRegistrationForm({
               const displayPrice = plan.price;
               const hasDiscount = false;
 
-              // 高松市アプリ連携済みの場合の価格表示
-              const isSaitamaLinked = saitamaAppLinked || linkedSaitamaAppId;
-              const saitamaDiscountPrice = 480; // 高松市アプリ連携時の価格
+              // マイデジアプリ連携済みの場合の価格表示
+              const isMydigiLinked = mydigiAppLinked || linkedMydigiAppId;
+              const mydigiDiscountPrice = 480; // マイデジアプリ連携時の価格
 
-              // 高松市アプリ連携済みで、通常価格が980円の場合
-              if (isSaitamaLinked && plan.price === 980) {
+              // マイデジアプリ連携済みで、通常価格が980円の場合
+              if (isMydigiLinked && plan.price === 980) {
                 return (
                   <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
                     <PlanCard
                       title={plan.name}
                       description={plan.description || ''}
                       features={plan.plan_content?.features || []}
-                      price={`¥${saitamaDiscountPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
+                      price={`¥${mydigiDiscountPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
                       originalPrice={`¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                      badge={plan.status === 'active' ? '高松市アプリ連携でお得' : undefined}
+                      badge={plan.status === 'active' ? 'マイデジ連携でお得' : undefined}
                       isSelected={selectedPlan === plan.id}
                       onSelect={() => handlePlanSelect(plan.id)}
                     />
@@ -256,8 +256,8 @@ export function PlanRegistrationForm({
         </div>
       )}
 
-      {/* 高松市みんなのアプリ連携フォーム（未連携の場合のみ表示、支払い方法変更のみの場合は非表示） */}
-      {!isPaymentMethodChangeOnly && !saitamaAppLinked && !linkedSaitamaAppId && allPlansDisplayed && (
+      {/* マイデジアプリ連携フォーム（未連携の場合のみ表示、支払い方法変更のみの場合は非表示） */}
+      {!isPaymentMethodChangeOnly && !mydigiAppLinked && !linkedMydigiAppId && allPlansDisplayed && (
         <FadeInComponent delay={0}>
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5 space-y-4">
             {/* 割引強調セクション */}
@@ -274,7 +274,7 @@ export function PlanRegistrationForm({
                     ¥480/月
                   </p>
                   <p className="text-gray-700 text-sm font-medium">
-                    高松市みんなのアプリ連携で
+                    マイデジアプリ連携で
                   </p>
                   <p className="text-sm font-bold text-indigo-700">
                     月額480円でご利用いただけます
@@ -286,9 +286,9 @@ export function PlanRegistrationForm({
             {/* アプリ説明とダウンロードリンク */}
             <div className="bg-white rounded-lg p-4 space-y-3">
               <div>
-                <h4 className="font-bold text-gray-900 text-sm mb-1">高松市みんなのアプリ</h4>
+                <h4 className="font-bold text-gray-900 text-sm mb-1">マイデジアプリ</h4>
                 <p className="text-xs text-gray-700 leading-relaxed">
-                  高松市が提供する公式アプリです。<br />
+                  香川県が提供する公式アプリです。<br />
                   アプリと連携することで、特別な割引価格でご利用いただけます。
                 </p>
               </div>
@@ -297,7 +297,7 @@ export function PlanRegistrationForm({
               <div className="space-y-3">
                 <div className="flex justify-center gap-3">
                   <a
-                    href="https://apps.apple.com/jp/app/%E3%81%95%E3%81%84%E3%81%9F%E3%81%BE%E5%B8%82%E3%81%BF%E3%82%93%E3%81%AA%E3%81%AE%E3%82%A2%E3%83%97%E3%83%AA/id6502677802"
+                    href="https://apps.apple.com/jp/app/mydigi"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-80 transition-opacity"
@@ -305,7 +305,7 @@ export function PlanRegistrationForm({
                     <Image src="/app-store.svg" alt="App Storeからダウンロード" width={100} height={48} className="h-12" />
                   </a>
                   <a
-                    href="http://play.google.com/store/apps/details?id=jp.saitamacity.rsa&hl=ja&pli=1"
+                    href="https://play.google.com/store/apps/details?id=jp.kagawa.mydigi"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:opacity-80 transition-opacity"
@@ -315,7 +315,7 @@ export function PlanRegistrationForm({
                 </div>
                 <div className="text-center">
                   <a
-                    href="/saitama-app-guide"
+                    href="/mydigi-app-guide"
                     className="text-xs text-blue-600 hover:text-blue-800 underline"
                   >
                     ユーザーID取得手順はこちら
@@ -337,22 +337,22 @@ export function PlanRegistrationForm({
               <Input
                 label={
                   <>
-                    高松市みんなのアプリ
+                    マイデジアプリ
                     <br />
                     ユーザーID
                   </>
                 }
-                value={saitamaAppId}
+                value={mydigiAppId}
                 onChange={(value) => {
-                  setSaitamaAppId(value)
+                  setMydigiAppId(value)
                   setLinkError("")
                 }}
-                placeholder="saitamacity_xxxxxx"
+                placeholder="mydigi_xxxxxx"
                 disabled={isLinking}
               />
               <button
-                onClick={handleLinkSaitamaApp}
-                disabled={isLinking || !saitamaAppId}
+                onClick={handleLinkMydigiApp}
+                disabled={isLinking || !mydigiAppId}
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
               >
                 {isLinking ? (
