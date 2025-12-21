@@ -223,7 +223,6 @@ export function RegisterForm({
     }
   }
 
-
   const handleAddressSearch = async () => {
     const cleanedPostalCode = formData.postalCode.replace(/-/g, "")
 
@@ -344,7 +343,6 @@ export function RegisterForm({
     const value = formData[field] as string
     validateField(field, value)
   }
-
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
