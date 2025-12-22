@@ -1,23 +1,38 @@
 # Next.jsアプリケーション用Dockerfile
-FROM node:22-alpine
+FROM node:22-alpine AS base
 
-WORKDIR /app
-
-# pnpmをインストール
+# Install pnpm
 RUN npm install -g pnpm
 
-# 依存関係ファイルのコピー
-COPY frontend/package.json frontend/pnpm-lock.yaml* ./
+# Dependencies
+FROM base AS deps
+# ビルド引数としてGitHub tokenを受け取る
+ARG GITHUB_TOKEN
+WORKDIR /app
+RUN node -v && npm -v
+COPY nomoca-kagawa-web/frontend/package.json nomoca-kagawa-web/frontend/pnpm-lock.yaml ./
+COPY nomoca-kagawa-web/frontend/.npmrc ./
 
-# パッケージのインストール
-RUN pnpm install --no-frozen-lockfile
+# ビルド時にGitHub tokenを設定（トークンが提供された場合のみ）
+RUN if [ -z "$GITHUB_TOKEN" ]; then \
+      echo "エラー: GITHUB_TOKENが設定されていません。ビルドを中止します。" >&2; \
+      exit 1; \
+    else \
+      echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc; \
+    fi
+# Install dependencies from GitHub Packages
+RUN pnpm install
+# トークンを含む.npmrcを削除（セキュリティのため）
+RUN rm -f .npmrc
 
-# ソースコードをコピー
-COPY frontend ./
+# Development
+FROM base AS dev
+WORKDIR /app
+# ソースコードをコピー（node_modulesは除外される）
+COPY nomoca-kagawa-web/frontend/ .
+# 既存のnode_modules/@hv-development/schemasを削除してから、depsステージからnode_modulesをコピー
+RUN rm -rf node_modules/@hv-development/schemas 2>/dev/null || true
+COPY --from=deps /app/node_modules ./node_modules
 
-# 開発サーバーのポート
 EXPOSE 3000
-
-# 開発サーバー起動（デフォルトコマンド）
-CMD ["pnpm", "dev"]
-
+CMD ["pnpm", "run", "dev"]

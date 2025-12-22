@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# bolt
+.bolt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -57,6 +60,18 @@ coverage/
 
 # nyc test coverage
 .nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
 
 # Dependency directories
 jspm_packages/
@@ -100,6 +115,8 @@ out
 .nuxt
 dist
 
+# bolt
+.bolt
 # Gatsby files
 .cache/
 
@@ -111,6 +128,10 @@ storybook-static
 # Temporary folders
 tmp/
 temp/
+
+# Playwright test results
+frontend/playwright-report/
+frontend/test-results/
 
 # Editor directories and files
 .vscode/
@@ -138,4 +159,3 @@ frontend/out/
 frontend/build/
 infrastructure/docker/ssl/
 .env
-
