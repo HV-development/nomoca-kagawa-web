@@ -252,13 +252,13 @@ export default function LPPage() {
 
             {/* nomoca で */}
             <div className="flex items-end gap-4">
-              <Image
-                src="/lp/images/nomoca-logo.svg"
-                alt="nomoca"
-                width={410}
-                height={57}
-                className="w-48 md:w-[300px] h-auto"
-              />
+                <Image
+                  src="/lp/images/nomoca.png"
+                  alt="nomoca"
+                  width={410}
+                  height={57}
+                  className="w-48 md:w-[300px] h-auto"
+                />
               <span
                 className="text-3xl md:text-4xl"
                 style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
