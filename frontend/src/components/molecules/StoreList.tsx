@@ -56,7 +56,7 @@ export function StoreList({
   return (
     <div className={`space-y-5 ${className}`}>
       {stores.map((store, index) => (
-        <FadeInComponent key={store.id} delay={index * 100}>
+        <FadeInComponent key={store.id} delay={index * 30}>
           <StoreCard
             store={store}
             onFavoriteToggle={onFavoriteToggle}
