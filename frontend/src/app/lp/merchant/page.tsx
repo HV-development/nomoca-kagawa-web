@@ -39,11 +39,18 @@ export default function MerchantLPPage() {
           </nav>
           <Link
             href="/lp"
-            className="flex justify-center items-center gap-2 px-6 py-2 rounded-full text-white font-bold hover:opacity-90 transition-opacity"
-            style={{ background: 'var(--main, #2B7A78)' }}
+            className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm lg:text-base px-4 py-2 md:px-6 md:py-3"
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '10px',
+              borderRadius: '9999px',
+              background: 'var(--main, #2B7A78)'
+            }}
           >
-            お店の方はこちら
-            <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+            ユーザーの方はこちら
+            <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none" className="w-2 h-3 md:w-3 md:h-4">
               <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </Link>
