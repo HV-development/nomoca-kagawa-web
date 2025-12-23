@@ -1392,7 +1392,7 @@ export default function LPPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/Stores.png)'
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/stores.png)'
           }}
         />
         {/* 背景画像 - PC */}
