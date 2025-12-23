@@ -547,85 +547,98 @@ export default function LPPage() {
                                     gap: '40px',
                                 }}
                             >
-                                {features.map((f, idx) => (
-                                    <div
-                                        key={f.title}
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'flex-start',
-                                            gap: '24px',
-                                            backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                                            width: '100%',
-                                            minHeight: '400px',
-                                        }}
-                                    >
+                                {features.map((f, idx) => {
+                                    const isFirst = idx === 0
+                                    const isSecond = idx === 1
+                                    const isThird = idx === 2
+
+                                    const cardWidth = isSecond ? '400px' : '100%'
+                                    const imageWrapperWidth = isFirst || isThird ? '400px' : '100%'
+                                    const imageWrapperHeight = isFirst ? '250px' : isSecond ? '250px' : '400px'
+                                    const imageWidth = isFirst ? 400 : 800
+                                    const imageHeight = isSecond ? 250 : isFirst ? 250 : 400
+                                    const textWidth = isFirst ? '350px' : isThird ? '400px' : '100%'
+
+                                    return (
                                         <div
-                                            className="overflow-hidden"
-                                            style={{
-                                                width: idx === 0 ? '350px' : '100%',
-                                                height: idx === 0 ? '250px' : '400px',
-                                                flexShrink: 0,
-                                                display: idx === 0 ? 'flex' : 'block',
-                                                flexDirection: idx === 0 ? 'column' : undefined,
-                                                minHeight: idx === 0 ? '0px' : undefined,
-                                                maxHeight: idx === 0 ? '250px' : undefined,
-                                            }}
-                                        >
-                                            <Image
-                                                src={f.image}
-                                                alt={f.title}
-                                                width={idx === 0 ? 350 : 800}
-                                                height={idx === 0 ? 250 : 400}
-                                                sizes="(min-width: 1024px) 50vw, 100vw"
-                                                className="w-full h-full object-cover"
-                                                priority={idx === 0}
-                                            />
-                                        </div>
-                                        <div
+                                            key={f.title}
                                             style={{
                                                 display: 'flex',
                                                 flexDirection: 'column',
                                                 justifyContent: 'flex-start',
-                                                alignItems: 'flex-start',
-                                                gap: '16px',
-                                                width: '100%',
-                                                padding: '0 0 24px 0',
-                                                boxSizing: 'border-box',
+                                                gap: '24px',
+                                                backgroundColor: 'rgba(43, 122, 120, 0.1)',
+                                                width: cardWidth,
+                                                minHeight: '400px',
                                             }}
                                         >
-                                            <h3
+                                            <div
+                                                className="overflow-hidden"
                                                 style={{
-                                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                                    fontWeight: 700,
-                                                    fontSize: '24px',
-                                                    lineHeight: '1.6000000635782878em',
-                                                    textAlign: 'justify',
-                                                    color: '#FAF8F4',
-                                                    width: idx === 0 ? '350px' : '100%',
-                                                    paddingLeft: '0',
+                                                    width: imageWrapperWidth,
+                                                    height: imageWrapperHeight,
+                                                    flexShrink: 0,
+                                                    display: isFirst ? 'flex' : 'block',
+                                                    flexDirection: isFirst ? 'column' : undefined,
+                                                    minHeight: isFirst ? '0px' : undefined,
+                                                    maxHeight: isFirst ? '250px' : undefined,
                                                 }}
                                             >
-                                                {f.title}
-                                            </h3>
-                                            <p
+                                                <Image
+                                                    src={f.image}
+                                                    alt={f.title}
+                                                    width={imageWidth}
+                                                    height={imageHeight}
+                                                    sizes="(min-width: 1024px) 50vw, 100vw"
+                                                    className="w-full h-full object-cover"
+                                                    priority={idx === 0}
+                                                />
+                                            </div>
+                                            <div
                                                 style={{
-                                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                                    fontWeight: 500,
-                                                    fontSize: '16px',
-                                                    lineHeight: '1.7999999523162842em',
-                                                    textAlign: 'left',
-                                                    color: '#FAF8F4',
-                                                    width: idx === 0 ? '350px' : '100%',
-                                                    whiteSpace: 'pre-line',
-                                                    paddingLeft: '0',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    justifyContent: 'flex-start',
+                                                    alignItems: 'flex-start',
+                                                    gap: '16px',
+                                                    width: '100%',
+                                                    padding: '0 0 24px 0',
+                                                    boxSizing: 'border-box',
                                                 }}
                                             >
-                                                {f.description}
-                                            </p>
+                                                <h3
+                                                    style={{
+                                                        fontFamily: '"Noto Sans JP", sans-serif',
+                                                        fontWeight: 700,
+                                                        fontSize: '24px',
+                                                        lineHeight: '1.6000000635782878em',
+                                                        textAlign: 'justify',
+                                                        color: '#FAF8F4',
+                                                        width: textWidth,
+                                                        paddingLeft: '0',
+                                                    }}
+                                                >
+                                                    {f.title}
+                                                </h3>
+                                                <p
+                                                    style={{
+                                                        fontFamily: '"Noto Sans JP", sans-serif',
+                                                        fontWeight: 500,
+                                                        fontSize: '16px',
+                                                        lineHeight: '1.7999999523162842em',
+                                                        textAlign: 'left',
+                                                        color: '#FAF8F4',
+                                                        width: textWidth,
+                                                        whiteSpace: 'pre-line',
+                                                        paddingLeft: '0',
+                                                    }}
+                                                >
+                                                    {f.description}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                })}
                             </div>
                         </div>
                     </div>
