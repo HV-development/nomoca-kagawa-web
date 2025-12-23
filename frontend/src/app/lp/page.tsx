@@ -67,7 +67,7 @@ export default function LPPage() {
   // メディアクエリでカルーセル画像サイズを動的に変更
   useEffect(() => {
     const updateCarouselSize = () => {
-      if (window.matchMedia('(min-width: 768px)').matches) {
+      if (window.matchMedia('(min-width: 1024px)').matches) {
         setCarouselImageWidth(375)
       } else {
         setCarouselImageWidth(303)
@@ -98,7 +98,7 @@ export default function LPPage() {
       >
         {/* Header */}
         <header className="relative w-full" style={{ zIndex: 100 }}>
-          <div className="w-full px-4 py-4 md:px-8 md:py-6" style={{ width: '100vw', margin: 0 }}>
+          <div className="w-full px-4 py-4 lg:px-8 lg:py-6" style={{ width: '100vw', margin: 0 }}>
             <div className="flex items-center w-full justify-between">
               <div className="flex items-center">
                 <Image
@@ -106,14 +106,14 @@ export default function LPPage() {
                   alt="nomoca"
                   width={244}
                   height={92}
-                  className="w-32 h-12 md:w-[244px] md:h-[92px]"
+                  className="w-32 h-12 lg:w-[244px] lg:h-[92px]"
                   style={{
                     flexShrink: 0
                   }}
                 />
               </div>
-              <div className="flex items-center gap-4 md:gap-11">
-                <nav className="hidden md:flex items-center space-x-6 lg:space-x-10">
+              <div className="flex items-center gap-4 lg:gap-11">
+                <nav className="hidden lg:flex items-center space-x-6 lg:space-x-10">
                   <a href="#about" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">nomocaとは</a>
                   <a href="#features" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">魅力</a>
                   <a href="#flow" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">使い方</a>
@@ -123,7 +123,7 @@ export default function LPPage() {
 
                 <Link
                   href="/lp/merchant"
-                  className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm lg:text-base px-4 py-2 md:px-6 md:py-3"
+                  className="text-white font-bold hover:opacity-90 transition-opacity text-xs lg:text-sm lg:text-base px-4 py-2 lg:px-6 lg:py-3"
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -134,14 +134,14 @@ export default function LPPage() {
                   }}
                 >
                   お店の方はこちら
-                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none" className="w-2 h-3 md:w-3 md:h-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none" className="w-2 h-3 lg:w-3 lg:h-4">
                     <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </Link>
 
                 {/* ハンバーガーメニューアイコン（モバイルのみ表示） */}
                 <button
-                  className="md:hidden flex flex-col justify-center items-center cursor-pointer"
+                  className="lg:hidden flex flex-col justify-center items-center cursor-pointer"
                   style={{
                     gap: '6px'
                   }}
@@ -159,7 +159,7 @@ export default function LPPage() {
           {/* モバイルメニュー */}
           {isMobileMenuOpen && (
             <div
-              className="md:hidden fixed inset-0 w-full h-full"
+              className="lg:hidden fixed inset-0 w-full h-full"
               style={{
                 background: '#FFF',
                 display: 'flex',
@@ -233,7 +233,7 @@ export default function LPPage() {
         </header>
 
         {/* FV Main Content - Mobile */}
-        <div className="md:hidden flex flex-col items-center justify-center px-8 pt-[100px] pb-6 gap-6">
+        <div className="lg:hidden flex flex-col items-center justify-center px-8 pt-[100px] pb-6 gap-6">
           {/* 左コンテンツ - Mobile */}
           <div className="flex flex-col items-center gap-4">
             {/* 毎日 1店舗 1日 1杯無料 - Mobile用 */}
@@ -400,7 +400,7 @@ export default function LPPage() {
         </div>
 
         {/* FV Main Content - Desktop */}
-        <div className="hidden md:flex relative w-full flex-row items-center justify-center px-20 py-24 gap-20">
+        <div className="hidden lg:flex relative w-full flex-row items-center justify-center px-20 py-24 gap-20">
           {/* 左コンテンツ - Desktop */}
           <div className="flex flex-col items-center gap-6">
             {/* 1店舗 1日 1杯無料 テキスト - absoluteで重ねる */}
@@ -524,9 +524,9 @@ export default function LPPage() {
       </div>
 
       {/* Banner Carousel Section */}
-      <div className="w-full py-10 md:py-20" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      <div className="w-full py-10 lg:py-20" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div 
-          className="w-full px-4 md:px-8 lg:px-20"
+          className="w-full px-4 lg:px-8 lg:px-20"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -539,7 +539,7 @@ export default function LPPage() {
           {/* Carousel Container */}
           <div className="relative w-full max-w-6xl" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* Banner Images Container */}
-            <div className="relative overflow-hidden w-full max-w-[375px] h-[170px] md:max-w-[1157px] md:h-[210px]">
+            <div className="relative overflow-hidden w-full max-w-[375px] h-[170px] lg:max-w-[1157px] lg:h-[210px]">
               <div 
                 className="flex absolute left-1/2"
                 style={{ 
@@ -551,7 +551,7 @@ export default function LPPage() {
                 {extendedImages.map((src, i) => (
                   <div
                     key={i}
-                    className="relative flex-shrink-0 overflow-hidden w-[303px] h-[170px] md:w-[375px] md:h-[210px]"
+                    className="relative flex-shrink-0 overflow-hidden w-[303px] h-[170px] lg:w-[375px] lg:h-[210px]"
                     style={{
                       display: 'flex',
                       justifyContent: 'center',
@@ -579,7 +579,7 @@ export default function LPPage() {
 
             {/* Left Arrow */}
             <button 
-              className="absolute z-10 hover:opacity-80 transition-opacity left-[12px] top-[69px] md:left-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
+              className="absolute z-10 hover:opacity-80 transition-opacity left-[12px] top-[69px] lg:left-[70px] lg:top-[89px] w-8 h-8 lg:w-12 lg:h-12"
               onClick={() => handleScroll('left')}
               style={{
                 display: 'flex',
@@ -601,7 +601,7 @@ export default function LPPage() {
 
             {/* Right Arrow */}
             <button 
-              className="absolute z-10 hover:opacity-80 transition-opacity right-[12px] top-[69px] md:right-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
+              className="absolute z-10 hover:opacity-80 transition-opacity right-[12px] top-[69px] lg:right-[70px] lg:top-[89px] w-8 h-8 lg:w-12 lg:h-12"
               onClick={() => handleScroll('right')}
               style={{
                 display: 'flex',
@@ -623,7 +623,7 @@ export default function LPPage() {
           </div>
 
           {/* Pagination Dots */}
-          <div className="flex justify-center space-x-2 md:space-x-3">
+          <div className="flex justify-center space-x-2 lg:space-x-3">
             {bannerImages.map((_, index) => {
               const actualIndex = ((currentSlide % bannerImages.length) + bannerImages.length) % bannerImages.length
               return (
@@ -633,7 +633,7 @@ export default function LPPage() {
                   onClick={() => goToSlide(index)}
                 >
                   <div
-                    className="w-3 h-3 md:w-4 md:h-4"
+                    className="w-3 h-3 lg:w-4 lg:h-4"
                     style={{
                       borderRadius: '50%',
                       backgroundColor: actualIndex === index ? '#2B7A78' : '#D9D9D9',
@@ -648,12 +648,12 @@ export default function LPPage() {
       </div>
 
       {/* About Section */}
-      <div id="about" className="w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      <div id="about" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div className="max-w-6xl mx-auto">
           {/* About Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: 'Oswald, sans-serif',
@@ -664,7 +664,7 @@ export default function LPPage() {
               ABOUT
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -675,10 +675,10 @@ export default function LPPage() {
           </div>
 
           {/* About Content */}
-          <div className="relative flex flex-col-reverse md:flex-row items-stretch justify-center">
+          <div className="relative flex flex-col-reverse lg:flex-row items-stretch justify-center">
             {/* テキストコンテンツ */}
             <div
-              className="flex flex-col justify-center items-start gap-6 relative z-0 px-4 py-8 md:py-[150px] md:pr-[150px] md:pl-[120px]"
+              className="flex flex-col justify-center items-start gap-6 relative z-0 px-4 py-8 lg:py-[150px] lg:pr-[150px] lg:pl-[120px]"
               style={{ 
                 backgroundColor: 'rgba(43, 122, 120, 0.1)',
                 maxWidth: '620px',
@@ -686,7 +686,7 @@ export default function LPPage() {
               }}
             >
               <h3
-                className="text-xl md:text-2xl font-bold"
+                className="text-xl lg:text-2xl font-bold"
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
                   color: '#000',
@@ -697,7 +697,7 @@ export default function LPPage() {
                 気になるお店をハシゴしよう。
               </h3>
               <p
-                className="text-xs md:text-sm"
+                className="text-xs lg:text-sm"
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
                   color: '#000',
@@ -714,13 +714,13 @@ export default function LPPage() {
             </div>
 
             {/* 画像 - テキスト背景に重なるように配置 */}
-            <div className="flex-shrink-0 md:-ml-8 lg:-ml-12 relative z-10 self-center">
+            <div className="flex-shrink-0 lg:-ml-8 lg:-ml-12 relative z-10 self-center">
               <Image
                 src="/lp/images/user-about.png"
                 alt="nomocaを楽しむ人々"
                 width={510}
                 height={440}
-                className="w-full md:w-[380px] lg:w-[480px] h-auto rounded-lg"
+                className="w-full lg:w-[380px] lg:w-[480px] h-auto rounded-lg"
               />
             </div>
           </div>
@@ -728,12 +728,12 @@ export default function LPPage() {
       </div>
 
       {/* Features Section */}
-      <div id="features" className="w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--main, #2B7A78)' }}>
+      <div id="features" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--main, #2B7A78)' }}>
         <div className="max-w-6xl mx-auto">
           {/* Features Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--accent, #FFD93B)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--accent, #FFD93B)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--accent, #FFD93B)',
                 fontFamily: 'Oswald, sans-serif',
@@ -744,7 +744,7 @@ export default function LPPage() {
               FEATURES
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--accent, #FFD93B)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -755,13 +755,13 @@ export default function LPPage() {
           </div>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:gap-16">
             {/* Feature 01 */}
             <div
               className="flex flex-col gap-6"
               style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
             >
-              <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
                   src="/lp/images/user-feature-01.png"
                   alt="1店舗につき1杯無料！"
@@ -772,7 +772,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -782,7 +782,7 @@ export default function LPPage() {
                   1店舗につき1杯無料！
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -803,7 +803,7 @@ export default function LPPage() {
               className="flex flex-col gap-6"
               style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
             >
-              <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
                   src="/lp/images/user-feature-02.png"
                   alt="1日で複数店舗をハシゴできる！"
@@ -814,7 +814,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -824,7 +824,7 @@ export default function LPPage() {
                   1日で複数店舗をハシゴできる！
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -844,7 +844,7 @@ export default function LPPage() {
               className="flex flex-col gap-6"
               style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
             >
-              <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
                   src="/lp/images/user-feature-03.png"
                   alt="お酒が苦手でも楽しめる！"
@@ -855,7 +855,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -865,7 +865,7 @@ export default function LPPage() {
                   お酒が苦手でも楽しめる！
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -886,7 +886,7 @@ export default function LPPage() {
               className="flex flex-col gap-6"
               style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
             >
-              <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
                   src="/lp/images/user-feature-04.png"
                   alt="新しいお店との出会い！"
@@ -897,7 +897,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -907,7 +907,7 @@ export default function LPPage() {
                   新しいお店との出会い！
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: 'var(--sub, #FAF8F4)',
@@ -927,12 +927,12 @@ export default function LPPage() {
       </div>
 
       {/* Flow Section */}
-      <div id="flow" className="w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      <div id="flow" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div className="max-w-6xl mx-auto">
           {/* Flow Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: 'Oswald, sans-serif',
@@ -943,7 +943,7 @@ export default function LPPage() {
               FLOW
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -954,12 +954,12 @@ export default function LPPage() {
           </div>
 
           {/* Flow Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 lg:gap-16">
             {/* Step 1 */}
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/user-flow-01.png"
                       alt="お店を見つける"
@@ -997,7 +997,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6 text-center">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1007,7 +1007,7 @@ export default function LPPage() {
                   お店を見つける
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1024,7 +1024,7 @@ export default function LPPage() {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/user-flow-02.png"
                       alt="スマホを見せる"
@@ -1062,7 +1062,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6 text-center">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1072,7 +1072,7 @@ export default function LPPage() {
                   スマホを見せる
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1090,7 +1090,7 @@ export default function LPPage() {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/user-flow-03.png"
                       alt="ハシゴして楽しむ"
@@ -1128,7 +1128,7 @@ export default function LPPage() {
               </div>
               <div className="px-6 pb-6 text-center">
                 <h3
-                  className="text-xl md:text-2xl font-bold mb-4"
+                  className="text-xl lg:text-2xl font-bold mb-4"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1138,7 +1138,7 @@ export default function LPPage() {
                   ハシゴして楽しむ
                 </h3>
                 <p
-                  className="text-sm md:text-base"
+                  className="text-sm lg:text-base"
                   style={{
                     fontFamily: "'Noto Sans JP', sans-serif",
                     color: '#000',
@@ -1156,12 +1156,12 @@ export default function LPPage() {
       </div>
 
       {/* Pricing Section */}
-      <div id="pricing" className="w-full py-0 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      <div id="pricing" className="w-full py-0 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div className="max-w-6xl mx-auto">
           {/* Pricing Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: 'Oswald, sans-serif',
@@ -1172,7 +1172,7 @@ export default function LPPage() {
               PRICING
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -1183,9 +1183,9 @@ export default function LPPage() {
           </div>
 
           {/* Pricing Subtitle */}
-          <div className="text-center mb-8 md:mb-12">
+          <div className="text-center mb-8 lg:mb-12">
             <p
-              className="text-xl md:text-2xl font-bold"
+              className="text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -1197,16 +1197,16 @@ export default function LPPage() {
 
           {/* Pricing Cards */}
           <div
-            className="relative p-8 md:p-12 lg:p-16 bg-cover bg-center bg-no-repeat"
+            className="relative p-8 lg:p-12 lg:p-16 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: 'url(/lp/images/user-pricing-bg.png)',
               backgroundColor: '#FFF'
             }}
           >
-            <div className="flex flex-col gap-6 md:gap-8 justify-center items-center">
+            <div className="flex flex-col gap-6 lg:gap-8 justify-center items-center">
               {/* 通常プラン */}
               <div
-                className="flex flex-col items-center gap-4 p-6 md:p-8"
+                className="flex flex-col items-center gap-4 p-6 lg:p-8"
               >
                 {/* 1日1軒1杯無料 */}
                 <div
@@ -1217,7 +1217,7 @@ export default function LPPage() {
                     <path d="M1 1L11 10L1 19" stroke="#2B7A78" strokeWidth="2"/>
                   </svg>
                   <span
-                    className="text-xl md:text-2xl font-bold"
+                    className="text-xl lg:text-2xl font-bold"
                     style={{
                       fontFamily: "'Noto Sans JP', sans-serif",
                       color: 'var(--main, #2B7A78)'
@@ -1248,7 +1248,7 @@ export default function LPPage() {
                   </div>
                   <div className="flex items-end gap-2">
                     <span
-                      className="text-6xl md:text-7xl lg:text-8xl font-semibold"
+                      className="text-6xl lg:text-7xl lg:text-8xl font-semibold"
                       style={{
                         fontFamily: 'Oswald, sans-serif',
                         color: '#000',
@@ -1258,7 +1258,7 @@ export default function LPPage() {
                       980
                     </span>
                     <span
-                      className="text-lg md:text-xl font-bold pb-2"
+                      className="text-lg lg:text-xl font-bold pb-2"
                       style={{
                         fontFamily: "'Noto Sans JP', sans-serif",
                         color: '#000'
@@ -1272,7 +1272,7 @@ export default function LPPage() {
 
               {/* マイデジ会員プラン */}
               <div
-                className="flex flex-col md:flex-row items-center gap-4 p-6 md:p-8 relative overflow-visible"
+                className="flex flex-col lg:flex-row items-center gap-4 p-6 lg:p-8 relative overflow-visible"
                 style={{ backgroundColor: 'var(--main, #2B7A78)' }}
               >
                 {/* PC: 左にスマホ画像 */}
@@ -1281,16 +1281,16 @@ export default function LPPage() {
                   alt="マイデジアプリ"
                   width={200}
                   height={236}
-                  className="hidden md:block w-32 md:w-40 lg:w-[200px] h-auto -mt-8 -mb-16 md:-mb-20"
+                  className="hidden lg:block w-32 lg:w-40 lg:w-[200px] h-auto -mt-8 -mb-16 lg:-mb-20"
                 />
                 {/* 金額情報 */}
-                <div className="flex flex-col gap-2 items-center md:items-start">
+                <div className="flex flex-col gap-2 items-center lg:items-start">
                   <div
                     className="px-4 py-1 text-center"
                     style={{ backgroundColor: 'var(--accent, #FFD93B)', borderRadius: '9999px' }}
                   >
                     <span
-                      className="text-lg md:text-xl font-bold"
+                      className="text-lg lg:text-xl font-bold"
                       style={{
                         fontFamily: "'Zen Kaku Gothic New', sans-serif",
                         color: '#000'
@@ -1301,11 +1301,11 @@ export default function LPPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div
-                      className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full"
+                      className="flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-full"
                       style={{ backgroundColor: '#FFF' }}
                     >
                       <span
-                        className="text-sm md:text-base font-bold"
+                        className="text-sm lg:text-base font-bold"
                         style={{
                           fontFamily: "'Noto Sans JP', sans-serif",
                           color: '#000'
@@ -1315,7 +1315,7 @@ export default function LPPage() {
                       </span>
                     </div>
                     <span
-                      className="text-5xl md:text-6xl lg:text-7xl font-bold"
+                      className="text-5xl lg:text-6xl lg:text-7xl font-bold"
                       style={{
                         fontFamily: 'Oswald, sans-serif',
                         color: '#FFF'
@@ -1325,7 +1325,7 @@ export default function LPPage() {
                     </span>
                     <div className="flex flex-col">
                       <span
-                        className="text-base md:text-lg font-bold"
+                        className="text-base lg:text-lg font-bold"
                         style={{
                           fontFamily: "'Noto Sans JP', sans-serif",
                           color: '#FFF'
@@ -1334,7 +1334,7 @@ export default function LPPage() {
                         円で
                       </span>
                       <span
-                        className="text-base md:text-lg font-bold"
+                        className="text-base lg:text-lg font-bold"
                         style={{
                           fontFamily: "'Noto Sans JP', sans-serif",
                           color: '#FFF'
@@ -1351,7 +1351,7 @@ export default function LPPage() {
                   alt="マイデジアプリ"
                   width={152}
                   height={179}
-                  className="md:hidden w-[152px] h-auto mt-2"
+                  className="lg:hidden w-[152px] h-auto mt-2"
                 />
               </div>
             </div>
@@ -1360,7 +1360,7 @@ export default function LPPage() {
           {/* 注意事項 */}
           <div className="text-center mt-8">
             <p
-              className="text-sm md:text-base mb-2"
+              className="text-sm lg:text-base mb-2"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 color: '#000',
@@ -1370,7 +1370,7 @@ export default function LPPage() {
               ※対象ドリンクは店舗により異なります。
             </p>
             <p
-              className="text-sm md:text-base"
+              className="text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 color: '#000',
@@ -1386,18 +1386,18 @@ export default function LPPage() {
       {/* Stores Section */}
       <div
         id="stores"
-        className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32"
+        className="relative w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32"
       >
         {/* 背景画像 - スマホ */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden"
           style={{
             backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/user-stores-mobile-bg.png)'
           }}
         />
         {/* 背景画像 - PC */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
           style={{
             backgroundImage: 'url(/lp/images/user-stores-bg.svg)'
           }}
@@ -1405,9 +1405,9 @@ export default function LPPage() {
 
         <div className="relative z-10 max-w-6xl mx-auto">
           {/* Stores Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--sub, #FAF8F4)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--sub, #FAF8F4)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--sub, #FAF8F4)',
                 fontFamily: 'Oswald, sans-serif',
@@ -1418,7 +1418,7 @@ export default function LPPage() {
               STORES
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--sub, #FAF8F4)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -1431,7 +1431,7 @@ export default function LPPage() {
           {/* Stores Content */}
           <div className="text-center">
             <p
-              className="text-xl md:text-2xl font-bold mb-8"
+              className="text-xl lg:text-2xl font-bold mb-8"
               style={{
                 color: 'var(--sub, #FAF8F4)',
                 fontFamily: "'Noto Sans JP', sans-serif",
@@ -1467,12 +1467,12 @@ export default function LPPage() {
       </div>
 
       {/* FAQ Section */}
-      <div id="faq" className="w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      <div id="faq" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div className="max-w-6xl mx-auto">
           {/* FAQ Title */}
-          <div className="flex items-end gap-6 md:gap-10 mb-8 md:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl"
+              className="text-4xl lg:text-5xl lg:text-6xl"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: 'Oswald, sans-serif',
@@ -1483,7 +1483,7 @@ export default function LPPage() {
               FAQ
             </h2>
             <p
-              className="text-lg md:text-xl lg:text-2xl font-bold"
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif"
@@ -1496,7 +1496,7 @@ export default function LPPage() {
           {/* FAQ Content */}
           <div className="text-center">
             <p
-              className="text-lg md:text-xl font-bold mb-8"
+              className="text-lg lg:text-xl font-bold mb-8"
               style={{
                 color: 'var(--main, #2B7A78)',
                 fontFamily: "'Noto Sans JP', sans-serif",
@@ -1532,10 +1532,10 @@ export default function LPPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="w-full py-16 md:py-20 px-4 md:px-8 lg:px-32" style={{ backgroundColor: 'var(--accent, #FFD93B)' }}>
+      <div className="w-full py-16 lg:py-20 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--accent, #FFD93B)' }}>
         <div className="max-w-6xl mx-auto text-center">
           <h2
-            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8"
+            className="text-2xl lg:text-3xl lg:text-4xl font-bold mb-8"
             style={{
               color: 'var(--main, #2B7A78)',
               fontFamily: "'Noto Sans JP', sans-serif"
@@ -1568,22 +1568,22 @@ export default function LPPage() {
       </div>
 
       {/* Footer Section */}
-      <div className="w-full bg-white py-12 md:py-16 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6 md:gap-8">
+      <div className="w-full bg-white py-12 lg:py-16 px-4 lg:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6 lg:gap-8">
           {/* Logo */}
           <Image
             src="/lp/images/logo-footer.svg"
             alt="nomoca"
             width={294}
             height={294}
-            className="w-48 md:w-64 lg:w-[294px] h-auto"
+            className="w-48 lg:w-64 lg:w-[294px] h-auto"
           />
 
           {/* Footer Links */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 lg:gap-10">
+          <div className="flex flex-wrap justify-center gap-4 lg:gap-8 lg:gap-10">
             <Link
               href="/lp/faq"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1593,7 +1593,7 @@ export default function LPPage() {
             </Link>
             <Link
               href="/lp/contact"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1605,7 +1605,7 @@ export default function LPPage() {
               href="/プライバシーポリシー.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1617,7 +1617,7 @@ export default function LPPage() {
               href="/特定商取引法.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1627,7 +1627,7 @@ export default function LPPage() {
             </a>
             <Link
               href="/lp/terms"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1637,7 +1637,7 @@ export default function LPPage() {
             </Link>
             <a
               href="#"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm md:text-base"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
                 fontWeight: '500'
@@ -1648,9 +1648,9 @@ export default function LPPage() {
           </div>
 
           {/* Copyright */}
-          <div className="pt-6 md:pt-8 border-t border-gray-200 w-full text-center">
+          <div className="pt-6 lg:pt-8 border-t border-gray-200 w-full text-center">
             <p
-              className="text-sm md:text-base"
+              className="text-sm lg:text-base"
               style={{
                 fontFamily: 'Oswald, sans-serif',
                 color: '#000'
