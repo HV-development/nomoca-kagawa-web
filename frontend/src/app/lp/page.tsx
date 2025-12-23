@@ -509,7 +509,7 @@ export default function LPPage() {
           </div>
 
           {/* About Content */}
-          <div className="relative flex flex-col md:flex-row items-stretch">
+          <div className="relative flex flex-col md:flex-row items-stretch justify-center">
             {/* テキストコンテンツ */}
             <div
               className="flex flex-col justify-center items-start gap-6 relative z-0"
