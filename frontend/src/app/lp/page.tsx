@@ -791,10 +791,7 @@ export default function LPPage() {
           {/* Flow Steps */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
             {/* Step 1 */}
-            <div
-              className="flex flex-col gap-6"
-              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
-            >
+            <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
                   <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
@@ -859,10 +856,7 @@ export default function LPPage() {
             </div>
 
             {/* Step 2 */}
-            <div
-              className="flex flex-col gap-6"
-              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
-            >
+            <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
                   <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
@@ -928,10 +922,7 @@ export default function LPPage() {
             </div>
 
             {/* Step 3 */}
-            <div
-              className="flex flex-col gap-6"
-              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
-            >
+            <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
                   <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
