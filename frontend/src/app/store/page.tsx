@@ -235,7 +235,7 @@ export default function StorePage() {
                         className="text-lg font-bold leading-[1.6] text-black text-center"
                         style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
                     >
-                        "nomoca"に掲載することで、新しいお客様との出会いが広がります！
+                        &quot;nomoca&quot;に掲載することで、新しいお客様との出会いが広がります！
                     </p>
 
                     {/* Benefits Grid */}
@@ -402,7 +402,7 @@ export default function StorePage() {
                         className="text-[28px] font-bold text-[#2B7A78]"
                         style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
                     >
-                        あなたのお店も"nomoca"に参加しませんか？
+                        あなたのお店も&quot;nomoca&quot;に参加しませんか？
                     </h2>
                     <Link
                         href="/lp/merchant/apply"

@@ -463,7 +463,7 @@ export default function FAQPage() {
                             </div>
                           ) : (
                             <button
-                              className="w-full text-left flex items-center justify-between hover:opacity-80 transition-opacity"
+                              className="w-full text-left flex items-center justify-between gap-5 lg:gap-10 hover:opacity-80 transition-opacity"
                               onClick={() => toggleItem(sectionIndex, itemIndex)}
                               style={{
                                 display: 'flex',
@@ -472,7 +472,6 @@ export default function FAQPage() {
                                 alignSelf: 'stretch',
                                 gap: '20px',
                               }}
-                              className="gap-5 lg:gap-10"
                             >
                               <span
                                 style={{

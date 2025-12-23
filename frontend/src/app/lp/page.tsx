@@ -4,7 +4,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 const colors = {
     primary: '#2B7A78',
@@ -447,7 +447,7 @@ export default function LPPage() {
                                             width: '350px',
                                         }}
                                     >
-                                        「nomoca」は、毎日1軒につきドリンクが1杯無料になる新しい"Welcomeドリンク"サービスです。
+                                        「nomoca」は、毎日1軒につきドリンクが1杯無料になる新しい&quot;Welcomeドリンク&quot;サービスです。
                                         お酒でもソフトドリンクでもOK。
                                         気になるお店をみつけたら、仲間と乾杯したり、自分だけの寄り道を楽しんだり。
                                         今日の一杯をきっかけに、街の楽しさがどんどん広がる。

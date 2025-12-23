@@ -332,8 +332,6 @@ test.describe('認証フローのテスト', () => {
             }
         } catch (error) {
             // リダイレクトが発生しなかった場合、現在のURLとエラーメッセージを確認
-            const currentUrl = page.url();
-            
             // エラーメッセージが表示されているか確認
             const errorAfter = page.locator('.bg-red-50 .text-red-800, .text-red-500');
             const errorAfterCount = await errorAfter.count();

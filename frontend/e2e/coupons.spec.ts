@@ -36,7 +36,7 @@ async function setupAuthenticatedState(page: Page, request: APIRequestContext, e
             if (otp && otp.match(/^\d{6}$/)) {
                 break;
             }
-        } catch (error) {
+        } catch {
             retryCount++;
             if (retryCount < maxOtpRetries) {
                 await page.waitForTimeout(1000); // リトライ前に待機（短縮）
@@ -142,7 +142,7 @@ async function openCouponList(page: Page) {
         ]).catch(() => {
             // いずれも表示されない場合は、少し待機してから再確認
         });
-    } catch (error) {
+    } catch {
     }
     
     await page.waitForTimeout(1000); // 追加の待機時間
