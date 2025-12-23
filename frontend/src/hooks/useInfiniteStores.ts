@@ -39,6 +39,10 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
   const isFirstLoadRef = useRef(true)
   const [items, setItems] = useState<Store[]>([])
 
+  // pageとhasMoreをrefで保持（loadNextのコールバックが古いステートを参照する問題を回避）
+  const pageRef = useRef(page)
+  const hasMoreRef = useRef(hasMore)
+
   // フィルターが変更されたときに再取得するためのキー
   const filterKeyRef = useRef<string>('')
 
@@ -347,13 +351,24 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     fetchPageRef.current = fetchPage
   }, [fetchPage])
 
+  // pageとhasMoreが変更されたらrefを更新
+  useEffect(() => {
+    pageRef.current = page
+  }, [page])
+
+  useEffect(() => {
+    hasMoreRef.current = hasMore
+  }, [hasMore])
+
   const loadNext = useCallback(async () => {
     // 直近でエラーが発生している場合や、ロード中/末尾到達時は再取得しない
-    if (isLoading || isLoadingMore || !hasMore || error) return null
+    // refを使用することで、loadNextが再作成されずに最新の状態を参照できる
+    if (isLoading || isLoadingMore || !hasMoreRef.current || error) return null
     setIsLoadingMore(true)
     setError(null)
     try {
-      const result = await fetchPage(page + 1)
+      const currentPage = pageRef.current
+      const result = await fetchPage(currentPage + 1)
       setPage(result.page)
       setHasMore(result.hasMore)
       if (result.items?.length) {
@@ -367,7 +382,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
       setError(message)
       return null
     }
-  }, [error, fetchPage, hasMore, isLoading, isLoadingMore, page])
+  }, [error, fetchPage, isLoading, isLoadingMore])
 
   // 初回ロード完了を追跡するref
   const initialLoadCompletedRef = useRef(false)
@@ -395,10 +410,13 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           return
         }
         setPage(result.page)
+        pageRef.current = result.page
         setHasMore(result.hasMore)
+        hasMoreRef.current = result.hasMore
         setItems(result.items)
         isFirstLoadRef.current = true
         initialLoadCompletedRef.current = true
+        setIsLoading(false)
       } catch (e) {
         if (initialLoadCompletedRef.current) return
         const message = e instanceof Error ? e.message : 'エラーが発生しました'
@@ -410,11 +428,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           errorStack: e instanceof Error ? e.stack : undefined,
         })
         setError(message)
+        setIsLoading(false)
       } finally {
         initialLoadInProgressRef.current = false
-        if (!initialLoadCompletedRef.current) {
-          setIsLoading(false)
-        }
       }
     }
 
@@ -439,7 +455,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
 
       // 状態をリセット
       setPage(1)
+      pageRef.current = 1
       setHasMore(true)
+      hasMoreRef.current = true
       setIsLoading(true)
       setError(null)
       setItems([])
@@ -455,7 +473,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
               return
             }
             setPage(result.page)
+            pageRef.current = result.page
             setHasMore(result.hasMore)
+            hasMoreRef.current = result.hasMore
             setItems(result.items)
           } catch (e) {
             if (aborted) return
