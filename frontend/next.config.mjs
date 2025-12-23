@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Force rebuild - cache invalidation
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
