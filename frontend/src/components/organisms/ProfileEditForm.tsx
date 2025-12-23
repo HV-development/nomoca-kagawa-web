@@ -5,7 +5,6 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import { Input } from "@/components/atoms/Input"
 import { Button } from "@/components/atoms/Button"
-import { RadioButton } from "@/components/atoms/RadioButton"
 import { ProfileEditConfirmModal } from "./ProfileEditConfirmModal"
 import type { User } from "@/types/user"
 import {
@@ -149,20 +148,14 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
 
     Object.keys(formData).forEach((key) => {
       const fieldKey = key as keyof ProfileEditInput
-      // 生年月日と住所は編集不可なので除外
-      if (fieldKey === 'birthDate' || fieldKey === 'address') {
+      // 生年月日と性別は編集不可なので除外
+      if (fieldKey === 'birthDate' || fieldKey === 'gender') {
         return
       }
 
       if (formData[fieldKey] !== originalData[fieldKey]) {
         if (fieldKey in fieldLabels) {
-          let displayValue = String(formData[fieldKey] || "")
-
-          // 性別を日本語に変換
-          if (fieldKey === 'gender') {
-            const genderOption = genderOptions.find(opt => opt.value === formData[fieldKey])
-            displayValue = genderOption?.label || displayValue
-          }
+          const displayValue = String(formData[fieldKey] || "")
 
           fields.push({
             label: fieldLabels[fieldKey as keyof typeof fieldLabels],
@@ -269,8 +262,8 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
       } else if (phoneValidation.errors.length > 0) {
         setErrors({ ...errors, phone: phoneValidation.errors[0] })
       }
-    } else if (field !== 'address' && field !== 'birthDate' && errors[field]) {
-      // 住所と生年月日は編集不可なので、エラーをクリア
+    } else if (field !== 'gender' && field !== 'birthDate' && errors[field]) {
+      // 性別と生年月日は編集不可なので、エラーをクリア
       setErrors({ ...errors, [field]: undefined })
     }
   }
@@ -287,13 +280,11 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
         profileEditSchema.pick({ postalCode: true }).parse({ postalCode: value })
       } else if (field === 'address') {
         profileEditSchema.pick({ address: true }).parse({ address: value })
-      } else if (field === 'birthDate') {
-        // 生年月日は編集不可なのでバリデーションをスキップ
+      } else if (field === 'birthDate' || field === 'gender') {
+        // 生年月日と性別は編集不可なのでバリデーションをスキップ
         return
       } else if (field === 'phone') {
         profileEditSchema.pick({ phone: true }).parse({ phone: value })
-      } else if (field === 'gender') {
-        profileEditSchema.pick({ gender: true }).parse({ gender: value })
       } else if (field === 'saitamaAppId') {
         profileEditSchema.pick({ saitamaAppId: true }).parse({ saitamaAppId: value })
       }
@@ -349,24 +340,26 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
         {errors.postalCode && <p className="mt-1 text-sm text-red-500">{errors.postalCode}</p>}
       </div>
 
-      {/* 住所表示（表示のみ） */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          住所
-        </label>
-        <div className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 min-h-[48px] flex items-center">
-          {formData.address || "住所検索ボタンで住所を取得してください"}
-        </div>
-        {errors.address && <p className="mt-1 text-sm text-red-500">{errors.address}</p>}
-      </div>
+      {/* 住所 */}
+      <Input
+        type="text"
+        label="住所"
+        placeholder="住所を入力"
+        value={formData.address}
+        onChange={(value) => updateFormData("address", value)}
+        onBlur={() => handleBlur("address")}
+        error={errors.address}
+        ref={addressInputRef}
+      />
 
       {/* 生年月日表示（表示のみ・更新対象外） */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           生年月日
+          <span className="ml-2 text-xs text-gray-500 font-normal">※登録後の変更はできません</span>
         </label>
         <div className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 min-h-[48px] flex items-center">
-          {formData.birthDate || "生年月日は登録できません"}
+          {formData.birthDate || "未登録"}
         </div>
       </div>
 
@@ -382,15 +375,16 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
         required={true}
       />
 
-      {/* 性別 */}
-      <RadioButton
-        name="gender"
-        label="性別"
-        options={genderOptions}
-        value={formData.gender}
-        onChange={(value) => updateFormData("gender", value)}
-        error={errors.gender}
-      />
+      {/* 性別表示（表示のみ・更新対象外） */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          性別
+          <span className="ml-2 text-xs text-gray-500 font-normal">※登録後の変更はできません</span>
+        </label>
+        <div className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 min-h-[48px] flex items-center">
+          {genderOptions.find(opt => opt.value === formData.gender)?.label || "未登録"}
+        </div>
+      </div>
 
       {/* ボタン */}
       <div className="space-y-3">
