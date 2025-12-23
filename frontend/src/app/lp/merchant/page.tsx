@@ -257,14 +257,6 @@ export default function MerchantLPPage() {
           <div className="flex flex-col items-center gap-10 w-full">
             {/* テキスト */}
             <div className="flex flex-col items-center gap-2 w-full">
-              <h1
-                className="text-[26px] font-bold leading-[140%] text-center"
-                style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}
-              >
-                余計な手間なく、<br />
-                席が埋まる
-              </h1>
-              
               {/* nomoca 掲載店募集中 */}
               <div className="flex flex-col items-center gap-4">
                 <span
