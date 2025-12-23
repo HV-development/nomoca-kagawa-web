@@ -515,9 +515,9 @@ export default function LPPage() {
               className="flex flex-col justify-center items-start gap-6 relative z-0"
               style={{ 
                 backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                padding: '80px 120px 80px 60px',
-                maxWidth: '550px',
-                minHeight: '450px'
+                padding: '100px 180px 100px 100px',
+                maxWidth: '620px',
+                minHeight: '480px'
               }}
             >
               <h3
