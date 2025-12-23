@@ -178,7 +178,7 @@ export default function LPPage() {
         <div className="relative w-full flex flex-col md:flex-row items-center justify-center px-4 md:px-20 py-12 md:py-24 gap-8 md:gap-20">
           {/* 左コンテンツ */}
           <div className="flex flex-col items-center gap-6">
-            {/* 1店舗 1杯無料 テキスト - absoluteで重ねる */}
+            {/* 1店舗 1日 1杯無料 テキスト - absoluteで重ねる */}
             <div className="flex flex-row items-center justify-center whitespace-nowrap">
               {/* 1店舗 */}
               <div className="relative flex items-center">
@@ -200,6 +200,29 @@ export default function LPPage() {
                   style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
                 >
                   店舗
+                </span>
+              </div>
+
+              {/* 1日 - absoluteで重ねる */}
+              <div className="relative flex items-center -ml-4 md:-ml-6 lg:-ml-8">
+                {/* 黄色い丸（背面） */}
+                <div
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
+                />
+                {/* 1の数字 */}
+                <span
+                  className="relative text-5xl md:text-6xl lg:text-7xl font-bold pl-3 md:pl-4 lg:pl-5"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
+                >
+                  1
+                </span>
+                {/* 日テキスト */}
+                <span
+                  className="relative text-2xl md:text-3xl lg:text-4xl font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
+                >
+                  日
                 </span>
               </div>
 
