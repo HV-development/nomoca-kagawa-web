@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
           currentPassword: body.currentPassword,
           newEmail: body.newEmail,
           confirmEmail: body.confirmEmail,
-          appName: 'nomoca-kagawa', // アプリケーション判定用（メールテンプレート選択）
         }),
         signal: controller.signal,
       })

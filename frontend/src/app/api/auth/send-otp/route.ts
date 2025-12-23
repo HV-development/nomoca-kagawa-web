@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         email,
-        appName: 'nomoca-kagawa', // アプリケーション判定用（メールテンプレート選択）
       }),
     })
 
