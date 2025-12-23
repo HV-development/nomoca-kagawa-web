@@ -515,7 +515,7 @@ export default function LPPage() {
               className="flex flex-col justify-center items-start gap-6 relative z-0"
               style={{ 
                 backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                padding: '100px 180px 100px 100px',
+                padding: '150px 150px 150px 120px',
                 maxWidth: '620px',
                 minHeight: '480px'
               }}
@@ -549,7 +549,7 @@ export default function LPPage() {
             </div>
 
             {/* 画像 - テキスト背景に重なるように配置 */}
-            <div className="flex-shrink-0 md:-ml-20 lg:-ml-28 relative z-10 self-center">
+            <div className="flex-shrink-0 md:-ml-8 lg:-ml-12 relative z-10 self-center">
               <Image
                 src="/lp/images/about-image.png"
                 alt="nomocaを楽しむ人々"
