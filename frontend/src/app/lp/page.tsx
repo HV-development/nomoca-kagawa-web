@@ -178,8 +178,8 @@ export default function LPPage() {
         <div className="relative w-full flex flex-col md:flex-row items-center justify-center px-4 md:px-20 py-12 md:py-24 gap-8 md:gap-20">
           {/* 左コンテンツ */}
           <div className="flex flex-col items-center gap-6">
-            {/* 1店舗1日1杯無料 テキスト - 横並び */}
-            <div className="flex flex-row items-center gap-2 md:gap-4 flex-wrap justify-center">
+            {/* 1店舗1日1杯無料 テキスト - 横並び（重なり） */}
+            <div className="flex flex-row items-center justify-center">
               {/* 1店舗 */}
               <div className="flex items-center">
                 <div
@@ -201,8 +201,8 @@ export default function LPPage() {
                 </span>
               </div>
 
-              {/* 1日 */}
-              <div className="flex items-center">
+              {/* 1日 - 前の要素に重なるようにネガティブマージン */}
+              <div className="flex items-center -ml-8 md:-ml-10 lg:-ml-12">
                 <div
                   className="flex justify-center items-center w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
                   style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
@@ -222,8 +222,8 @@ export default function LPPage() {
                 </span>
               </div>
 
-              {/* 1杯無料 */}
-              <div className="flex items-center">
+              {/* 1杯無料 - 前の要素に重なるようにネガティブマージン */}
+              <div className="flex items-center -ml-2 md:-ml-3 lg:-ml-4">
                 <div
                   className="flex justify-center items-center w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
                   style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
