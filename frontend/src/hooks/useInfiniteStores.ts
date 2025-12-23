@@ -26,7 +26,8 @@ interface UseInfiniteStoresResult {
 }
 
 export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseInfiniteStoresResult {
-  const { limit = 5, selectedAreas = [], selectedGenres = [] } = options
+  // デフォルト10件に増加（空白スクロールを防ぐため）
+  const { limit = 10, selectedAreas = [], selectedGenres = [] } = options
 
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
@@ -520,7 +521,8 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         },
         {
           root: null,
-          rootMargin: '200px 0px',
+          // 画面下端から800px手前で次ページを取得開始（空白スクロールを防ぐ）
+          rootMargin: '800px 0px',
           threshold: 0,
         }
       )
