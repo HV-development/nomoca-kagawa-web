@@ -133,10 +133,9 @@ export default function LPPage() {
                     background: 'var(--main, #2B7A78)'
                   }}
                 >
-                  <span className="hidden md:inline">お店の方はこちら</span>
-                  <span className="md:hidden">お店の方</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" className="w-6 h-6 md:w-8 md:h-8">
-                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  お店の方はこちら
+                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none" className="w-2 h-3 md:w-3 md:h-4">
+                    <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </Link>
 
@@ -233,9 +232,176 @@ export default function LPPage() {
           )}
         </header>
 
-        {/* FV Main Content */}
-        <div className="relative w-full flex flex-col md:flex-row items-center justify-center px-4 md:px-20 py-12 md:py-24 gap-8 md:gap-20">
-          {/* 左コンテンツ */}
+        {/* FV Main Content - Mobile */}
+        <div className="md:hidden flex flex-col items-center justify-center px-8 pt-[100px] pb-6 gap-6">
+          {/* 左コンテンツ - Mobile */}
+          <div className="flex flex-col items-center gap-4">
+            {/* 毎日 1店舗 1日 1杯無料 - Mobile用 */}
+            <div className="relative flex items-center" style={{ width: '320px', height: '70px' }}>
+              {/* 毎日 - 最前面 z-index: 40 */}
+              <span
+                className="absolute text-xl font-bold flex items-center"
+                style={{ 
+                  fontFamily: "'Noto Sans JP', sans-serif", 
+                  color: '#000',
+                  left: '0px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 40
+                }}
+              >
+                毎日
+              </span>
+              
+              {/* 1店舗 - z-index: 30 */}
+              <div className="absolute flex items-center" style={{ left: '40px', top: '50%', transform: 'translateY(-50%)', zIndex: 30 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  店舗
+                </span>
+              </div>
+
+              {/* 1日 - z-index: 20 */}
+              <div className="absolute flex items-center" style={{ left: '125px', top: '50%', transform: 'translateY(-50%)', zIndex: 20 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  日
+                </span>
+              </div>
+
+              {/* 1杯無料 - z-index: 10 */}
+              <div className="absolute flex items-center" style={{ left: '200px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  杯無料
+                </span>
+              </div>
+            </div>
+
+            {/* nomoca で - Mobile */}
+            <div className="flex items-end justify-center gap-2 w-full">
+              <Image
+                src="/lp/images/nomoca.png"
+                alt="nomoca"
+                width={292}
+                height={40}
+                className="h-[40px] w-auto"
+              />
+              <span
+                className="text-2xl"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                で
+              </span>
+            </div>
+
+            {/* サブテキスト - Mobile */}
+            <p
+              className="text-[21px] font-bold text-center"
+              style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1' }}
+            >
+              ちょっとお得に、ちょっと楽しく
+            </p>
+          </div>
+
+          {/* ビールとスマホ - Mobile (緑背景) */}
+          <div 
+            className="relative flex flex-col items-center w-[100vw] -mx-8 px-4 pt-4 pb-0 overflow-hidden"
+            style={{ 
+              backgroundColor: 'var(--main, #2B7A78)',
+              height: '486px'
+            }}
+          >
+            {/* ビール画像 */}
+            <div className="w-full flex-shrink-0 rounded-lg overflow-hidden" style={{ maxWidth: '358px', height: '224px' }}>
+              <Image
+                src="/lp/images/sp-fv-beer-toast.png"
+                alt="乾杯"
+                width={358}
+                height={224}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* スマホ画像（ビール画像に重ねる） */}
+            <div className="flex-shrink-0" style={{ marginTop: '-52px' }}>
+              <Image
+                src="/lp/images/fv-phone.png"
+                alt="スマホ画面"
+                width={206}
+                height={418}
+                className="w-[206px] h-auto"
+              />
+            </div>
+          </div>
+
+          {/* CTAボタン - Mobile */}
+          <Link
+            href="/register"
+            className="flex items-center justify-between w-full py-4 px-6 rounded-full"
+            style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+          >
+            <div className="flex-1" />
+            <div className="flex flex-col items-center gap-2">
+              <span
+                className="text-lg font-bold"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                今すぐはじめる
+              </span>
+              <span
+                className="text-[26px] font-bold"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                &ldquo;一杯無料&rdquo;
+              </span>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M16.67 11.67L25 20L16.67 28.33" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </Link>
+        </div>
+
+        {/* FV Main Content - Desktop */}
+        <div className="hidden md:flex relative w-full flex-row items-center justify-center px-20 py-24 gap-20">
+          {/* 左コンテンツ - Desktop */}
           <div className="flex flex-col items-center gap-6">
             {/* 1店舗 1日 1杯無料 テキスト - absoluteで重ねる */}
             <div className="flex flex-row items-center justify-center whitespace-nowrap">
@@ -243,19 +409,19 @@ export default function LPPage() {
               <div className="relative flex items-center">
                 {/* 黄色い丸（背面） */}
                 <div
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
                   style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
                 />
                 {/* 1の数字 */}
                 <span
-                  className="relative text-5xl md:text-6xl lg:text-7xl font-bold pl-3 md:pl-4 lg:pl-5"
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
                   style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
                 >
                   1
                 </span>
                 {/* 店舗テキスト */}
                 <span
-                  className="relative text-2xl md:text-3xl lg:text-4xl font-bold"
+                  className="relative text-3xl lg:text-4xl font-bold"
                   style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
                 >
                   店舗
@@ -263,22 +429,22 @@ export default function LPPage() {
               </div>
 
               {/* 1日 - absoluteで重ねる */}
-              <div className="relative flex items-center -ml-1 md:-ml-2 lg:-ml-3">
+              <div className="relative flex items-center -ml-2 lg:-ml-3">
                 {/* 黄色い丸（背面） */}
                 <div
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
                   style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
                 />
                 {/* 1の数字 */}
                 <span
-                  className="relative text-5xl md:text-6xl lg:text-7xl font-bold pl-3 md:pl-4 lg:pl-5"
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
                   style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
                 >
                   1
                 </span>
                 {/* 日テキスト */}
                 <span
-                  className="relative text-2xl md:text-3xl lg:text-4xl font-bold"
+                  className="relative text-3xl lg:text-4xl font-bold"
                   style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
                 >
                   日
@@ -286,22 +452,22 @@ export default function LPPage() {
               </div>
 
               {/* 1杯無料 - absoluteで重ねる */}
-              <div className="relative flex items-center ml-0 md:ml-1 lg:ml-2">
+              <div className="relative flex items-center ml-1 lg:ml-2">
                 {/* 黄色い丸（背面） */}
                 <div
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
                   style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
                 />
                 {/* 1の数字 */}
                 <span
-                  className="relative text-5xl md:text-6xl lg:text-7xl font-bold pl-3 md:pl-4 lg:pl-5"
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
                   style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
                 >
                   1
                 </span>
                 {/* 杯無料テキスト */}
                 <span
-                  className="relative text-2xl md:text-3xl lg:text-4xl font-bold"
+                  className="relative text-3xl lg:text-4xl font-bold"
                   style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
                 >
                   杯無料
@@ -309,48 +475,48 @@ export default function LPPage() {
               </div>
             </div>
 
-            {/* nomoca で */}
+            {/* nomoca で - Desktop */}
             <div className="flex items-end gap-4">
-                <Image
-                  src="/lp/images/nomoca.png"
-                  alt="nomoca"
-                  width={410}
-                  height={57}
-                  className="w-48 md:w-[300px] h-auto"
-                />
+              <Image
+                src="/lp/images/nomoca.png"
+                alt="nomoca"
+                width={410}
+                height={57}
+                className="w-[300px] h-auto"
+              />
               <span
-                className="text-3xl md:text-4xl"
+                className="text-4xl"
                 style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
               >
                 で
               </span>
             </div>
 
-            {/* サブテキスト */}
+            {/* サブテキスト - Desktop */}
             <p
-              className="text-xl md:text-2xl font-bold text-center"
+              className="text-2xl font-bold text-center"
               style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
             >
               もっと気軽に、楽しく街歩き！
             </p>
           </div>
 
-          {/* イラストとスマホ */}
+          {/* イラストとスマホ - Desktop */}
           <div className="relative flex items-center justify-center">
             <Image
               src="/lp/images/fv-illustration.svg"
               alt="街のイラスト"
               width={602}
               height={578}
-              className="w-64 md:w-[400px] lg:w-[500px] h-auto"
+              className="w-[400px] lg:w-[500px] h-auto"
             />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/ -translate-y-[25%]">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[25%]">
               <Image
                 src="/lp/images/fv-phone.png"
                 alt="スマホ画面"
                 width={204}
                 height={413}
-                className="w-24 md:w-32 lg:w-[180px] h-auto"
+                className="w-32 lg:w-[180px] h-auto"
               />
             </div>
           </div>
@@ -509,13 +675,12 @@ export default function LPPage() {
           </div>
 
           {/* About Content */}
-          <div className="relative flex flex-col md:flex-row items-stretch justify-center">
+          <div className="relative flex flex-col-reverse md:flex-row items-stretch justify-center">
             {/* テキストコンテンツ */}
             <div
-              className="flex flex-col justify-center items-start gap-6 relative z-0"
+              className="flex flex-col justify-center items-start gap-6 relative z-0 px-4 py-8 md:py-[150px] md:pr-[150px] md:pl-[120px]"
               style={{ 
                 backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                padding: '150px 150px 150px 120px',
                 maxWidth: '620px',
                 minHeight: '480px'
               }}
@@ -794,12 +959,12 @@ export default function LPPage() {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/flow-step-01.png"
                       alt="お店を見つける"
                       width={350}
-                      height={350}
+                      height={400}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -859,12 +1024,12 @@ export default function LPPage() {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/flow-step-02.png"
                       alt="スマホを見せる"
                       width={350}
-                      height={350}
+                      height={400}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -925,12 +1090,12 @@ export default function LPPage() {
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-[-56px]">
                 <div className="w-full flex justify-center">
-                  <div className="w-48 h-48 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                  <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
                     <Image
                       src="/lp/images/flow-step-03.png"
                       alt="ハシゴして楽しむ"
                       width={350}
-                      height={350}
+                      height={400}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -1038,11 +1203,10 @@ export default function LPPage() {
               backgroundColor: '#FFF'
             }}
           >
-            <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-center">
+            <div className="flex flex-col gap-6 md:gap-8 justify-center items-center">
               {/* 通常プラン */}
               <div
                 className="flex flex-col items-center gap-4 p-6 md:p-8"
-                style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}
               >
                 {/* 1日1軒1杯無料 */}
                 <div
@@ -1108,20 +1272,22 @@ export default function LPPage() {
 
               {/* マイデジ会員プラン */}
               <div
-                className="flex items-center gap-4 p-6 md:p-8"
+                className="flex flex-col md:flex-row items-center gap-4 p-6 md:p-8 relative overflow-visible"
                 style={{ backgroundColor: 'var(--main, #2B7A78)' }}
               >
+                {/* PC: 左にスマホ画像 */}
                 <Image
                   src="/lp/images/mydigi-phone.png"
                   alt="マイデジアプリ"
-                  width={152}
-                  height={179}
-                  className="w-24 md:w-32 lg:w-[152px] h-auto"
+                  width={200}
+                  height={236}
+                  className="hidden md:block w-32 md:w-40 lg:w-[200px] h-auto -mt-8 -mb-16 md:-mb-20"
                 />
-                <div className="flex flex-col gap-2">
+                {/* 金額情報 */}
+                <div className="flex flex-col gap-2 items-center md:items-start">
                   <div
                     className="px-4 py-1 text-center"
-                    style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                    style={{ backgroundColor: 'var(--accent, #FFD93B)', borderRadius: '9999px' }}
                   >
                     <span
                       className="text-lg md:text-xl font-bold"
@@ -1179,6 +1345,14 @@ export default function LPPage() {
                     </div>
                   </div>
                 </div>
+                {/* スマホ: 下にスマホ画像 */}
+                <Image
+                  src="/lp/images/mydigi-phone.png"
+                  alt="マイデジアプリ"
+                  width={152}
+                  height={179}
+                  className="md:hidden w-[152px] h-auto mt-2"
+                />
               </div>
             </div>
           </div>
@@ -1214,9 +1388,16 @@ export default function LPPage() {
         id="stores"
         className="relative w-full py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-32"
       >
-        {/* 背景画像 */}
+        {/* 背景画像 - スマホ */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/Stores.png)'
+          }}
+        />
+        {/* 背景画像 - PC */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
           style={{
             backgroundImage: 'url(/lp/images/stores-bg.svg)'
           }}
