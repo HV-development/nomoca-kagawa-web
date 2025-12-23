@@ -509,18 +509,19 @@ export default function LPPage() {
           </div>
 
           {/* About Content */}
-          <div className="relative flex flex-col md:flex-row items-center">
+          <div className="relative flex flex-col md:flex-row items-stretch">
             {/* テキストコンテンツ */}
             <div
-              className="flex flex-col justify-center items-start gap-6"
+              className="flex flex-col justify-center items-start gap-6 relative z-0"
               style={{ 
                 backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                padding: '60px 110px 60px 60px',
-                flex: '1 0 0'
+                padding: '80px 120px 80px 60px',
+                maxWidth: '550px',
+                minHeight: '450px'
               }}
             >
               <h3
-                className="text-xl md:text-2xl lg:text-3xl font-bold"
+                className="text-xl md:text-2xl font-bold"
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
                   color: '#000',
@@ -531,12 +532,12 @@ export default function LPPage() {
                 気になるお店をハシゴしよう。
               </h3>
               <p
-                className="text-sm md:text-base"
+                className="text-xs md:text-sm"
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
                   color: '#000',
                   fontWeight: '500',
-                  lineHeight: '1.8'
+                  lineHeight: '2'
                 }}
               >
                 「nomoca」は、毎日1軒につきドリンクが1杯無料になる新しい&ldquo;Welcomeドリンク&rdquo;サービスです。<br />
@@ -548,13 +549,13 @@ export default function LPPage() {
             </div>
 
             {/* 画像 - テキスト背景に重なるように配置 */}
-            <div className="flex-shrink-0 md:-ml-16 lg:-ml-24 relative z-10">
+            <div className="flex-shrink-0 md:-ml-20 lg:-ml-28 relative z-10 self-center">
               <Image
                 src="/lp/images/about-image.png"
                 alt="nomocaを楽しむ人々"
                 width={510}
                 height={440}
-                className="w-full md:w-[400px] lg:w-[510px] h-auto rounded-lg"
+                className="w-full md:w-[380px] lg:w-[480px] h-auto rounded-lg"
               />
             </div>
           </div>
