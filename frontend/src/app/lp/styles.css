@@ -1,5 +1,7 @@
 :root {
-  --main: #6FC8E5;
+  --main: #2B7A78;
+  --accent: #FFD93B;
+  --sub: #FAF8F4;
 }
 
 /* Hide scrollbar for infinite carousel */
