@@ -344,7 +344,7 @@ export default function LPPage() {
               height={578}
               className="w-64 md:w-[400px] lg:w-[500px] h-auto"
             />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[35%]">
               <Image
                 src="/lp/images/fv-phone.png"
                 alt="スマホ画面"
