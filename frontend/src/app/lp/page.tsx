@@ -7,9 +7,54 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
+// カルーセル用のプレースホルダー（実際の画像がある場合は置き換えてください）
+const bannerImages = [
+  null, // プレースホルダー1
+  null, // プレースホルダー2
+  null, // プレースホルダー3
+];
+
 export default function LPPage() {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(bannerImages.length * 7)
+  const [carouselImageWidth, setCarouselImageWidth] = useState(303)
+
+  // 無限ループ用：画像を15回複製
+  const extendedImages = [
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+  ]
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (isTransitioning) return
+    
+    setIsTransitioning(true)
+    const delta = direction === 'right' ? -1 : 1
+    setCurrentSlide(prev => prev + delta)
+    
+    setTimeout(() => {
+      setIsTransitioning(false)
+      setCurrentSlide((prev) => {
+        if (prev >= bannerImages.length * 11) {
+          return prev - bannerImages.length * 5
+        }
+        if (prev < bannerImages.length * 3) {
+          return prev + bannerImages.length * 5
+        }
+        return prev
+      })
+    }, 500)
+  }
+
+  const goToSlide = (index: number) => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
+    setCurrentSlide(bannerImages.length * 7 + index)
+    setTimeout(() => setIsTransitioning(false), 500)
+  }
 
   // LPページ用：bodyの最大幅制限を解除
   useEffect(() => {
@@ -17,6 +62,20 @@ export default function LPPage() {
     return () => {
       document.body.style.maxWidth = ''
     }
+  }, [])
+
+  // メディアクエリでカルーセル画像サイズを動的に変更
+  useEffect(() => {
+    const updateCarouselSize = () => {
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        setCarouselImageWidth(375)
+      } else {
+        setCarouselImageWidth(303)
+      }
+    }
+    updateCarouselSize()
+    window.addEventListener('resize', updateCarouselSize)
+    return () => window.removeEventListener('resize', updateCarouselSize)
   }, [])
 
   return (
@@ -294,6 +353,130 @@ export default function LPPage() {
                 className="w-24 md:w-32 lg:w-[180px] h-auto"
               />
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Banner Carousel Section */}
+      <div className="w-full py-10 md:py-20" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div 
+          className="w-full px-4 md:px-8 lg:px-20"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '24px',
+            alignSelf: 'stretch'
+          }}
+        >
+          {/* Carousel Container */}
+          <div className="relative w-full max-w-6xl" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Banner Images Container */}
+            <div className="relative overflow-hidden w-full max-w-[375px] h-[170px] md:max-w-[1157px] md:h-[210px]">
+              <div 
+                className="flex absolute left-1/2"
+                style={{ 
+                  gap: '16px',
+                  transform: `translateX(calc(-50% - ${currentSlide * (carouselImageWidth + 16)}px))`,
+                  transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
+                }}
+              >
+                {extendedImages.map((src, i) => (
+                  <div
+                    key={i}
+                    className="relative flex-shrink-0 overflow-hidden w-[303px] h-[170px] md:w-[375px] md:h-[210px]"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      aspectRatio: '303/170',
+                      borderRadius: '20px',
+                      background: '#D9D9D9'
+                    }}
+                  >
+                    {src ? (
+                      <Image
+                        src={src}
+                        alt={`banner-${i}`}
+                        fill
+                        className="object-cover"
+                        priority={i < 2}
+                      />
+                    ) : (
+                      <p style={{ color: '#999', fontSize: '16px', fontWeight: 400 }}>準備中</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Left Arrow */}
+            <button 
+              className="absolute z-10 hover:opacity-80 transition-opacity left-[12px] top-[69px] md:left-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
+              onClick={() => handleScroll('left')}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+                aspectRatio: '1/1',
+                borderRadius: '9999px',
+                background: 'var(--main, #2B7A78)',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                <path d="M6 1L1 6L6 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            {/* Right Arrow */}
+            <button 
+              className="absolute z-10 hover:opacity-80 transition-opacity right-[12px] top-[69px] md:right-[70px] md:top-[89px] w-8 h-8 md:w-12 md:h-12"
+              onClick={() => handleScroll('right')}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+                aspectRatio: '1/1',
+                borderRadius: '9999px',
+                background: 'var(--main, #2B7A78)',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center space-x-2 md:space-x-3">
+            {bannerImages.map((_, index) => {
+              const actualIndex = ((currentSlide % bannerImages.length) + bannerImages.length) % bannerImages.length
+              return (
+                <button 
+                  key={index} 
+                  className="p-1 hover:opacity-80 transition-opacity"
+                  onClick={() => goToSlide(index)}
+                >
+                  <div
+                    className="w-3 h-3 md:w-4 md:h-4"
+                    style={{
+                      borderRadius: '50%',
+                      backgroundColor: actualIndex === index ? '#2B7A78' : '#D9D9D9',
+                      transition: 'background-color 0.3s ease'
+                    }}
+                  />
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
