@@ -216,7 +216,7 @@ export default function FAQPage() {
           <div className="flex items-center justify-between">
             <Link href="/lp">
               <Image
-                src="/lp/images/horizon-color-white.png"
+                src="/lp/images/logo-horizon-white.png"
                 alt="nomocaKagawa"
                 width={1312}
                 height={320}
@@ -416,7 +416,7 @@ export default function FAQPage() {
             {/* Logo */}
             <div className="mb-8">
               <Image
-                src="/lp/images/logo.png"
+                src="/lp/images/logo-main.png"
                 alt="TAMANOMI"
                 width={328}
                 height={329}

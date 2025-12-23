@@ -102,7 +102,7 @@ export default function LPPage() {
             <div className="flex items-center w-full justify-between">
               <div className="flex items-center">
                 <Image
-                  src="/lp/images/nomoca-logo.svg"
+                  src="/lp/images/logo-nomoca.svg"
                   alt="nomoca"
                   width={244}
                   height={92}
@@ -317,7 +317,7 @@ export default function LPPage() {
             {/* nomoca で - Mobile */}
             <div className="flex items-end justify-center gap-2 w-full">
               <Image
-                src="/lp/images/nomoca.png"
+                src="/lp/images/logo-nomoca-text.png"
                 alt="nomoca"
                 width={292}
                 height={40}
@@ -351,7 +351,7 @@ export default function LPPage() {
             {/* ビール画像 */}
             <div className="w-full flex-shrink-0 rounded-lg overflow-hidden" style={{ maxWidth: '358px', height: '224px' }}>
               <Image
-                src="/lp/images/sp-fv-beer-toast.png"
+                src="/lp/images/user-fv-beer-mobile.png"
                 alt="乾杯"
                 width={358}
                 height={224}
@@ -361,7 +361,7 @@ export default function LPPage() {
             {/* スマホ画像（ビール画像に重ねる） */}
             <div className="flex-shrink-0" style={{ marginTop: '-52px' }}>
               <Image
-                src="/lp/images/fv-phone.png"
+                src="/lp/images/user-fv-phone.png"
                 alt="スマホ画面"
                 width={206}
                 height={418}
@@ -478,7 +478,7 @@ export default function LPPage() {
             {/* nomoca で - Desktop */}
             <div className="flex items-end gap-4">
               <Image
-                src="/lp/images/nomoca.png"
+                src="/lp/images/logo-nomoca-text.png"
                 alt="nomoca"
                 width={410}
                 height={57}
@@ -504,7 +504,7 @@ export default function LPPage() {
           {/* イラストとスマホ - Desktop */}
           <div className="relative flex items-center justify-center">
             <Image
-              src="/lp/images/fv-illustration.svg"
+              src="/lp/images/user-fv-illustration.svg"
               alt="街のイラスト"
               width={602}
               height={578}
@@ -512,7 +512,7 @@ export default function LPPage() {
             />
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[25%]">
               <Image
-                src="/lp/images/fv-phone.png"
+                src="/lp/images/user-fv-phone.png"
                 alt="スマホ画面"
                 width={204}
                 height={413}
@@ -716,7 +716,7 @@ export default function LPPage() {
             {/* 画像 - テキスト背景に重なるように配置 */}
             <div className="flex-shrink-0 md:-ml-8 lg:-ml-12 relative z-10 self-center">
               <Image
-                src="/lp/images/about-image.png"
+                src="/lp/images/user-about.png"
                 alt="nomocaを楽しむ人々"
                 width={510}
                 height={440}
@@ -763,7 +763,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/feature-01.png"
+                  src="/lp/images/user-feature-01.png"
                   alt="1店舗につき1杯無料！"
                   width={558}
                   height={400}
@@ -805,7 +805,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/feature-02.png"
+                  src="/lp/images/user-feature-02.png"
                   alt="1日で複数店舗をハシゴできる！"
                   width={558}
                   height={400}
@@ -846,7 +846,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/feature-03.png"
+                  src="/lp/images/user-feature-03.png"
                   alt="お酒が苦手でも楽しめる！"
                   width={558}
                   height={400}
@@ -888,7 +888,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 md:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/feature-04.png"
+                  src="/lp/images/user-feature-04.png"
                   alt="新しいお店との出会い！"
                   width={558}
                   height={400}
@@ -961,7 +961,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/flow-step-01.png"
+                      src="/lp/images/user-flow-01.png"
                       alt="お店を見つける"
                       width={350}
                       height={400}
@@ -1026,7 +1026,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/flow-step-02.png"
+                      src="/lp/images/user-flow-02.png"
                       alt="スマホを見せる"
                       width={350}
                       height={400}
@@ -1092,7 +1092,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 md:w-72 md:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/flow-step-03.png"
+                      src="/lp/images/user-flow-03.png"
                       alt="ハシゴして楽しむ"
                       width={350}
                       height={400}
@@ -1199,7 +1199,7 @@ export default function LPPage() {
           <div
             className="relative p-8 md:p-12 lg:p-16 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/lp/images/pricing-bg.png)',
+              backgroundImage: 'url(/lp/images/user-pricing-bg.png)',
               backgroundColor: '#FFF'
             }}
           >
@@ -1277,7 +1277,7 @@ export default function LPPage() {
               >
                 {/* PC: 左にスマホ画像 */}
                 <Image
-                  src="/lp/images/mydigi-phone.png"
+                  src="/lp/images/user-pricing-phone.png"
                   alt="マイデジアプリ"
                   width={200}
                   height={236}
@@ -1347,7 +1347,7 @@ export default function LPPage() {
                 </div>
                 {/* スマホ: 下にスマホ画像 */}
                 <Image
-                  src="/lp/images/mydigi-phone.png"
+                  src="/lp/images/user-pricing-phone.png"
                   alt="マイデジアプリ"
                   width={152}
                   height={179}
@@ -1392,14 +1392,14 @@ export default function LPPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/stores.png)'
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/user-stores-mobile-bg.png)'
           }}
         />
         {/* 背景画像 - PC */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
           style={{
-            backgroundImage: 'url(/lp/images/stores-bg.svg)'
+            backgroundImage: 'url(/lp/images/user-stores-bg.svg)'
           }}
         />
 
@@ -1572,7 +1572,7 @@ export default function LPPage() {
         <div className="max-w-6xl mx-auto flex flex-col items-center gap-6 md:gap-8">
           {/* Logo */}
           <Image
-            src="/lp/images/footer-logo.svg"
+            src="/lp/images/logo-footer.svg"
             alt="nomoca"
             width={294}
             height={294}

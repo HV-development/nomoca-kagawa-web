@@ -21,7 +21,7 @@ export default function MerchantLPPage() {
       <header className="hidden lg:flex w-full justify-between items-center px-6 py-2" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
         <div className="flex items-center">
           <Image
-            src="/lp/images/nomoca-logo.svg"
+            src="/lp/images/logo-nomoca.svg"
             alt="nomoca"
             width={244}
             height={92}
@@ -55,7 +55,7 @@ export default function MerchantLPPage() {
         {/* 左側: 背景画像 */}
         <div className="relative flex-1">
           <Image
-            src="/lp/images/merchant-fv-text-bg.png"
+            src="/lp/images/merchant-fv-bg.png"
             alt="飲食店向けファーストビュー"
             fill
             className="object-cover"
@@ -181,7 +181,7 @@ export default function MerchantLPPage() {
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center">
                 <Image
-                  src="/lp/images/nomoca-logo.svg"
+                  src="/lp/images/logo-nomoca.svg"
                   alt="nomoca"
                   width={130}
                   height={50}
@@ -372,7 +372,7 @@ export default function MerchantLPPage() {
         {/* 画像 */}
         <div className="w-full lg:w-[540px] h-auto lg:h-[400px] flex-shrink-0 rounded-lg overflow-hidden">
           <Image
-            src="/lp/images/merchant-service-flow.png"
+            src="/lp/images/merchant-overview.png"
             alt="nomocaの仕組み"
             width={540}
             height={400}
@@ -541,7 +541,7 @@ export default function MerchantLPPage() {
         {/* プロセス画像 */}
         <div className="w-full max-w-[800px]">
           <Image
-            src="/lp/images/merchant-simple-process.png"
+            src="/lp/images/merchant-process.png"
             alt="お店の対応フロー"
             width={800}
             height={277}
@@ -764,7 +764,7 @@ export default function MerchantLPPage() {
       >
         {/* Logo */}
         <Image
-          src="/lp/images/footer-logo.svg"
+          src="/lp/images/logo-footer.svg"
           alt="nomoca"
           width={294}
           height={294}
