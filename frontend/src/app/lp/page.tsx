@@ -512,11 +512,15 @@ export default function LPPage() {
           <div className="relative flex flex-col md:flex-row items-center">
             {/* テキストコンテンツ */}
             <div
-              className="flex-1 p-8 md:p-12 lg:p-16 md:pr-24 lg:pr-32"
-              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
+              className="flex flex-col justify-center items-start gap-6"
+              style={{ 
+                backgroundColor: 'rgba(43, 122, 120, 0.1)',
+                padding: '60px 110px 60px 60px',
+                flex: '1 0 0'
+              }}
             >
               <h3
-                className="text-xl md:text-2xl lg:text-3xl font-bold mb-6"
+                className="text-xl md:text-2xl lg:text-3xl font-bold"
                 style={{
                   fontFamily: "'Noto Sans JP', sans-serif",
                   color: '#000',
