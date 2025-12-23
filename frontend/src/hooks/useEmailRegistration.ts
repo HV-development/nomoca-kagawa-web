@@ -30,10 +30,19 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
 
   const searchParams = useSearchParams()
 
+  // URLパラメータからrefを取得して紹介者IDを状態に保存
+  const [referrerUserIdFromUrl, setReferrerUserIdFromUrl] = useState<string | undefined>(undefined)
+
   // URLパラメータからエラーメッセージとshopIdを取得
   useEffect(() => {
     const error = searchParams.get('error')
     const shop_id = searchParams.get('shop_id')
+    const ref = searchParams.get('ref')
+    
+    // 紹介者IDを状態に保存
+    if (ref) {
+      setReferrerUserIdFromUrl(ref)
+    }
 
     // shopIdを状態に保存
     if (shop_id) {
@@ -66,9 +75,8 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
     setErrorMessage('')
 
     try {
-      // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
-      // referrerUserIdはURLパラメータから取得するか、Cookieから取得する
-      const referrerUserId = null; // 必要に応じてCookieから取得する実装を追加
+      // URLパラメータから取得したreferrerUserIdを使用
+      const referrerUserId = referrerUserIdFromUrl;
 
       // 紹介者IDを含めてpreRegisterを呼び出し
       const registrationData: UserRegistrationRequest = {
@@ -119,9 +127,8 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
     setSuccessMessage('')
 
     try {
-      // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
-      // referrerUserIdはURLパラメータから取得するか、Cookieから取得する
-      const referrerUserId = null; // 必要に応じてCookieから取得する実装を追加
+      // URLパラメータから取得したreferrerUserIdを使用
+      const referrerUserId = referrerUserIdFromUrl;
 
       await preRegister(lastEmail, lastCampaignCode, referrerUserId || undefined, shopId)
       // 成功メッセージを表示（画面は complete のまま）
