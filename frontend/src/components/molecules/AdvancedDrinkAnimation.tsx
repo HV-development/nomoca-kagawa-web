@@ -21,24 +21,25 @@ export default function AdvancedDrinkAnimation({
   autoStart = false,
   showButton = true
 }: AdvancedDrinkAnimationProps) {
-  const [currentImage, setCurrentImage] = useState<'drink1' | 'drink2'>('drink1');
+  // nomoca-kagawa専用の画像を使用
+  const [currentImage, setCurrentImage] = useState<'nomoca-drink-01' | 'nomoca-drink-02'>('nomoca-drink-01');
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {
     if (autoStart && !isAnimating && !hasAnimated) {
-      setCurrentImage('drink1');
+      setCurrentImage('nomoca-drink-01');
       setIsAnimating(true);
     }
   }, [autoStart, isAnimating, hasAnimated]);
 
   useEffect(() => {
     if (isAnimating) {
-      // 0.5秒後にdrink2に切り替え
+      // 0.5秒後にnomoca-drink-02に切り替え
       const switchTimer = setTimeout(() => {
-        setCurrentImage('drink2');
+        setCurrentImage('nomoca-drink-02');
         
-        // drink2で停止（ループしない）
+        // nomoca-drink-02で停止（ループしない）
         setTimeout(() => {
           setIsAnimating(false);
           setHasAnimated(true);
@@ -56,13 +57,13 @@ export default function AdvancedDrinkAnimation({
 
   const startAnimation = useCallback(() => {
     if (!isAnimating && !hasAnimated) {
-      setCurrentImage('drink1');
+      setCurrentImage('nomoca-drink-01');
       setIsAnimating(true);
     }
   }, [isAnimating, hasAnimated]);
 
   const resetAnimation = () => {
-    setCurrentImage('drink1');
+    setCurrentImage('nomoca-drink-01');
     setIsAnimating(false);
     setHasAnimated(false);
   };
@@ -77,7 +78,7 @@ export default function AdvancedDrinkAnimation({
         <div className="relative">
           <Image
             src={`/${currentImage}.svg`}
-            alt={currentImage === 'drink1' ? '飲む前' : '飲んでいる'}
+            alt={currentImage === 'nomoca-drink-01' ? '乾杯前' : '乾杯中'}
             width={width}
             height={height}
             className="opacity-100"

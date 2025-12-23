@@ -211,31 +211,9 @@ export function PlanRegistrationForm({
             </div>
           ) : (
             plans.map((plan, index) => {
-              // 割引価格は現在のスキーマでは未対応のため、通常価格のみ表示
-              const displayPrice = plan.price;
-              const hasDiscount = false;
-
-              // マイデジアプリ連携済みの場合の価格表示
-              const isMydigiLinked = mydigiAppLinked || linkedMydigiAppId;
-              const mydigiDiscountPrice = 480; // マイデジアプリ連携時の価格
-
-              // マイデジアプリ連携済みで、通常価格が980円の場合
-              if (isMydigiLinked && plan.price === 980) {
-                return (
-                  <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
-                    <PlanCard
-                      title={plan.name}
-                      description={plan.description || ''}
-                      features={plan.plan_content?.features || []}
-                      price={`¥${mydigiDiscountPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                      originalPrice={`¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                      badge={plan.status === 'active' ? 'マイデジ連携でお得' : undefined}
-                      isSelected={selectedPlan === plan.id}
-                      onSelect={() => handlePlanSelect(plan.id)}
-                    />
-                  </PlanFadeIn>
-                );
-              }
+              // APIから返される割引価格を使用
+              const hasDiscount = plan.discount_price !== null && plan.discount_price !== undefined;
+              const displayPrice = hasDiscount ? plan.discount_price : plan.price;
 
               return (
                 <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
@@ -245,7 +223,7 @@ export function PlanRegistrationForm({
                     features={plan.plan_content?.features || []}
                     price={`¥${displayPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
                     originalPrice={hasDiscount ? `¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}` : undefined}
-                    badge={plan.status === 'active' ? '利用可能' : undefined}
+                    badge={hasDiscount ? 'マイデジ連携でお得' : (plan.status === 'active' ? '利用可能' : undefined)}
                     isSelected={selectedPlan === plan.id}
                     onSelect={() => handlePlanSelect(plan.id)}
                   />

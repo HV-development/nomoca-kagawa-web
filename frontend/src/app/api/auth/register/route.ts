@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       birthDate?: string;
       gender?: string;
       phone?: string;
-      saitamaAppId?: string;
+      mydigiAppId?: string;
       referrerUserId?: string;
       shopId?: string;
       token?: string;
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // バックエンドが期待するデータ構造に変換
     // セキュリティ改善：メールアドレスはリクエストボディに含めず、トークンから取得される
-    // 空文字列のsaitamaAppIdとreferrerUserIdは除外
+    // 空文字列のmydigiAppIdとreferrerUserIdは除外
     // 生年月日をISO形式（YYYY-MM-DD）に変換（スラッシュ区切りから変換）
     const formatBirthDate = (dateStr: string | undefined): string | undefined => {
       if (!dateStr) return undefined
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       birthDate?: string;
       gender?: string;
       phone?: string;
-      saitamaAppId?: string;
+      mydigiAppId?: string;
       referrerUserId?: string;
       shopId?: string;
       token?: string;
@@ -95,8 +95,8 @@ export async function POST(request: NextRequest) {
     };
 
     // オプショナルフィールドを追加（存在する場合のみ）
-    if (body.saitamaAppId && body.saitamaAppId.trim() !== '') {
-      validatedData.saitamaAppId = body.saitamaAppId.trim()
+    if (body.mydigiAppId && body.mydigiAppId.trim() !== '') {
+      validatedData.mydigiAppId = body.mydigiAppId.trim()
     }
     if (body.referrerUserId && body.referrerUserId.trim() !== '') {
       validatedData.referrerUserId = body.referrerUserId.trim()
@@ -162,15 +162,15 @@ export async function POST(request: NextRequest) {
 
         // 409エラー（既存アカウント・重複ID）の場合は特別な処理
         if (response.status === 409) {
-          if (errorCode === 'SAITAMA_APP_ID_ALREADY_EXISTS') {
+          if (errorCode === 'MYDIGI_APP_ID_ALREADY_EXISTS') {
             return createNoCacheResponse(
               {
                 success: false,
-                message: errorMessage || 'この高松市アプリIDは既に登録されています',
-                errorCode: 'SAITAMA_APP_ID_ALREADY_EXISTS',
+                message: errorMessage || 'このマイデジアプリIDは既に登録されています',
+                errorCode: 'MYDIGI_APP_ID_ALREADY_EXISTS',
                 error: {
-                  code: 'SAITAMA_APP_ID_ALREADY_EXISTS',
-                  message: errorMessage || 'この高松市アプリIDは既に登録されています'
+                  code: 'MYDIGI_APP_ID_ALREADY_EXISTS',
+                  message: errorMessage || 'このマイデジアプリIDは既に登録されています'
                 }
               },
               { status: 409 }
