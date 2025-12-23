@@ -317,7 +317,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
 
   // 無限スクロール: 初回ロードと追加ロード
   const { isLoading: isStoresLoading, isLoadingMore, error, sentinelRef, items } = useInfiniteStores({
-    limit: 5,
+    limit: 10, // 1回の取得件数を増加（空白スクロールを防ぐ）
     selectedAreas: selectedAreas ?? [],
     selectedGenres: selectedGenres ?? [],
   })
