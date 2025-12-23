@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
       headerOptions: {
         requireAuth: false, // OTP送信は認証不要
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({
+        email,
+        appName: 'nomoca-kagawa', // アプリケーション判定用（メールテンプレート選択）
+      }),
     })
 
     if (!response.ok) {

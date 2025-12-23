@@ -29,10 +29,12 @@ export async function POST(request: NextRequest) {
         campaignCode?: string;
         referrerUserId?: string;
         shopId?: string;
+        appName?: string;
       }
       const requestBody: RequestBody = {
         email: body.email,
         campaignCode: body.campaignCode,
+        appName: 'nomoca-kagawa', // アプリケーション判定用（メールテンプレート選択）
       };
       
       // 紹介者IDがある場合は追加
