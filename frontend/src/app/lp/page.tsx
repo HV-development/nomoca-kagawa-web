@@ -227,7 +227,7 @@ export default function LPPage() {
               </div>
 
               {/* 1杯無料 - absoluteで重ねる */}
-              <div className="relative flex items-center -ml-4 md:-ml-6 lg:-ml-8">
+              <div className="relative flex items-center ml-0 md:ml-1 lg:ml-2">
                 {/* 黄色い丸（背面） */}
                 <div
                   className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full"
