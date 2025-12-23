@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface FAQItem {
   question: string
@@ -12,19 +12,21 @@ interface FAQItem {
 interface FAQSection {
   title: string
   items: FAQItem[]
+  isContact?: boolean
+  isAlwaysOpen?: boolean
 }
 
 const faqData: FAQSection[] = [
   {
-    title: '1) サービス全体について',
+    title: 'サービス全体について',
     items: [
       {
-        question: 'nomocaKagawaって何？',
+        question: 'nomocaって何？',
         answer: '高松市を中心に"ちょい飲み"を楽しめる月額制（サブスク）サービスです。掲載店で提示すると「各店舗につき1日に1杯の対象ドリンクが無料」になり（※対象ドリンクや条件等は店舗・キャンペーンにより異なります）、地域ポイント「たまポン」の還元施策とも連動する場合があります。掲載費は店舗無料、ユーザーは月額課金で利用できます。'
       },
       {
         question: '料金は？',
-        answer: '月額 一般価格：980円、会員価格：490円。今後は、6か月・12か月分をまとめて購入できるパッケージや観光客向けのショートプラン（３Days）などを販売する予定です。'
+        answer: '月額 一般価格：980円、マイデジ会員価格：480円。今後は、6か月・12か月分をまとめて購入できるパッケージや観光客向けのショートプラン（３Days）などを販売する予定です。'
       },
       {
         question: '目的は？',
@@ -37,7 +39,7 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '2) ユーザー向け',
+    title: 'ユーザー向け',
     items: [
       {
         question: '利用する際のルールは？',
@@ -45,7 +47,7 @@ const faqData: FAQSection[] = [
       },
       {
         question: 'どんなドリンクが無料対象？',
-        answer: '店舗ごとの「対象メニュー」からの提供が基本です（例：最初の1杯限定・指定銘柄・ソフトドリンク可など）。nomocaKagawaサイトのクーポンページで事前にご確認ください。'
+        answer: '店舗ごとの「対象メニュー」からの提供が基本です（例：最初の1杯限定・指定銘柄・ソフトドリンク可など）。nomocaサイトのクーポンページで事前にご確認ください。'
       },
       {
         question: '年齢制限は？',
@@ -57,15 +59,11 @@ const faqData: FAQSection[] = [
       },
       {
         question: '使い方の流れは？',
-        answer: '1) nomocaKagawaサイトで掲載店を検索 → 2) 入店 → 3) 店舗スタッフにnomocaKagawaサイトの「無料1杯」画面を提示 → 4) 店舗スタッフが確認 → 5) 無料ドリンクが提供 → 6) 会計時に値引。※提示タイミング・画面種別は店舗オペレーションにより多少異なります。'
-      },
-      {
-        question: 'たまポンのポイント還元を受けられる？',
-        answer: '実施中のキャンペーンにより、条件満たされた方にポイント還元されます。付与タイミング・上限・対象は企画ごとに異なるため、専用サイト等で告知をご確認ください。ポイント還元を受けるためには、高松市みんなのアプリのIDをnomocaKagawaサイト上で登録する必要があります。'
+        answer: '1) nomocaサイトで掲載店を検索 → 2) 入店 → 3) 店舗スタッフにnomocaサイトの「無料1杯」画面を提示 → 4) 店舗スタッフが確認 → 5) 無料ドリンクが提供 → 6) 会計時に値引。※提示タイミング・画面種別は店舗オペレーションにより多少異なります。'
       },
       {
         question: '支払い方法は？',
-        answer: 'nomocaKagawaサイト内の月額課金です。利用可能な決済手段（例：各種クレジットカード、コード決済等）を選択できます。詳細はサイト内の画面でご確認ください。'
+        answer: 'nomocaサイト内の月額課金です。利用可能な決済手段（例：各種クレジットカード、コード決済等）を選択できます。詳細はサイト内の画面でご確認ください。'
       },
       {
         question: '解約はどうする？更新日は？',
@@ -86,7 +84,7 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '3) 掲載店向け',
+    title: '掲載店向け',
     items: [
       {
         question: '掲載費は？',
@@ -119,7 +117,7 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '4) 行政・パートナー向け（概要）',
+    title: '行政・パートナー向け（概要）',
     items: [
       {
         question: '社会的な狙いと評価指標は？',
@@ -132,7 +130,7 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '5) セキュリティ・プライバシー',
+    title: 'セキュリティ・プライバシー',
     items: [
       {
         question: '個人情報の取り扱いは？',
@@ -149,11 +147,11 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '6) トラブルシューティング',
+    title: 'トラブルシューティング',
     items: [
       {
         question: '「無料1杯」が反映されない/押下できない',
-        answer: '既に当日その店舗で1杯利用済みの可能性、通信不良／スマホの古いバージョン、店舗側の提供一時停止などが考えられます。nomocaKagawaサイト再起動、電波状況の確認、店舗スタッフへお知らせをお試しください。解決しない場合はサポート窓口へご連絡ください。'
+        answer: '既に当日その店舗で1杯利用済みの可能性、通信不良／スマホの古いバージョン、店舗側の提供一時停止などが考えられます。nomocaサイト再起動、電波状況の確認、店舗スタッフへお知らせをお試しください。解決しない場合はサポート窓口へご連絡ください。'
       },
       {
         question: '課金・請求金額がおかしい',
@@ -170,35 +168,52 @@ const faqData: FAQSection[] = [
     ]
   },
   {
-    title: '7) ルール・マナー（重要）',
+    title: 'ルール・マナー（重要）',
     items: [
       {
-        question: '利用時の注意事項は？',
-        answer: 'アルコール類の提供の場合、20歳未満の飲酒禁止／飲酒運転禁止。迷惑行為（長時間の占有、大声、他客・スタッフへの迷惑）は利用停止対象。nomocaKagawaサイト画面の不正転用・転売・貸与は禁止。健康状態に留意し、節度ある飲酒をお願いします。'
+        question: '',
+        answer: 'アルコール類の提供の場合、20歳未満の飲酒禁止／飲酒運転禁止\n迷惑行為（長時間の占有、大声、他客・スタッフへの迷惑）は利用停止対象\nたまのみサイト画面の不正転用・転売・貸与は禁止\n健康状態に留意し、節度ある飲酒を'
       }
-    ]
+    ],
+    isAlwaysOpen: true
   },
   {
-    title: '8) 連絡先',
+    title: '連絡先',
     items: [
       {
-        question: 'ユーザーサポートの連絡先は？',
-        answer: 'サイト内「ヘルプ・お問い合わせ」からご連絡ください。'
+        question: 'ユーザーサポート',
+        answer: 'サイト内「ヘルプ・お問い合わせ」'
       },
       {
-        question: '掲載店サポートの連絡先は？',
-        answer: '運営窓口、営業担当へご連絡ください。'
+        question: '掲載店サポート',
+        answer: '運営窓口、営業担当へ'
       },
       {
-        question: '取材・協業の連絡先は？',
-        answer: '運営窓口までご連絡ください。'
+        question: '取材・協業',
+        answer: '運営窓口まで'
       }
-    ]
+    ],
+    isContact: true
   }
+]
+
+const navLinks = [
+  { href: '/lp#about', label: 'nomocaとは' },
+  { href: '/lp#features', label: '魅力' },
+  { href: '/lp#flow', label: '使い方' },
+  { href: '/lp#pricing', label: '利用料金' },
+  { href: '/lp#stores', label: '加盟店一覧' },
 ]
 
 export default function FAQPage() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
+
+  useEffect(() => {
+    document.body.classList.add('lp-page')
+    return () => {
+      document.body.classList.remove('lp-page')
+    }
+  }, [])
 
   const toggleItem = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`
@@ -208,76 +223,128 @@ export default function FAQPage() {
     }))
   }
 
+  const container = 'w-full max-w-[1200px] mx-auto px-6 lg:px-10'
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="w-full bg-white text-[#111] overflow-x-hidden" style={{ fontFamily: '"Noto Sans JP", sans-serif' }}>
       {/* Header */}
-      <header className="w-full bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-6 md:px-[120px] md:py-8">
-          <div className="flex items-center justify-between">
-            <Link href="/lp">
-              <Image
-                src="/lp/images/horizon-color-white.png"
-                alt="nomocaKagawa"
-                width={1312}
-                height={320}
-                className="w-32 h-8 md:w-[246px] md:h-[60px]"
-              />
+      <header className="w-full py-4" style={{ position: 'relative', zIndex: 100 }}>
+        <div className={`${container} flex items-center justify-between`}>
+          <Link href="/lp">
+            <Image 
+              src="/horizon-2.svg" 
+              alt="nomoca Kagawa" 
+              width={170} 
+              height={48} 
+              className="w-[160px] h-auto lg:w-[170px]" 
+              priority 
+            />
+          </Link>
+          <nav className="hidden lg:flex items-center gap-6 text-[13px] font-semibold text-[#0f1524]">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="hover:text-[#2B7A78] transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link href="/lp/contact" className="hover:text-[#2B7A78] transition-colors">
+              お問い合わせ
             </Link>
-          </div>
+            <Link
+              href="/lp/merchant"
+              className="flex items-center justify-center rounded-full px-4 py-2 bg-[#2B7A78] text-white text-sm font-bold hover:brightness-110 transition ml-2"
+            >
+              お店の方はこちら
+            </Link>
+          </nav>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="w-full py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-4 md:px-[120px]">
-          {/* Page Title */}
-          <div className="text-center mb-12 md:mb-16">
+      <main className="w-full" style={{ backgroundColor: '#FAF8F4' }}>
+        {/* Page Title Section */}
+        <div className={`${container} py-20 lg:py-28`}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'stretch',
+              gap: '24px',
+              paddingBottom: '24px',
+            }}
+          >
             <h1
-              className="text-4xl md:text-5xl mb-4"
               style={{
-                color: '#000',
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '700',
-                lineHeight: '100%'
+                fontFamily: '"Oswald", sans-serif',
+                fontWeight: 500,
+                fontSize: '56px',
+                lineHeight: '1em',
+                color: '#2B7A78',
+                textAlign: 'left',
+              }}
+            >
+              FAQ
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Noto Sans JP", sans-serif',
+                fontWeight: 700,
+                fontSize: '22px',
+                lineHeight: '1em',
+                color: '#2B7A78',
+                textAlign: 'left',
               }}
             >
               よくあるご質問
-            </h1>
-            <p
-              className="text-base md:text-lg"
-              style={{
-                color: '#666',
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400',
-                lineHeight: '160%'
-              }}
-            >
-              お問い合わせの多い質問をまとめました。
             </p>
           </div>
+        </div>
 
-          {/* FAQ Sections */}
-          <div className="space-y-12 md:space-y-16">
+        {/* FAQ Sections */}
+        <div className="w-full px-6 lg:px-[120px] py-10 lg:py-20" style={{ backgroundColor: '#FAF8F4' }}>
+          <div className="w-full max-w-[1200px] mx-auto">
             {faqData.map((section, sectionIndex) => (
-              <div key={sectionIndex}>
+              <div
+                key={sectionIndex}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  marginBottom: sectionIndex < faqData.length - 1 ? '45px' : '0',
+                }}
+                className="mb-[45px] last:mb-0"
+              >
                 {/* Section Title */}
-                <div className="flex items-center gap-3 mb-6 md:mb-8">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '16px',
+                    padding: '32px 0px',
+                    alignItems: 'center',
+                  }}
+                >
                   <div
                     style={{
                       width: '5px',
-                      height: '20px',
-                      background: 'var(--main, #6FC8E5)'
+                      height: '100%',
+                      backgroundColor: '#2B7A78',
+                      flexShrink: 0,
                     }}
                   />
                   <h2
-                    className="text-xl md:text-2xl"
                     style={{
-                      color: '#000',
-                      textAlign: 'center',
-                      fontFamily: '"Zen Kaku Gothic New"',
+                      fontFamily: '"Noto Sans JP", sans-serif',
+                      fontWeight: 500,
                       fontSize: '20px',
-                      fontWeight: '500',
-                      lineHeight: '100%'
+                      lineHeight: '1em',
+                      color: '#000000',
+                      textAlign: 'left',
                     }}
                   >
                     {section.title}
@@ -285,204 +352,307 @@ export default function FAQPage() {
                 </div>
 
                 {/* FAQ Items */}
-                <div>
-                  {section.items.map((item, itemIndex) => {
-                    const key = `${sectionIndex}-${itemIndex}`
-                    const isOpen = openItems[key]
-
-                    return (
-                      <div
-                        key={itemIndex}
-                        style={{
-                          display: 'flex',
-                          padding: '32px 0',
-                          flexDirection: 'column',
-                          alignItems: 'flex-start',
-                          gap: '40px',
-                          borderTop: '1px solid #D5D5D5',
-                          background: '#FFF'
-                        }}
-                      >
-                        {/* Question Button */}
-                        <button
-                          className="w-full text-left flex items-center justify-between hover:opacity-80 transition-opacity"
-                          onClick={() => toggleItem(sectionIndex, itemIndex)}
+                <div style={{ width: '100%', maxWidth: '940px' }}>
+                  {section.isContact ? (
+                    // Contact section with special layout
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '16px',
+                        padding: '24px 0px',
+                        borderTop: '1px solid #D5D5D5',
+                        borderBottom: '1px solid #D5D5D5',
+                        backgroundColor: '#FAF8F4',
+                      }}
+                      className="py-6 lg:py-8"
+                    >
+                      {section.items.map((item, itemIndex) => (
+                        <div
+                          key={itemIndex}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignSelf: 'stretch',
+                            gap: '8px',
+                          }}
+                          className="lg:flex-row"
                         >
-                          <span
-                            className="text-sm md:text-base pr-4"
+                          <div
                             style={{
-                              color: 'var(--main, #6FC8E5)',
-                              fontFamily: '"Zen Kaku Gothic New"',
-                              fontSize: '16px',
-                              fontWeight: '500',
-                              lineHeight: '160%'
+                              fontFamily: '"Noto Sans JP", sans-serif',
+                              fontWeight: 700,
+                              fontSize: '14px',
+                              lineHeight: '1.6em',
+                              color: '#000000',
+                              textAlign: 'left',
+                              width: '150px',
+                              flexShrink: 0,
                             }}
+                            className="text-sm lg:text-base lg:w-[150px]"
                           >
                             {item.question}
-                          </span>
+                          </div>
                           <div
-                            className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full"
                             style={{
-                              background: '#6FC8E5'
+                              fontFamily: '"Noto Sans JP", sans-serif',
+                              fontWeight: 400,
+                              fontSize: '14px',
+                              lineHeight: '1.6em',
+                              color: '#000000',
+                              textAlign: 'left',
+                              flex: 1,
                             }}
+                            className="text-sm lg:text-base lg:text-justify"
                           >
-                            {isOpen ? (
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M20.5 12H3.5" stroke="white" strokeLinecap="round" />
-                              </svg>
-                            ) : (
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M12 3.5V20.5M20.5 12H3.5" stroke="white" strokeLinecap="round" />
-                              </svg>
-                            )}
+                            {item.answer}
                           </div>
-                        </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    // Regular FAQ items
+                    section.items.map((item, itemIndex) => {
+                      const key = `${sectionIndex}-${itemIndex}`
+                      const isOpen = section.isAlwaysOpen ? true : openItems[key]
+                      const isLast = itemIndex === section.items.length - 1
 
-                        {/* Answer */}
-                        {isOpen && (
-                          <div className="w-full">
-                            <p
-                              className="text-sm md:text-base"
+                      return (
+                        <div
+                          key={itemIndex}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '24px',
+                            padding: '24px 0px',
+                            borderTop: '1px solid #D5D5D5',
+                            borderBottom: isLast ? '1px solid #D5D5D5' : 'none',
+                            backgroundColor: '#FAF8F4',
+                          }}
+                          className="gap-6 lg:gap-10 py-6 lg:py-8"
+                        >
+                          {/* Question Button */}
+                          {section.isAlwaysOpen && !item.question ? (
+                            // No question, show answer directly
+                            null
+                          ) : section.isAlwaysOpen ? (
+                            <div
                               style={{
-                                color: '#333',
-                                fontFamily: '"Zen Kaku Gothic New"',
-                                fontWeight: '400',
-                                lineHeight: '160%'
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                alignSelf: 'stretch',
+                                gap: '20px',
                               }}
+                              className="gap-5 lg:gap-10"
                             >
-                              {item.answer}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
+                              <span
+                                style={{
+                                  fontFamily: '"Noto Sans JP", sans-serif',
+                                  fontWeight: 500,
+                                  fontSize: '14px',
+                                  lineHeight: '1.6em',
+                                  color: '#000000',
+                                  flex: 1,
+                                  textAlign: 'left',
+                                }}
+                                className="text-sm lg:text-base"
+                              >
+                                {item.question}
+                              </span>
+                            </div>
+                          ) : (
+                            <button
+                              className="w-full text-left flex items-center justify-between hover:opacity-80 transition-opacity"
+                              onClick={() => toggleItem(sectionIndex, itemIndex)}
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                alignSelf: 'stretch',
+                                gap: '20px',
+                              }}
+                              className="gap-5 lg:gap-10"
+                            >
+                              <span
+                                style={{
+                                  fontFamily: '"Noto Sans JP", sans-serif',
+                                  fontWeight: 500,
+                                  fontSize: '14px',
+                                  lineHeight: '1.6em',
+                                  color: '#000000',
+                                  flex: 1,
+                                  textAlign: 'left',
+                                }}
+                                className="text-sm lg:text-base"
+                              >
+                                {item.question}
+                              </span>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  gap: '10px',
+                                  padding: '4px 16px',
+                                  width: '32px',
+                                  height: '32px',
+                                  borderRadius: '9999px',
+                                  backgroundColor: '#2B7A78',
+                                  flexShrink: 0,
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: '#FFFFFF',
+                                    fontSize: '20px',
+                                    fontWeight: 'bold',
+                                    lineHeight: '1',
+                                  }}
+                                >
+                                  {isOpen ? '−' : '+'}
+                                </span>
+                              </div>
+                            </button>
+                          )}
+
+                          {/* Answer */}
+                          {isOpen && (
+                            <div style={{ width: '100%' }}>
+                              <p
+                                style={{
+                                  fontFamily: '"Noto Sans JP", sans-serif',
+                                  fontWeight: 400,
+                                  fontSize: '14px',
+                                  lineHeight: '1.6em',
+                                  color: '#000000',
+                                  textAlign: 'left',
+                                  whiteSpace: 'pre-line',
+                                }}
+                                className="text-sm lg:text-base lg:text-justify"
+                              >
+                                {item.answer}
+                              </p>
+                            </div>
+                          )}
+                          {/* Always show answer if no question */}
+                          {section.isAlwaysOpen && !item.question && (
+                            <div style={{ width: '100%' }}>
+                              <p
+                                style={{
+                                  fontFamily: '"Noto Sans JP", sans-serif',
+                                  fontWeight: 400,
+                                  fontSize: '14px',
+                                  lineHeight: '1.6em',
+                                  color: '#000000',
+                                  textAlign: 'left',
+                                  whiteSpace: 'pre-line',
+                                }}
+                                className="text-sm lg:text-base lg:text-justify"
+                              >
+                                {item.answer}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })
+                  )}
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Contact Section */}
-          <div
-            className="mt-16 md:mt-20 p-8 md:p-12 rounded-lg text-center"
-            style={{
-              backgroundColor: '#F0F9FF'
-            }}
-          >
-            <h3
-              className="text-xl md:text-2xl mb-4"
-              style={{
-                color: '#000',
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '700',
-                lineHeight: '100%'
-              }}
-            >
-              解決しない場合は
-            </h3>
-            <p
-              className="text-base md:text-lg mb-6"
-              style={{
-                color: '#666',
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400',
-                lineHeight: '160%'
-              }}
-            >
-              お問い合わせフォームよりご連絡ください
-            </p>
-            <Link
-              href="/lp/contact"
-              className="inline-flex py-3 md:py-4 px-8 md:px-12 justify-center items-center gap-2 rounded-full border-none cursor-pointer hover:opacity-90 transition-opacity"
-              style={{
-                background: '#6FC8E5',
-                color: '#FFF',
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '700',
-                fontSize: '16px',
-                textDecoration: 'none'
-              }}
-            >
-              お問い合わせ
-            </Link>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 mt-16 md:mt-20">
-        <div className="max-w-6xl mx-auto px-4 md:px-[120px] py-12 md:py-16">
-          <div className="text-center">
+      <footer className="w-full bg-white border-t border-[#eee]">
+        <div className={`${container} py-10`}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'stretch',
+              gap: '24px',
+              padding: '56px 0px 0px',
+            }}
+          >
             {/* Logo */}
-            <div className="mb-8">
-              <Image
-                src="/lp/images/logo.png"
-                alt="TAMANOMI"
-                width={328}
-                height={329}
-                className="w-32 h-auto md:w-40 mx-auto"
-              />
-            </div>
+            <Image
+              src="/favicon.png"
+              alt="nomoca Kagawa"
+              width={294}
+              height={294}
+              style={{
+                width: '200px',
+                height: '200px',
+              }}
+              className="w-[200px] h-[200px] lg:w-[294px] lg:h-[294px]"
+            />
 
-            {/* Footer Links */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-6">
-              <Link
-                href="/lp/faq"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
-              >
-                よくあるご質問
-              </Link>
-              <Link
-                href="/lp/contact"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
-              >
-                お問い合わせ
-              </Link>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
-              >
-                プライバシーポリシー
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
-              >
-                利用規約
-              </a>
+            {/* Links */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '20px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}
+              className="gap-5 lg:gap-10"
+            >
+            <Link href="/lp/faq" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              よくあるご質問
+            </Link>
+            <Link href="/lp/contact" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              お問い合わせ
+            </Link>
+            <a href="/プライバシーポリシー.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              プライバシーポリシー
+            </a>
+            <a href="/特定商取引法.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              特定商取引法に基づく表記
+            </a>
+            <Link href="/lp/terms" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              ご利用規約
+            </Link>
+            <a href="#" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
+              運営会社
+            </a>
             </div>
 
             {/* Copyright */}
-            <p
-              className="text-sm"
+            <div
               style={{
-                color: '#666',
-                fontFamily: 'Rubik',
-                fontWeight: '400'
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'stretch',
+                gap: '40px',
+                padding: '40px 0px',
+                borderTop: '1px solid #000000',
               }}
             >
-              ©2025 nomocaKagawa
-            </p>
+              <p
+                style={{
+                  fontFamily: '"Oswald", sans-serif',
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  lineHeight: '1em',
+                  color: '#000000',
+                  textAlign: 'center',
+                }}
+              >
+                ©2025 nomoca Kagawa
+              </p>
+            </div>
           </div>
         </div>
       </footer>
     </div>
   )
 }
-

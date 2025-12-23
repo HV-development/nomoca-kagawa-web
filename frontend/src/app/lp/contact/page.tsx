@@ -225,7 +225,7 @@ function ContactFormContent() {
 
       {/* Main Content */}
       <div className="w-full bg-white py-12 md:py-20">
-        <div className="max-w-3xl mx-auto px-4 md:px-8">
+        <div className="w-full max-w-5xl lg:max-w-6xl mx-auto px-4 md:px-10 lg:px-12">
           {/* Title */}
           <div className="text-center mb-8 md:mb-12">
             <h1
@@ -294,9 +294,9 @@ function ContactFormContent() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* Inquiry Type Radio Buttons */}
-            <div>
+            <div className="md:grid md:grid-cols-2 md:gap-6 md:items-center">
               <label
                 className="block mb-3 text-sm md:text-base"
                 style={{
@@ -350,7 +350,7 @@ function ContactFormContent() {
             </div>
 
             {/* Name Field */}
-            <div>
+            <div className="md:grid md:grid-cols-2 md:gap-6">
               <label
                 htmlFor="name"
                 className="block mb-2 text-sm md:text-base"
@@ -362,25 +362,27 @@ function ContactFormContent() {
               >
                 {nameLabel} <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder={namePlaceholder}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
-                style={{
-                  borderColor: errors.name ? '#ef4444' : '#d1d5db',
-                  fontFamily: '"Zen Kaku Gothic New"',
-                }}
-              />
-              {errors.name && (
-                <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
-              )}
+              <div>
+                <input
+                  type="text"
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder={namePlaceholder}
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
+                  style={{
+                    borderColor: errors.name ? '#ef4444' : '#d1d5db',
+                    fontFamily: '"Zen Kaku Gothic New"',
+                  }}
+                />
+                {errors.name && (
+                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
+                )}
+              </div>
             </div>
 
             {/* Email Field */}
-            <div>
+            <div className="md:grid md:grid-cols-2 md:gap-6">
               <label
                 htmlFor="email"
                 className="block mb-2 text-sm md:text-base"
@@ -392,25 +394,27 @@ function ContactFormContent() {
               >
                 メールアドレス <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="例：example@tamanomi.com"
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
-                style={{
-                  borderColor: errors.email ? '#ef4444' : '#d1d5db',
-                  fontFamily: '"Zen Kaku Gothic New"',
-                }}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
-              )}
+              <div>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  placeholder="例：example@tamanomi.com"
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
+                  style={{
+                    borderColor: errors.email ? '#ef4444' : '#d1d5db',
+                    fontFamily: '"Zen Kaku Gothic New"',
+                  }}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
+                )}
+              </div>
             </div>
 
             {/* Message Field */}
-            <div>
+            <div className="md:grid md:grid-cols-2 md:gap-6">
               <label
                 htmlFor="message"
                 className="block mb-2 text-sm md:text-base"
@@ -422,21 +426,23 @@ function ContactFormContent() {
               >
                 お問い合わせ内容 <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <textarea
-                id="message"
-                value={formData.message}
-                onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                placeholder="お問い合わせ内容をご記入ください"
-                rows={8}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] resize-vertical"
-                style={{
-                  borderColor: errors.message ? '#ef4444' : '#d1d5db',
-                  fontFamily: '"Zen Kaku Gothic New"',
-                }}
-              />
-              {errors.message && (
-                <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.message}</p>
-              )}
+              <div className="md:col-span-1">
+                <textarea
+                  id="message"
+                  value={formData.message}
+                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                  placeholder="お問い合わせ内容をご記入ください"
+                  rows={8}
+                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] resize-vertical"
+                  style={{
+                    borderColor: errors.message ? '#ef4444' : '#d1d5db',
+                    fontFamily: '"Zen Kaku Gothic New"',
+                  }}
+                />
+                {errors.message && (
+                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.message}</p>
+                )}
+              </div>
             </div>
 
             {/* Submit Button */}

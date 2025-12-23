@@ -12,9 +12,9 @@ body {
   overflow-x: hidden;
 }
 
-/* 通常ページ: PC幅でもスマホ幅を維持（LPでは後述のlp-pageクラスで解除） */
+/* スマホ幅固定を行いたい場合のみ .mobile-fixed を付与して使用する */
 @media (min-width: 768px) {
-  body:not(.lp-page) {
+  body.mobile-fixed {
     max-width: 28rem;
     width: 100%;
     margin-left: auto;
