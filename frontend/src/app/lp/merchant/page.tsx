@@ -422,7 +422,7 @@ export default function MerchantLPPage() {
         </p>
 
         {/* メリットカード */}
-        <div className="flex flex-col lg:flex-row flex-wrap justify-center items-stretch gap-4 lg:gap-10 w-full max-w-[1200px]">
+        <div className="flex flex-col lg:flex-row flex-wrap justify-center items-center gap-4 lg:gap-10 w-full max-w-[1200px]">
           {/* Merit 1 */}
           <div
             className="flex flex-col lg:flex-row items-start gap-4 p-4 pr-6"
