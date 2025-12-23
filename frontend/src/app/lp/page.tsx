@@ -344,7 +344,7 @@ export default function LPPage() {
               height={578}
               className="w-64 md:w-[400px] lg:w-[500px] h-auto"
             />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[35%]">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/ -translate-y-[25%]">
               <Image
                 src="/lp/images/fv-phone.png"
                 alt="スマホ画面"
@@ -509,10 +509,10 @@ export default function LPPage() {
           </div>
 
           {/* About Content */}
-          <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center">
+          <div className="relative flex flex-col md:flex-row items-center">
             {/* テキストコンテンツ */}
             <div
-              className="flex-1 p-8 md:p-12 lg:p-16"
+              className="flex-1 p-8 md:p-12 lg:p-16 md:pr-24 lg:pr-32"
               style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
             >
               <h3
@@ -543,8 +543,8 @@ export default function LPPage() {
               </p>
             </div>
 
-            {/* 画像 */}
-            <div className="flex-shrink-0">
+            {/* 画像 - テキスト背景に重なるように配置 */}
+            <div className="flex-shrink-0 md:-ml-16 lg:-ml-24 relative z-10">
               <Image
                 src="/lp/images/about-image.png"
                 alt="nomocaを楽しむ人々"
