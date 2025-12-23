@@ -30,7 +30,7 @@ export function HeaderLogo({
         {showBackButton && onBackClick && (
           <button
             onClick={onBackClick}
-            className="absolute left-0 text-green-600 hover:text-green-700 transition-colors"
+            className="absolute left-0 z-10 text-green-600 hover:text-green-700 transition-colors"
           >
             ← 戻る
           </button>

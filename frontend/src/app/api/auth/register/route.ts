@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
       shopId?: string;
       token?: string;
     }
+
     const validatedData: ValidatedData = {
       // emailはスキーマでオプショナルになったため、送信しない（トークンから取得される）
       password: body.password,

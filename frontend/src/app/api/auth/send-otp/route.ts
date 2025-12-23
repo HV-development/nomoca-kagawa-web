@@ -19,9 +19,7 @@ export async function POST(request: NextRequest) {
       headerOptions: {
         requireAuth: false, // OTP送信は認証不要
       },
-      body: JSON.stringify({
-        email,
-      }),
+      body: JSON.stringify({ email }),
     })
 
     if (!response.ok) {
