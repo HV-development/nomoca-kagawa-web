@@ -32,7 +32,7 @@ export default function LPPage() {
     if (isTransitioning) return
     
     setIsTransitioning(true)
-    const delta = direction === 'right' ? -1 : 1
+    const delta = direction === 'right' ? 1 : -1
     setCurrentSlide(prev => prev + delta)
     
     setTimeout(() => {
