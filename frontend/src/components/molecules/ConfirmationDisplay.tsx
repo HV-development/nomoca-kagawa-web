@@ -31,7 +31,7 @@ export function ConfirmationDisplay({ data, onRegister, onEdit, isLoading = fals
     { label: "生年月日", value: formatDate(data.birthDate) },
     { label: "性別", value: genderLabels[data.gender as keyof typeof genderLabels] },
     { label: "パスワード", value: "●".repeat(data.password.length) },
-    ...(data.saitamaAppId ? [{ label: "高松市みんなのアプリID", value: data.saitamaAppId }] : []),
+    ...(data.mydigiAppId ? [{ label: "マイデジアプリID", value: data.mydigiAppId }] : []),
   ]
 
   return (

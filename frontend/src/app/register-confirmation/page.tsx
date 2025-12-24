@@ -128,7 +128,7 @@ export default function RegisterConfirmationPage() {
     setIsLoading(true)
 
     try {
-      const mydigiAppIdValue = formData.saitamaAppId && formData.saitamaAppId.trim() !== '' ? formData.saitamaAppId.trim() : undefined;
+      const mydigiAppIdValue = formData.mydigiAppId && formData.mydigiAppId.trim() !== '' ? formData.mydigiAppId.trim() : undefined;
 
       // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
       // referrerUserIdはURLパラメータから取得するか、Cookieから取得する
