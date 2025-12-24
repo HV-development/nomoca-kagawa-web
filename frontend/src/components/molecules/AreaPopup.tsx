@@ -11,17 +11,11 @@ interface AreaPopupProps {
   onClear: () => void
 }
 
-const SAITAMA_AREAS = [
-  { value: "nishi", label: "西区" },
-  { value: "kita", label: "北区" },
-  { value: "omiya", label: "大宮区" },
-  { value: "minuma", label: "見沼区" },
-  { value: "chuo", label: "中央区" },
-  { value: "sakura", label: "桜区" },
-  { value: "urawa", label: "浦和区" },
-  { value: "minami", label: "南区" },
-  { value: "midori", label: "緑区" },
-  { value: "iwatsuki", label: "岩槻区" },
+const KAGAWA_AREAS = [
+  { value: "takamatsu", label: "高松市内エリア" },
+  { value: "tosan", label: "東讃エリア" },
+  { value: "chusan", label: "中讃エリア" },
+  { value: "seisan", label: "西讃エリア" },
 ]
 
 export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClear }: AreaPopupProps) {
@@ -48,12 +42,12 @@ export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClea
 
           {/* 説明テキスト */}
           <div className="text-sm text-gray-600 mb-4">
-            高松市内のエリアを選択してください
+            香川県内のエリアを選択してください
           </div>
 
           {/* エリア選択グリッド - スマホ最適化 */}
           <div className="grid grid-cols-2 gap-3 mb-6">
-            {SAITAMA_AREAS.map((area) => (
+            {KAGAWA_AREAS.map((area) => (
               <AreaButton
                 key={area.value}
                 label={area.label}

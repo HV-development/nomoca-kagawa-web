@@ -1,25 +1,19 @@
 /**
- * エリア値から市区町村名へのマッピング
- * 高松市のエリアを定義
+ * エリア値からエリア名へのマッピング
+ * 香川県のエリアを定義
  */
 
 const AREA_TO_CITY_MAP: Record<string, string> = {
-  nishi: "西区",
-  kita: "北区",
-  omiya: "大宮区",
-  minuma: "見沼区",
-  chuo: "中央区",
-  sakura: "桜区",
-  urawa: "浦和区",
-  minami: "南区",
-  midori: "緑区",
-  iwatsuki: "岩槻区",
+  takamatsu: "高松市内エリア",
+  tosan: "東讃エリア",
+  chusan: "中讃エリア",
+  seisan: "西讃エリア",
 }
 
 /**
- * エリア値の配列を市区町村名の配列に変換
- * @param areaValues エリア値の配列（例: ["nishi", "kita"]）
- * @returns 市区町村名の配列（例: ["西区", "北区"]）
+ * エリア値の配列をエリア名の配列に変換
+ * @param areaValues エリア値の配列（例: ["takamatsu", "tosan"]）
+ * @returns エリア名の配列（例: ["高松市内エリア", "東讃エリア"]）
  */
 export function mapAreasToCities(areaValues: string[]): string[] {
   return areaValues
@@ -28,9 +22,9 @@ export function mapAreasToCities(areaValues: string[]): string[] {
 }
 
 /**
- * 単一のエリア値を市区町村名に変換
- * @param areaValue エリア値（例: "nishi"）
- * @returns 市区町村名（例: "西区"）、存在しない場合はundefined
+ * 単一のエリア値をエリア名に変換
+ * @param areaValue エリア値（例: "takamatsu"）
+ * @returns エリア名（例: "高松市内エリア"）、存在しない場合はundefined
  */
 export function mapAreaToCity(areaValue: string): string | undefined {
   return AREA_TO_CITY_MAP[areaValue]
