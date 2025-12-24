@@ -250,34 +250,41 @@ export default function CampaignPage() {
               <span className="text-white text-xs font-bold ml-1">3店舗利用</span>
             </div>
             <div className="flex items-center justify-center mb-2">
-              {/* クーポン3枚のイラスト - チケット風 */}
-              <div className="flex flex-col gap-1">
-                {[1, 2, 3].map((num) => (
-                  <div 
-                    key={num}
-                    className="relative flex items-center"
-                    style={{ width: '70px', height: '18px' }}
-                  >
-                    {/* 左の半円切れ込み */}
-                    <div 
-                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
-                      style={{ backgroundColor: '#FFF' }}
-                    ></div>
-                    {/* クーポン本体 */}
-                    <div 
-                      className="w-full h-full flex items-center justify-between px-2 rounded-sm"
-                      style={{ backgroundColor: '#6FC8E5' }}
-                    >
-                      <span className="text-[7px] font-bold text-white">COUPON</span>
-                      <span className="text-[8px]">🍹</span>
-                    </div>
-                    {/* 右の半円切れ込み */}
-                    <div 
-                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 rounded-full"
-                      style={{ backgroundColor: '#FFF' }}
-                    ></div>
+              {/* クーポン3枚重ね */}
+              <div className="relative" style={{ width: '70px', height: '50px' }}>
+                {/* クーポン3（奥） */}
+                <div 
+                  className="absolute flex items-center"
+                  style={{ width: '60px', height: '16px', top: '0px', left: '10px' }}
+                >
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                  <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#4BA8C5' }}>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
                   </div>
-                ))}
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                </div>
+                {/* クーポン2（中） */}
+                <div 
+                  className="absolute flex items-center"
+                  style={{ width: '60px', height: '16px', top: '12px', left: '5px' }}
+                >
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                  <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#5BB8D5' }}>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
+                  </div>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                </div>
+                {/* クーポン1（手前） */}
+                <div 
+                  className="absolute flex items-center"
+                  style={{ width: '60px', height: '16px', top: '24px', left: '0px' }}
+                >
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                  <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#6FC8E5' }}>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
+                  </div>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#FFF' }}></div>
+                </div>
               </div>
             </div>
             <p className="text-[9px]" style={{ color: '#666' }}>
