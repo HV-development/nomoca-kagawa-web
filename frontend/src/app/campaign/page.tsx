@@ -271,8 +271,8 @@ export default function CampaignPage() {
           <div className="bg-white rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div 
-                className="px-3 py-1 rounded-full flex-shrink-0"
-                style={{ backgroundColor: '#FF6F61', minWidth: '110px' }}
+                className="px-3 py-1 rounded-full flex-shrink-0 text-center"
+                style={{ backgroundColor: '#FF6F61', width: '135px' }}
               >
                 <span className="text-white text-xs font-bold whitespace-nowrap">❶ 3店舗利用</span>
               </div>
@@ -306,8 +306,8 @@ export default function CampaignPage() {
           <div className="bg-white rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div 
-                className="px-3 py-1 rounded-full flex-shrink-0"
-                style={{ backgroundColor: '#FF6F61', minWidth: '110px' }}
+                className="px-3 py-1 rounded-full flex-shrink-0 text-center"
+                style={{ backgroundColor: '#FF6F61', width: '135px' }}
               >
                 <span className="text-white text-xs font-bold whitespace-nowrap">❷ 掲載店リクエスト</span>
               </div>
