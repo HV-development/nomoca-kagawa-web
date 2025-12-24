@@ -20,15 +20,15 @@ export default function CampaignPage() {
       </div>
 
       {/* 3ステップセクション - PDFと同様の横並び */}
-      <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
-        <div className="flex items-stretch justify-center gap-1">
+      <div className="px-2 py-4" style={{ backgroundColor: '#6FC8E5' }}>
+        <div className="flex items-stretch justify-center gap-0.5">
           {/* Step 1: サイトへアクセス */}
-          <div className="bg-white rounded-lg p-2 flex-1 max-w-[110px] text-center">
+          <div className="bg-white rounded-lg p-2 flex-1 max-w-[115px] text-center">
             <h2 
-              className="text-xs font-bold mb-2 leading-tight"
+              className="text-[11px] font-bold mb-2 leading-tight whitespace-nowrap"
               style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
             >
-              サイトへ<br />アクセス
+              サイトへアクセス
             </h2>
             <div 
               className="rounded-lg p-2 mb-2"
@@ -37,14 +37,14 @@ export default function CampaignPage() {
               <Image
                 src="/main-logo.jpg"
                 alt="nomocaKagawa"
-                width={60}
-                height={60}
+                width={55}
+                height={55}
                 className="mx-auto"
               />
             </div>
             <Link
               href="/email-registration"
-              className="block w-full py-1 rounded text-[9px] font-bold text-white"
+              className="block w-full py-1.5 rounded text-[10px] font-bold text-white whitespace-nowrap"
               style={{ backgroundColor: '#FF6F61' }}
             >
               新規登録 →
@@ -52,14 +52,14 @@ export default function CampaignPage() {
           </div>
 
           {/* 矢印 */}
-          <div className="flex items-center px-1">
-            <span className="text-white text-xl">▶</span>
+          <div className="flex items-center">
+            <span className="text-white text-lg">▶</span>
           </div>
 
           {/* Step 2: 新規登録 */}
-          <div className="bg-white rounded-lg p-2 flex-1 max-w-[110px] text-center">
+          <div className="bg-white rounded-lg p-2 flex-1 max-w-[115px] text-center">
             <h2 
-              className="text-xs font-bold mb-2 leading-tight"
+              className="text-[11px] font-bold mb-2 leading-tight whitespace-nowrap"
               style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
             >
               新規登録
@@ -69,7 +69,7 @@ export default function CampaignPage() {
               style={{ backgroundColor: '#F5F5F5' }}
             >
               {/* 登録フォームアイコン */}
-              <div className="flex flex-col items-center justify-center h-12">
+              <div className="flex flex-col items-center justify-center h-10">
                 <div className="relative">
                   <div 
                     className="w-8 h-10 rounded border-2 flex flex-col items-center pt-1"
@@ -87,31 +87,31 @@ export default function CampaignPage() {
                   </div>
                 </div>
               </div>
-              <p className="text-[8px] mt-1" style={{ color: '#6FC8E5' }}>必要事項を入力</p>
+              <p className="text-[8px] mt-1 whitespace-nowrap" style={{ color: '#6FC8E5' }}>必要事項を入力</p>
             </div>
             <p 
-              className="text-[7px] leading-tight"
+              className="text-[7px] leading-tight whitespace-nowrap"
               style={{ color: '#666' }}
             >
-              ※お支払い方法の登録が必要です
+              ※お支払い方法の登録必須
             </p>
           </div>
 
           {/* 矢印 */}
-          <div className="flex items-center px-1">
-            <span className="text-white text-xl">▶</span>
+          <div className="flex items-center">
+            <span className="text-white text-lg">▶</span>
           </div>
 
           {/* Step 3: コード入力 */}
           <div 
-            className="rounded-lg p-2 flex-1 max-w-[110px] text-center"
+            className="rounded-lg p-2 flex-1 max-w-[115px] text-center"
             style={{ backgroundColor: '#FFD93B' }}
           >
             <h2 
-              className="text-xs font-bold mb-1 leading-tight"
+              className="text-[11px] font-bold mb-1 leading-tight whitespace-nowrap"
               style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
             >
-              nomocaKagawa<br />コード入力
+              コード入力
             </h2>
             <div 
               className="rounded py-2 px-1 mb-1"
@@ -124,14 +124,14 @@ export default function CampaignPage() {
                 5959
               </span>
             </div>
-            <p className="text-[7px]" style={{ color: '#333' }}>
-              新規登録ページ内コード入力欄に<br />上記4桁の数字を入力ください。
+            <p className="text-[7px] whitespace-nowrap" style={{ color: '#333' }}>
+              登録時に上記コードを入力
             </p>
-            <p className="text-[7px] mt-1" style={{ color: '#FF6F61', fontWeight: 700 }}>
-              有効期限：2026年3月31日(火)
+            <p className="text-[7px] mt-1 whitespace-nowrap" style={{ color: '#FF6F61', fontWeight: 700 }}>
+              期限:2026年3月31日
             </p>
-            <p className="text-[7px]" style={{ color: '#666' }}>
-              お一人様1回限り有効
+            <p className="text-[7px] whitespace-nowrap" style={{ color: '#666' }}>
+              お一人様1回限り
             </p>
           </div>
         </div>
