@@ -549,20 +549,20 @@ export default function CampaignPage() {
 
       {/* フッター */}
       <div 
-        className="w-full py-6 text-center"
-        style={{ backgroundColor: '#6FC8E5' }}
+        className="w-full py-8 text-center"
+        style={{ backgroundColor: '#FFF' }}
       >
         <Image
-          src="/lp/images/horizon-color-white.png"
+          src="/main-logo.jpg"
           alt="nomocaKagawa"
-          width={200}
-          height={50}
+          width={120}
+          height={120}
           className="mx-auto mb-4"
         />
         <p 
           className="text-sm"
           style={{
-            color: '#FFF',
+            color: '#6FC8E5',
             fontFamily: 'Rubik, sans-serif'
           }}
         >
