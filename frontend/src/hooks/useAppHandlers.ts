@@ -380,7 +380,7 @@ export const useAppHandlers = (
 
         switch (itemId) {
             case "terms":
-                window.location.href = "/lp/terms"
+                window.open("/nomocakagawaサービス利用規約.pdf", "_blank", "noopener,noreferrer")
                 break
             case "privacy":
                 window.open("/プライバシーポリシー.pdf", "_blank")
@@ -723,7 +723,7 @@ export const useAppHandlers = (
                 throw new Error(errorData.message || 'プラン変更に失敗しました')
             }
 
-            const responseData = await response.json();
+            await response.json();
 
             // プラン変更後、新しいユーザー情報を取得してauth状態を更新
             try {

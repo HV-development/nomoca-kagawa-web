@@ -8,13 +8,6 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {
-    // デバッグログ: Cookieの存在確認
-    const accessTokenCookie = request.cookies.get('accessToken');
-    const hostAccessTokenCookie = request.cookies.get('__Host-accessToken');
-    const refreshTokenCookie = request.cookies.get('refreshToken');
-    const hostRefreshTokenCookie = request.cookies.get('__Host-refreshToken');
-    
-
     const fullUrl = buildApiUrl('/users/me')
 
     const response = await secureFetchWithCommonHeaders(request, fullUrl, {

@@ -91,9 +91,6 @@ export default function RegisterPage() {
     // フォームデータをZustandストアに保存（メモリのみ、ネットワーク経由で送信されない）
     setFormData(data)
     
-    // デバッグ: 保存されたデータを確認
-    const savedData = useRegisterStore.getState().formData
-    
     // 確認画面に遷移（クライアントサイドのみ）
     // 次のイベントループで遷移することで、Zustandストアへの保存が確実に完了する
     await new Promise(resolve => setTimeout(resolve, 0))

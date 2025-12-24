@@ -130,8 +130,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // /_next/image エンドポイントのURLパラメータを検証（ディレクトリトラバーサル対策）
+  // unoptimized: trueが設定されている場合、このエンドポイントは使用されないはずだが、
+  // 念のため検証を残す
   if (pathname === '/_next/image') {
     const imageUrl = request.nextUrl.searchParams.get('url');
+    if (!imageUrl) {
+      // URLパラメータがない場合は許可（Next.jsの内部処理）
+      return NextResponse.next();
+    }
     if (!validateImageUrl(imageUrl)) {
       console.warn('[middleware] Invalid image URL blocked', {
         url: imageUrl,

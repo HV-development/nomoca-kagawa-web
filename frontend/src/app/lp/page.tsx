@@ -504,7 +504,7 @@ export default function LPPage() {
           {/* イラストとスマホ - Desktop */}
           <div className="relative flex items-center justify-center">
             <Image
-              src="/lp/images/user-fv-illustration.svg"
+              src="/lp/images/user-fv-illustration.png"
               alt="街のイラスト"
               width={602}
               height={578}
@@ -1399,7 +1399,7 @@ export default function LPPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
           style={{
-            backgroundImage: 'url(/lp/images/user-stores-bg.svg)'
+            backgroundImage: 'url(/lp/images/user-stores-bg.png)'
           }}
         />
 
@@ -1626,7 +1626,7 @@ export default function LPPage() {
               特定商取引法に基づく表記
             </a>
             <Link
-              href="/lp/terms"
+              href="/nomocakagawaサービス利用規約.pdf" target="_blank" rel="noopener noreferrer"
               className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",

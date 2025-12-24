@@ -199,6 +199,7 @@ const faqData: FAQSection[] = [
 
 export default function FAQPage() {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const toggleItem = (sectionIndex: number, itemIndex: number) => {
     const key = `${sectionIndex}-${itemIndex}`
@@ -211,20 +212,127 @@ export default function FAQPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="w-full bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-6 md:px-[120px] md:py-8">
-          <div className="flex items-center justify-between">
-            <Link href="/lp">
+      <header className="relative w-full bg-white border-b" style={{ zIndex: 100 }}>
+        <div className="w-full px-4 py-4 md:px-8 md:py-6">
+          <div className="flex items-center w-full max-w-6xl mx-auto">
+            <Link href="/lp" className="flex items-center">
               <Image
-                src="/lp/images/logo-horizon-white.png"
-                alt="nomocaKagawa"
-                width={1312}
-                height={320}
-                className="w-32 h-8 md:w-[246px] md:h-[60px]"
+                src="/logo.svg"
+                alt="TAMANOMI"
+                width={576}
+                height={96}
+                className="w-24 h-auto md:w-32 lg:w-[320px]"
               />
             </Link>
+            <div style={{ flex: 1 }}></div>
+            <div className="flex items-center gap-4 md:gap-8">
+              <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <Link href="/lp#about" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  nomocaKagawaとは
+                </Link>
+                <Link href="/lp#features" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  魅力
+                </Link>
+                <Link href="/lp#howto" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  使い方
+                </Link>
+                <Link href="/lp#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  利用料金
+                </Link>
+              </nav>
+
+              <Link
+                href="/lp/merchant"
+                className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm px-4 py-2 md:px-6 md:py-3 rounded-full"
+                style={{
+                  background: 'var(--main, #6FC8E5)'
+                }}
+              >
+                お店の方はこちら
+              </Link>
+
+              <button
+                className="md:hidden flex flex-col justify-center items-center cursor-pointer"
+                style={{ gap: '6px' }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="メニュー"
+              >
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* モバイルメニュー */}
+        {isMobileMenuOpen && (
+          <div
+            className="md:hidden fixed inset-0 w-full h-full bg-white"
+            style={{
+              display: 'flex',
+              paddingBottom: '184px',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: '32px',
+              zIndex: 9999
+            }}
+          >
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
+              aria-label="メニューを閉じる"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <nav className="flex flex-col items-center gap-8 py-8">
+              <Link
+                href="/lp#about"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                nomocaKagawaとは
+              </Link>
+              <Link
+                href="/lp#features"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                魅力
+              </Link>
+              <Link
+                href="/lp#howto"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                使い方
+              </Link>
+              <Link
+                href="/lp#pricing"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                利用料金
+              </Link>
+            </nav>
+
+            <Link
+              href="/lp/merchant"
+              className="text-white font-bold hover:opacity-90 transition-opacity text-base px-8 py-4 rounded-full mb-8"
+              style={{
+                background: 'var(--main, #6FC8E5)',
+                textDecoration: 'none'
+              }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              お店の方はこちら
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* Main Content */}
@@ -410,75 +518,85 @@ export default function FAQPage() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full bg-white border-t border-gray-200 mt-16 md:mt-20">
-        <div className="max-w-6xl mx-auto px-4 md:px-[120px] py-12 md:py-16">
-          <div className="text-center">
+      <footer className="w-full bg-white border-t">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col justify-center items-center gap-8 md:gap-10 pt-8 md:pt-12">
             {/* Logo */}
-            <div className="mb-8">
+            <div className="mb-4 md:mb-8">
               <Image
-                src="/lp/images/logo-main.png"
+                src="/logo.svg"
                 alt="TAMANOMI"
-                width={328}
-                height={329}
-                className="w-32 h-auto md:w-40 mx-auto"
+                width={576}
+                height={96}
+                className="w-24 h-auto md:w-32 lg:w-[320px]"
               />
             </div>
 
             {/* Footer Links */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-6">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
               <Link
                 href="/lp/faq"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 よくあるご質問
               </Link>
               <Link
                 href="/lp/contact"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 お問い合わせ
               </Link>
               <a
-                href="#"
+                href="/プライバシーポリシー.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
                 プライバシーポリシー
               </a>
               <a
+                href="/特定商取引法.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
+              >
+                特定商取引法に基づく表記
+              </a>
+              <a
+                href="/nomocakagawaサービス利用規約.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
+              >
+                ご利用規約
+              </a>
+              <a
                 href="#"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{
-                  fontFamily: '"Zen Kaku Gothic New"',
-                  fontWeight: '400'
-                }}
+                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
               >
-                利用規約
+                運営会社
               </a>
             </div>
 
             {/* Copyright */}
-            <p
-              className="text-sm"
-              style={{
-                color: '#666',
-                fontFamily: 'Rubik',
-                fontWeight: '400'
-              }}
-            >
-              ©2025 nomocaKagawa
-            </p>
+            <div className="pb-6 md:pb-8">
+              <p
+                className="text-sm md:text-base"
+                style={{
+                  color: '#000',
+                  textAlign: 'center',
+                  fontFamily: 'Rubik'
+                }}
+              >
+                ©2025 nomocaKagawa
+              </p>
+            </div>
           </div>
         </div>
       </footer>
