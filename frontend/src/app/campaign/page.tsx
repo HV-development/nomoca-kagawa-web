@@ -188,14 +188,14 @@ export default function CampaignPage() {
 
           <div className="flex justify-center gap-4 mt-4 mb-4">
             <a
-              href="https://apps.apple.com/jp/app/id6504632498"
+              href="https://apps.apple.com/jp/app/%E3%83%9E%E3%82%A4%E3%83%87%E3%82%B8/id1593812395"
               target="_blank"
               rel="noopener noreferrer"
             >
               <Image src="/app-store.svg" alt="App Store" width={130} height={40} className="h-10 w-auto" />
             </a>
             <a
-              href="https://play.google.com/store/apps/details?id=jp.mydigi.kagawa"
+              href="https://play.google.com/store/apps/details?id=jp.takamatsu.yomsubi&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
               target="_blank"
               rel="noopener noreferrer"
             >
