@@ -37,7 +37,14 @@ export function PlanSection({ plan, onChangePlan, onCancelSubscription, classNam
         <div className="p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-bold text-green-900">{plan.name}</h3>
-            <div className="text-2xl font-bold text-green-600">¥{plan.price.toLocaleString()}</div>
+            {plan.discountPrice != null && plan.discountPrice < plan.price ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500 line-through">¥{plan.price.toLocaleString()}</span>
+                <div className="text-2xl font-bold text-green-600">¥{plan.discountPrice.toLocaleString()}</div>
+              </div>
+            ) : (
+              <div className="text-2xl font-bold text-green-600">¥{plan.price.toLocaleString()}</div>
+            )}
           </div>
           <p className="text-green-700 text-sm mb-3">{plan.description}</p>
 
