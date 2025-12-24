@@ -46,19 +46,8 @@ export function HomeContainer({
   // 店舗データをフィルタリング
   const filteredStores = useMemo(() => {
     const storesList = (stores ?? []).filter(store => {
-    // エリアフィルター（クライアントサイドフォールバック - サーバーサイドでフィルタリング済みのため通常は不要）
-    if ((selectedAreas?.length ?? 0) > 0 && selectedAreas) {
-      // 店舗のareaが選択されたエリアに含まれているかチェック
-      if (store.area) {
-        const matchesArea = selectedAreas.includes(store.area)
-        if (!matchesArea) {
-          return false
-        }
-      } else {
-        // 店舗にarea情報がない場合は除外（フィルターが適用されている場合）
-        return false
-      }
-    }
+    // エリアフィルターはサーバーサイドでフィルタリング済みのため、クライアントサイドでは不要
+    // サーバーからの結果をそのまま信頼する
     // ジャンルフィルター（サーバーサイドでフィルタリング済みのため、クライアントサイドでは不要）
     // サーバーサイドで既にフィルタリングされているため、ここでのフィルタリングは不要
     // if ((selectedGenres?.length ?? 0) > 0 && !selectedGenres?.includes(store.genre)) {
