@@ -49,7 +49,7 @@ export function RegisterForm({
     birthDate: "",
     gender: "male",
     phone: "",
-    saitamaAppId: "",
+    mydigiAppId: "",
     password: "",
     passwordConfirm: "",
   })
@@ -215,7 +215,7 @@ export function RegisterForm({
         'birthDate',
         'gender',
         'phone',
-        'saitamaAppId',
+        'mydigiAppId',
         'password',
         'passwordConfirm',
       ]
@@ -472,10 +472,10 @@ export function RegisterForm({
           type="text"
           label="マイデジ（任意）"
           placeholder="マイデジのアプリIDを入力"
-          value={formData.saitamaAppId || ""}
-          onChange={(value) => updateFormData("saitamaAppId", value)}
-          onBlur={() => handleFieldBlur("saitamaAppId")}
-          error={errors.saitamaAppId || undefined}
+          value={formData.mydigiAppId || ""}
+          onChange={(value) => updateFormData("mydigiAppId", value)}
+          onBlur={() => handleFieldBlur("mydigiAppId")}
+          error={errors.mydigiAppId || undefined}
         />
         <p className="mt-1 text-sm text-gray-500">
           マイデジのアプリをご利用の方は、アプリのユーザーIDをコピーして貼り付けてください

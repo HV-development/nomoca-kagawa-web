@@ -31,7 +31,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
     birthDate: "",
     gender: "male",
     phone: "",
-    saitamaAppId: "",
+    mydigiAppId: "",
   })
 
   const [originalData, setOriginalData] = useState<ProfileEditInput>({
@@ -41,7 +41,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
     birthDate: "",
     gender: "male",
     phone: "",
-    saitamaAppId: "",
+    mydigiAppId: "",
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof ProfileEditInput, string>>>({})
@@ -67,7 +67,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
       birthDate: formatBirthDate(user.birthDate),
       gender: (user.gender as "male" | "female" | "other") || "male",
       phone: user.phone || "",
-      saitamaAppId: (user as User & { saitamaAppId?: string }).saitamaAppId || "",
+      mydigiAppId: (user as User & { mydigiAppId?: string }).mydigiAppId || "",
     }
     setFormData(initialData)
     setOriginalData(initialData)
@@ -86,7 +86,7 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
     birthDate: "生年月日",
     gender: "性別",
     phone: "電話番号",
-    saitamaAppId: "高松市みんなのアプリID",
+    mydigiAppId: "マイデジアプリID",
   } as const
 
   const validateForm = () => {
@@ -285,8 +285,8 @@ export function ProfileEditForm({ user, onSubmit, onCancel, isLoading = false }:
         return
       } else if (field === 'phone') {
         profileEditSchema.pick({ phone: true }).parse({ phone: value })
-      } else if (field === 'saitamaAppId') {
-        profileEditSchema.pick({ saitamaAppId: true }).parse({ saitamaAppId: value })
+      } else if (field === 'mydigiAppId') {
+        profileEditSchema.pick({ mydigiAppId: true }).parse({ mydigiAppId: value })
       }
       setErrors(prev => ({ ...prev, [field]: undefined }))
     } catch (error) {

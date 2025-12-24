@@ -15,6 +15,7 @@ interface PlanOption {
   id: string
   name: string
   price: number
+  discountPrice?: number | null
   description: string
   features: string[]
   badge?: string
@@ -90,19 +91,20 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
         id: string;
         name: string;
         price: number;
+        discount_price?: number | null;
         description?: string;
-        features?: string[];
-        badge?: string;
-        isRecommended?: boolean;
+        plan_content?: { features?: string[] };
+        options?: { badge?: string; isRecommended?: boolean };
         originalPrice?: string
       }) => ({
         id: plan.id,
         name: plan.name,
         price: plan.price,
+        discountPrice: plan.discount_price,
         description: plan.description || '',
-        features: plan.features || [],
-        badge: plan.badge,
-        isRecommended: plan.isRecommended,
+        features: plan.plan_content?.features || [],
+        badge: plan.options?.badge,
+        isRecommended: plan.options?.isRecommended,
         originalPrice: plan.originalPrice,
       }))
 
@@ -374,35 +376,11 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
           const isCurrentPlan = plan.id === currentPlan.id
           const isSelected = selectedPlan === plan.id
 
-          // マイデジアプリ連携済みの場合の価格表示
-          const isMydigiLinked = mydigiAppLinked || linkedMydigiAppId;
-          const mydigiDiscountPrice = 480; // マイデジアプリ連携時の価格
-
-          // マイデジアプリ連携済みで、通常価格が980円の場合
-          if (isMydigiLinked && plan.price === 980) {
-            return (
-              <div key={plan.id} className="relative">
-                <PlanCard
-                  title={plan.name}
-                  description={plan.description}
-                  features={plan.features}
-                  price={`¥${mydigiDiscountPrice.toLocaleString()}/月`}
-                  originalPrice={`¥${plan.price.toLocaleString()}/月`}
-                  badge="マイデジ連携でお得"
-                  isSelected={isSelected}
-                  onSelect={() => handlePlanSelect(plan.id)}
-                  disabled={isCurrentPlan}
-                />
-
-                {/* 現在のプランオーバーレイ */}
-                {isCurrentPlan && (
-                  <div className="absolute inset-0 flex items-center justify-center rounded-2xl pointer-events-none">
-                    <div className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-bold">現在ご利用中</div>
-                  </div>
-                )}
-              </div>
-            );
-          }
+          // discountPriceがある場合は割引表示
+          const hasDiscount = plan.discountPrice != null && plan.discountPrice < plan.price
+          const displayPrice = hasDiscount ? plan.discountPrice! : plan.price
+          const displayOriginalPrice = hasDiscount ? `¥${plan.price.toLocaleString()}/月` : plan.originalPrice
+          const displayBadge = hasDiscount ? "マイデジ連携でお得" : plan.badge
 
           return (
             <div key={plan.id} className="relative">
@@ -410,9 +388,9 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
                 title={plan.name}
                 description={plan.description}
                 features={plan.features}
-                price={`¥${plan.price.toLocaleString()}/月`}
-                originalPrice={plan.originalPrice}
-                badge={plan.badge}
+                price={`¥${displayPrice.toLocaleString()}/月`}
+                originalPrice={displayOriginalPrice}
+                badge={displayBadge}
                 isSelected={isSelected}
                 onSelect={() => handlePlanSelect(plan.id)}
                 disabled={isCurrentPlan}

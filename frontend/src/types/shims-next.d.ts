@@ -110,7 +110,7 @@ declare module "@hv-development/schemas" {
     birthDate: string
     gender: "male" | "female" | "other"
     phone?: string
-    saitamaAppId?: string
+    mydigiAppId?: string
     referrerUserId?: string
     password: string
     passwordConfirm: string

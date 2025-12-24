@@ -41,7 +41,14 @@ export function PlanManagement({ plan, onChangePlan, className = "" }: PlanManag
           <div className="bg-green-100 rounded-xl p-4">
             <div className="text-center mb-3">
               <h4 className="text-lg font-bold text-green-900">{plan.name}</h4>
-              <div className="text-2xl font-bold text-green-900">¥{plan.price.toLocaleString()}</div>
+              {plan.discountPrice != null && plan.discountPrice < plan.price ? (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-sm text-gray-500 line-through">¥{plan.price.toLocaleString()}</span>
+                  <div className="text-2xl font-bold text-green-900">¥{plan.discountPrice.toLocaleString()}</div>
+                </div>
+              ) : (
+                <div className="text-2xl font-bold text-green-900">¥{plan.price.toLocaleString()}</div>
+              )}
             </div>
             
             <div className="text-sm text-green-800 text-center mb-4">
