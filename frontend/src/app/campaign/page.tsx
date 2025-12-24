@@ -244,23 +244,25 @@ export default function CampaignPage() {
       {/* キャンペーン条件セクション */}
       <div className="px-4 py-4" style={{ backgroundColor: '#6FC8E5' }}>
         {/* 達成条件ヘッダー */}
-        <div className="text-center mb-4 relative">
-          <div 
-            className="absolute -top-2 left-2 w-14 h-14 flex items-center justify-center"
-            style={{ 
-              backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpolygon points=\'50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35\' fill=\'%23FFD93B\'/%3E%3C/svg%3E")',
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat'
-            }}
-          >
-            <span className="text-xs font-bold" style={{ color: '#333' }}>達成!</span>
+        <div className="text-center mb-4">
+          <div className="inline-flex items-center gap-2">
+            <div 
+              className="w-10 h-10 flex items-center justify-center flex-shrink-0"
+              style={{ 
+                backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpolygon points=\'50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35\' fill=\'%23FFD93B\'/%3E%3C/svg%3E")',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat'
+              }}
+            >
+              <span className="text-[8px] font-bold" style={{ color: '#333' }}>達成!</span>
+            </div>
+            <p 
+              className="text-sm font-bold py-2 px-4 rounded-full"
+              style={{ backgroundColor: '#FFF', color: '#333' }}
+            >
+              条件<span style={{ color: '#FF6F61' }}>①②</span>を2026年2月28日までに達成すると
+            </p>
           </div>
-          <p 
-            className="text-base font-bold py-3 px-6 rounded-full inline-block"
-            style={{ backgroundColor: '#FFF', color: '#333' }}
-          >
-            条件<span style={{ color: '#FF6F61' }}>①②</span>を2026年2月28日までに達成すると
-          </p>
         </div>
 
         {/* 条件カード - 縦並び */}
