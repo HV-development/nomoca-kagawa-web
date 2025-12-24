@@ -380,7 +380,7 @@ export const useAppHandlers = (
 
         switch (itemId) {
             case "terms":
-                window.location.href = "/lp/terms"
+                window.open("/terms-of-service.pdf", "_blank")
                 break
             case "privacy":
                 window.open("/プライバシーポリシー.pdf", "_blank")

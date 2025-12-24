@@ -26,7 +26,7 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       id: "terms",
       label: "利用規約",
       onClick: () => {
-        window.location.href = "/lp/terms"
+        window.open("/terms-of-service.pdf", "_blank")
         onMenuItemClick("terms")
       },
     },
