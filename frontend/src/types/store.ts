@@ -24,6 +24,7 @@ export interface Store {
   address: string
   prefecture?: string
   city?: string
+  area?: string
   phone: string
   description: string
   thumbnailUrl?: string

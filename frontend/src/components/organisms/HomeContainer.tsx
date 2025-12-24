@@ -4,7 +4,6 @@ import { useMemo } from "react"
 import { StoreList } from "@/components/molecules/StoreList";
 import type { Store } from "@/types/store";
 import { calculateDistance } from "@/utils/location";
-import { mapAreasToCities } from "@/utils/area-mapping";
 
 interface HomeContainerProps {
   selectedGenres: string[] | undefined
@@ -47,17 +46,16 @@ export function HomeContainer({
   // 店舗データをフィルタリング
   const filteredStores = useMemo(() => {
     const storesList = (stores ?? []).filter(store => {
-    // エリアフィルター（クライアントサイドフォールバック）
-    if ((selectedAreas?.length ?? 0) > 0) {
-      const selectedCities = mapAreasToCities(selectedAreas)
-      // 店舗のcityが選択されたエリアの市区町村名に含まれているかチェック
-      if (store.city && selectedCities.length > 0) {
-        const matchesArea = selectedCities.some(city => store.city?.includes(city))
+    // エリアフィルター（クライアントサイドフォールバック - サーバーサイドでフィルタリング済みのため通常は不要）
+    if ((selectedAreas?.length ?? 0) > 0 && selectedAreas) {
+      // 店舗のareaが選択されたエリアに含まれているかチェック
+      if (store.area) {
+        const matchesArea = selectedAreas.includes(store.area)
         if (!matchesArea) {
           return false
         }
-      } else if (!store.city) {
-        // 店舗にcity情報がない場合は除外（フィルターが適用されている場合）
+      } else {
+        // 店舗にarea情報がない場合は除外（フィルターが適用されている場合）
         return false
       }
     }

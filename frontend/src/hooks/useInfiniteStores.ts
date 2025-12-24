@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Store } from '@/types/store'
 import type { ShopData } from '@hv-development/schemas'
 import { isFavoriteInStorage } from '@/lib/favorites-storage'
-import { mapAreasToCities } from '@/utils/area-mapping'
 import { mapGenresToIds } from '@/utils/genre-mapping'
 
 interface UseInfiniteStoresOptions {
@@ -121,6 +120,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     const fulladdress = shop.fulladdress as string | undefined
     const prefecture = shop.prefecture as string | undefined
     const city = shop.city as string | undefined
+    const area = (shop as any).area as string | undefined
     const address1 = shop.address1 as string | undefined
     const address2 = shop.address2 as string | undefined
     const phone = shop.phone as string | undefined
@@ -146,6 +146,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         [prefecture, city, address1, address2].filter(Boolean).join(' '),
       prefecture: prefecture || undefined,
       city: city || undefined,
+      area: area || undefined,
       phone: phone || '',
       description: description || '',
       thumbnailUrl: images?.[0] || '',
@@ -207,15 +208,10 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           limit: limit.toString(),
         })
 
-        // エリアフィルターを追加（複数エリアの場合はOR条件で処理）
+        // エリアフィルターを追加（複数エリアの場合はカンマ区切りでareaパラメータに設定）
         if (selectedAreas.length > 0) {
-          const cities = mapAreasToCities(selectedAreas)
-          // 複数のエリアがある場合は、各エリアに対してクエリを実行する必要があるが、
-          // バックエンドAPIが複数のcityパラメータをサポートしているか確認が必要
-          // 暫定的には最初のエリアのみを使用
-          if (cities.length > 0) {
-            queryParams.append('city', cities[0])
-          }
+          // エリア値をそのままareaパラメータとして送信（例: "takamatsu,tosan"）
+          queryParams.append('area', selectedAreas.join(','))
         }
 
         // ジャンルフィルターを追加
