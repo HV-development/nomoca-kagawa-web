@@ -80,13 +80,13 @@ export default function MerchantLPPage() {
             <div className="flex flex-col items-center gap-4">
               <span
                 className="text-[120px] font-bold leading-none"
-                style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}
+                style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}
               >
                 nomoca
               </span>
               <span
                 className="text-[56px] font-bold leading-none"
-                style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}
+                style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}
               >
                 加盟店募集中
               </span>
@@ -100,7 +100,7 @@ export default function MerchantLPPage() {
               {/* 初期費用 */}
               <div className="flex items-center gap-2 px-4">
                 <div className="flex px-4 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-lg font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-lg font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     初期費用
                   </span>
                 </div>
@@ -108,7 +108,7 @@ export default function MerchantLPPage() {
                   <span className="text-[80px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     0
                   </span>
-                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
+                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     円
                   </span>
                 </div>
@@ -120,7 +120,7 @@ export default function MerchantLPPage() {
               {/* 掲載料 */}
               <div className="flex items-center gap-2 px-4">
                 <div className="flex px-4 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-lg font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-lg font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     掲載料
                   </span>
                 </div>
@@ -128,7 +128,7 @@ export default function MerchantLPPage() {
                   <span className="text-[80px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     0
                   </span>
-                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
+                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     円
                   </span>
                 </div>
@@ -140,7 +140,7 @@ export default function MerchantLPPage() {
               {/* 解約金 */}
               <div className="flex items-center gap-2 px-4">
                 <div className="flex px-4 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-lg font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-lg font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     解約金
                   </span>
                 </div>
@@ -148,7 +148,7 @@ export default function MerchantLPPage() {
                   <span className="text-[80px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     0
                   </span>
-                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
+                  <span className="text-[26px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
                     円
                   </span>
                 </div>
@@ -166,10 +166,10 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--accent, #FFD93B)' }}
           >
             <div className="flex flex-col items-center gap-2">
-              <span className="text-lg font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}>
+              <span className="text-lg font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
                 今すぐ無料で
               </span>
-              <span className="text-[26px] font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}>
+              <span className="text-[26px] font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
                 お申し込み
               </span>
             </div>
@@ -282,7 +282,7 @@ export default function MerchantLPPage() {
               {/* 初期費用 */}
               <div className="flex items-center gap-2 px-3">
                 <div className="flex px-3 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-sm font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-sm font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     初期費用
                   </span>
                 </div>
@@ -290,7 +290,7 @@ export default function MerchantLPPage() {
                   <span className="text-[50px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: '#FFF' }}>
                     0
                   </span>
-                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#FFF' }}>
+                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#FFF' }}>
                     円
                   </span>
                 </div>
@@ -302,7 +302,7 @@ export default function MerchantLPPage() {
               {/* 掲載料 */}
               <div className="flex items-center gap-2 px-3">
                 <div className="flex px-3 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-sm font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-sm font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     掲載料
                   </span>
                 </div>
@@ -310,7 +310,7 @@ export default function MerchantLPPage() {
                   <span className="text-[50px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: '#FFF' }}>
                     0
                   </span>
-                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#FFF' }}>
+                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#FFF' }}>
                     円
                   </span>
                 </div>
@@ -322,7 +322,7 @@ export default function MerchantLPPage() {
               {/* 解約金 */}
               <div className="flex items-center gap-2 px-3">
                 <div className="flex px-3 py-1 justify-center items-center rounded-full" style={{ background: 'var(--accent, #FFD93B)' }}>
-                  <span className="text-sm font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}>
+                  <span className="text-sm font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}>
                     解約金
                   </span>
                 </div>
@@ -330,7 +330,7 @@ export default function MerchantLPPage() {
                   <span className="text-[50px] font-semibold leading-none" style={{ fontFamily: 'Commissioner, sans-serif', color: '#FFF' }}>
                     0
                   </span>
-                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#FFF' }}>
+                  <span className="text-[18px] font-bold leading-none pb-1" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#FFF' }}>
                     円
                   </span>
                 </div>
@@ -348,10 +348,10 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--accent, #FFD93B)' }}
           >
             <div className="flex flex-col items-center gap-2">
-              <span className="text-lg font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}>
+              <span className="text-lg font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
                 今すぐ無料で
               </span>
-              <span className="text-[26px] font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}>
+              <span className="text-[26px] font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
                 お申し込み
               </span>
             </div>
@@ -406,7 +406,7 @@ export default function MerchantLPPage() {
         <div className="flex flex-col items-center gap-4">
           <h2
             className="text-[28px] lg:text-[32px] font-bold leading-none text-center"
-            style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}
+            style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}
           >
             掲載店のメリット
           </h2>
@@ -414,8 +414,8 @@ export default function MerchantLPPage() {
 
         {/* サブタイトル */}
         <p
-          className="text-lg font-bold leading-[160%] text-center"
-          style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}
+          className="text-[18px] font-bold leading-[160%] text-center"
+          style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}
         >
           &ldquo;nomoca&rdquo;に掲載することで、新しいお客様との出会いが広がります！
         </p>
@@ -515,36 +515,35 @@ export default function MerchantLPPage() {
       {/* ===== Simple Process Section (お店の対応はシンプル) ===== */}
       <div
         id="simple"
-        className="flex flex-col justify-center items-center gap-11 px-5 lg:px-[120px] py-20"
+        className="flex flex-col justify-center items-center gap-8 lg:gap-10 px-6 lg:px-[120px] py-20"
         style={{ background: 'var(--sub, #FAF8F4)' }}
       >
         {/* タイトル */}
         <div className="flex flex-col items-center gap-4">
           <h2
-            className="text-[28px] lg:text-[32px] font-bold leading-[140%] text-center"
-            style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}
+            className="text-[28px] lg:text-[32px] font-bold leading-[1.1] text-center"
+            style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}
           >
-            お店の対応はシンプル！<br className="lg:hidden" />約3秒で完了
+            お店の対応はシンプル！ 約3秒で完了
           </h2>
         </div>
 
         {/* サブタイトル */}
         <p
-          className="text-lg font-bold leading-[160%] text-center"
-          style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}
+          className="text-[15px] lg:text-[18px] font-bold leading-[180%] text-center"
+          style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}
         >
-          お客様が提示する画面を確認するだけ。<br />
-          シンプルな仕組みだから、忙しい時間帯でもスムーズに対応できます。
+          お客様が提示する画面を確認するだけ。<br className="hidden lg:block" />シンプルな仕組みだから、忙しい時間帯でもスムーズに対応できます。
         </p>
 
-        {/* プロセス画像 */}
-        <div className="w-full max-w-[800px]">
+        {/* プロセス画像（Figmaデザイン） */}
+        <div className="w-full flex justify-center">
           <Image
-            src="/lp/images/merchant-process.png"
-            alt="お店の対応フロー"
-            width={800}
-            height={277}
-            className="w-full h-auto"
+            src="/lp/images/merchant-simple.png"
+            alt="お店の対応フロー（約3秒）"
+            width={920}
+            height={484}
+            className="w-full max-w-[920px] h-auto"
           />
         </div>
       </div>
@@ -559,7 +558,7 @@ export default function MerchantLPPage() {
         <div className="flex flex-col items-center gap-4">
           <h2
             className="text-[28px] lg:text-[32px] font-bold leading-none text-center"
-            style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}
+            style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}
           >
             お申し込み方法
           </h2>
@@ -567,8 +566,8 @@ export default function MerchantLPPage() {
 
         {/* サブタイトル */}
         <p
-          className="text-lg font-bold leading-[160%] text-center"
-          style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: '#000' }}
+          className="text-[18px] font-bold leading-[160%] text-center"
+          style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}
         >
           「nomoca」のご利用を開始するまでのステップをご紹介します。
         </p>
@@ -726,7 +725,7 @@ export default function MerchantLPPage() {
       >
         <h2
           className="text-[26px] lg:text-[28px] font-bold leading-[120%] text-center"
-          style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--main, #2B7A78)' }}
+          style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--main, #2B7A78)' }}
         >
           あなたのお店も<br className="lg:hidden" />
           &ldquo;nomoca&rdquo;に<br className="lg:hidden" />
@@ -740,13 +739,13 @@ export default function MerchantLPPage() {
           style={{ background: 'var(--main, #2B7A78)' }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-xl font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
+            <span className="text-xl font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
               いますぐ
             </span>
-            <span className="text-xl font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--accent, #FFD93B)' }}>
+            <span className="text-xl font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--accent, #FFD93B)' }}>
               無料
             </span>
-            <span className="text-xl font-bold" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
+            <span className="text-xl font-bold" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: 'var(--sub, #FAF8F4)' }}>
               で申し込む
             </span>
           </div>

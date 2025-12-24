@@ -504,7 +504,7 @@ export default function LPPage() {
           {/* イラストとスマホ - Desktop */}
           <div className="relative flex items-center justify-center">
             <Image
-              src="/lp/images/user-fv-illustration.svg"
+              src="/lp/images/user-fv-illustration.png"
               alt="街のイラスト"
               width={602}
               height={578}
@@ -1399,7 +1399,7 @@ export default function LPPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
           style={{
-            backgroundImage: 'url(/lp/images/user-stores-bg.svg)'
+            backgroundImage: 'url(/lp/images/user-stores-bg.png)'
           }}
         />
 
