@@ -65,11 +65,36 @@ export default function CampaignPage() {
             >
               新規登録
             </h2>
+            <div 
+              className="rounded-lg p-2 mb-2"
+              style={{ backgroundColor: '#F5F5F5' }}
+            >
+              {/* 登録フォームアイコン */}
+              <div className="flex flex-col items-center justify-center h-12">
+                <div className="relative">
+                  <div 
+                    className="w-8 h-10 rounded border-2 flex flex-col items-center pt-1"
+                    style={{ borderColor: '#6FC8E5', backgroundColor: '#FFF' }}
+                  >
+                    <div className="w-4 h-0.5 rounded mb-1" style={{ backgroundColor: '#6FC8E5' }}></div>
+                    <div className="w-4 h-0.5 rounded mb-1" style={{ backgroundColor: '#6FC8E5' }}></div>
+                    <div className="w-4 h-0.5 rounded" style={{ backgroundColor: '#6FC8E5' }}></div>
+                  </div>
+                  <div 
+                    className="absolute -right-1 -bottom-1 w-4 h-4 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: '#FF6F61' }}
+                  >
+                    <span className="text-[8px] text-white">✓</span>
+                  </div>
+                </div>
+              </div>
+              <p className="text-[8px] mt-1" style={{ color: '#6FC8E5' }}>必要事項を入力</p>
+            </div>
             <p 
-              className="text-[8px] leading-tight mb-2"
+              className="text-[7px] leading-tight"
               style={{ color: '#666' }}
             >
-              ※お支払い方法の登録が必要です。モニター期間終了後、月額料金の自動請求が開始します。
+              ※お支払い方法の登録が必要です
             </p>
           </div>
 
