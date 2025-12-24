@@ -140,25 +140,23 @@ export default function CampaignPage() {
       {/* アプリダウンロードセクション */}
       <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
         <div className="bg-white rounded-lg p-4">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1">
-              <h2 
-                className="text-sm font-bold leading-tight"
-                style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
-              >
-                「マイデジ」ダウンロードはこちら
-                <span className="text-[10px] font-normal ml-1" style={{ color: '#888' }}>（登録無料）</span>
-              </h2>
-              <p className="text-[9px] mt-1 leading-relaxed" style={{ color: '#666' }}>
-                「マイデジ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。
-              </p>
-              <p 
-                className="text-[10px] font-bold mt-1"
-                style={{ color: '#FF6F61' }}
-              >
-                市内在住の方はもちろん、市外の方も使える！
-              </p>
-            </div>
+          <div className="text-center">
+            <h2 
+              className="text-sm font-bold leading-tight"
+              style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
+            >
+              「マイデジ」ダウンロードはこちら
+              <span className="text-[10px] font-normal ml-1" style={{ color: '#888' }}>（登録無料）</span>
+            </h2>
+            <p className="text-[9px] mt-1 leading-relaxed" style={{ color: '#666' }}>
+              「マイデジ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。
+            </p>
+            <p 
+              className="text-[10px] font-bold mt-1"
+              style={{ color: '#FF6F61' }}
+            >
+              市内在住の方はもちろん、市外の方も使える！
+            </p>
           </div>
 
           <div className="flex justify-center gap-3 mt-3 mb-3">
