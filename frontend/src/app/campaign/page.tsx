@@ -5,566 +5,350 @@ import Link from 'next/link'
 
 export default function CampaignPage() {
   return (
-    <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#F5F9FB' }}>
-      {/* Hero Section */}
-      <div 
-        className="relative w-full py-12 md:py-20"
-        style={{
-          background: 'linear-gradient(135deg, #6FC8E5 0%, #4BA8C5 100%)'
-        }}
-      >
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 
-            className="text-2xl md:text-4xl font-bold mb-4"
-            style={{
-              color: '#FFF',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif',
-              lineHeight: '140%'
-            }}
-          >
-            モニター会員登録方法
-          </h1>
-          <p 
-            className="text-base md:text-lg"
-            style={{
-              color: '#FFF',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif'
-            }}
-          >
-            nomocaKagawaを始めましょう！
-          </p>
-        </div>
-        
-        {/* 装飾的な波形 */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-            <path d="M0,60 C360,100 720,20 1440,60 L1440,100 L0,100 Z" fill="#F5F9FB" />
-          </svg>
-        </div>
+    <div className="min-h-screen w-full overflow-x-hidden" style={{ backgroundColor: '#6FC8E5' }}>
+      {/* ヘッダー */}
+      <div className="w-full py-4 px-4 text-center" style={{ backgroundColor: '#6FC8E5' }}>
+        <h1 
+          className="text-xl font-bold"
+          style={{
+            color: '#FFF',
+            fontFamily: '"Zen Kaku Gothic New", sans-serif',
+          }}
+        >
+          モニター会員登録方法
+        </h1>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-        
-        {/* Step 1: サイトへアクセス */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 mb-6 shadow-lg">
-          <div className="flex items-center gap-4 mb-6">
-            <div 
-              className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
-              style={{ backgroundColor: '#6FC8E5' }}
-            >
-              1
-            </div>
+      {/* 3ステップセクション - PDFと同様の横並び */}
+      <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
+        <div className="flex items-stretch justify-center gap-1">
+          {/* Step 1: サイトへアクセス */}
+          <div className="bg-white rounded-lg p-2 flex-1 max-w-[110px] text-center">
             <h2 
-              className="text-xl md:text-2xl font-bold"
-              style={{
-                color: '#333',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+              className="text-xs font-bold mb-2 leading-tight"
+              style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
             >
-              サイトへアクセス
+              サイトへ<br />アクセス
             </h2>
-          </div>
-          <div className="text-center">
+            <div 
+              className="rounded-lg p-2 mb-2"
+              style={{ backgroundColor: '#F5F5F5' }}
+            >
+              <Image
+                src="/main-logo.jpg"
+                alt="nomocaKagawa"
+                width={60}
+                height={60}
+                className="mx-auto"
+              />
+              <p className="text-[8px] mt-1" style={{ color: '#6FC8E5' }}>nomocaKagawa</p>
+            </div>
             <Link
               href="/email-registration"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-full text-white font-bold text-lg transition-all hover:opacity-90 hover:scale-105"
-              style={{
-                backgroundColor: '#FF6F61',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif',
-                boxShadow: '0 4px 14px rgba(255, 111, 97, 0.4)'
-              }}
+              className="block w-full py-1 rounded text-[9px] font-bold text-white"
+              style={{ backgroundColor: '#FF6F61' }}
             >
-              nomocaKagawa 新規登録
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="9"
-                height="16"
-                viewBox="0 0 9 16"
-                fill="none"
-                className="ml-3"
-              >
-                <path
-                  d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
-                  stroke="#FFF"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              新規登録 →
             </Link>
           </div>
-        </div>
 
-        {/* Step 2: 新規登録 */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 mb-6 shadow-lg">
-          <div className="flex items-center gap-4 mb-6">
-            <div 
-              className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
-              style={{ backgroundColor: '#6FC8E5' }}
-            >
-              2
-            </div>
+          {/* 矢印 */}
+          <div className="flex items-center px-1">
+            <span className="text-white text-xl">▶</span>
+          </div>
+
+          {/* Step 2: 新規登録 */}
+          <div className="bg-white rounded-lg p-2 flex-1 max-w-[110px] text-center">
             <h2 
-              className="text-xl md:text-2xl font-bold"
-              style={{
-                color: '#333',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+              className="text-xs font-bold mb-2 leading-tight"
+              style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
             >
               新規登録
             </h2>
-          </div>
-          <div 
-            className="p-4 rounded-lg mb-4"
-            style={{ backgroundColor: '#FFF9E6' }}
-          >
             <p 
-              className="text-sm md:text-base"
-              style={{
-                color: '#666',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+              className="text-[8px] leading-tight mb-2"
+              style={{ color: '#666' }}
             >
               ※お支払い方法の登録が必要です。モニター期間終了後、月額料金の自動請求が開始します。
             </p>
           </div>
-        </div>
 
-        {/* Step 3: キャンペーンコード入力 */}
-        <div 
-          className="rounded-2xl p-6 md:p-8 mb-6 shadow-lg"
-          style={{
-            background: 'linear-gradient(135deg, #FFD93B 0%, #FFC107 100%)'
-          }}
-        >
-          <div className="flex items-center gap-4 mb-6">
+          {/* 矢印 */}
+          <div className="flex items-center px-1">
+            <span className="text-white text-xl">▶</span>
+          </div>
+
+          {/* Step 3: コード入力 */}
+          <div 
+            className="rounded-lg p-2 flex-1 max-w-[110px] text-center"
+            style={{ backgroundColor: '#FFD93B' }}
+          >
+            <h2 
+              className="text-xs font-bold mb-1 leading-tight"
+              style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
+            >
+              nomocaKagawa<br />コード入力
+            </h2>
             <div 
-              className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
+              className="rounded py-2 px-1 mb-1"
               style={{ backgroundColor: '#6FC8E5' }}
             >
-              3
-            </div>
-            <h2 
-              className="text-xl md:text-2xl font-bold"
-              style={{
-                color: '#333',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
-            >
-              キャンペーンコード入力
-            </h2>
-          </div>
-          
-          <div className="bg-white rounded-xl p-6 md:p-8 text-center">
-            <p 
-              className="text-sm md:text-base mb-4"
-              style={{
-                color: '#666',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
-            >
-              新規登録ページ内コード入力欄に下記4桁の数字を入力ください。
-            </p>
-            <div 
-              className="inline-block px-8 py-4 rounded-xl mb-4"
-              style={{ 
-                backgroundColor: '#6FC8E5',
-                boxShadow: '0 4px 14px rgba(111, 200, 229, 0.4)'
-              }}
-            >
               <span 
-                className="text-4xl md:text-6xl font-bold tracking-wider"
-                style={{
-                  color: '#FFF',
-                  fontFamily: 'Rubik, sans-serif',
-                  letterSpacing: '0.2em'
-                }}
+                className="text-2xl font-bold tracking-wide"
+                style={{ color: '#FFF', fontFamily: 'Rubik, sans-serif' }}
               >
                 5959
               </span>
             </div>
-            <div className="space-y-2">
-              <p 
-                className="text-sm"
-                style={{
-                  color: '#FF6F61',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif',
-                  fontWeight: '700'
-                }}
+            <p className="text-[7px]" style={{ color: '#333' }}>
+              新規登録ページ内コード入力欄に<br />上記4桁の数字を入力ください。
+            </p>
+            <p className="text-[7px] mt-1" style={{ color: '#FF6F61', fontWeight: 700 }}>
+              有効期限：2026年3月31日(火)
+            </p>
+            <p className="text-[7px]" style={{ color: '#666' }}>
+              お一人様1回限り有効
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* アプリダウンロードセクション */}
+      <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
+        <div className="bg-white rounded-lg p-4">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1">
+              <h2 
+                className="text-sm font-bold leading-tight"
+                style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
               >
-                有効期限：2026年3月31日(火)
+                「高松市みんなのアプリ」ダウンロードはこちら
+                <span className="text-[10px] font-normal ml-1" style={{ color: '#888' }}>（登録無料）</span>
+              </h2>
+              <p className="text-[9px] mt-1 leading-relaxed" style={{ color: '#666' }}>
+                「高松市みんなのアプリ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。
               </p>
               <p 
-                className="text-sm"
-                style={{
-                  color: '#666',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                }}
+                className="text-[10px] font-bold mt-1"
+                style={{ color: '#FF6F61' }}
               >
-                お一人様1回限り有効
+                市内在住の方はもちろん、市外の方も使える！
               </p>
             </div>
           </div>
-        </div>
 
-        {/* マイデジアプリ連携セクション */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 mb-6 shadow-lg">
-          <div 
-            className="text-center mb-6 pb-6"
-            style={{ borderBottom: '2px dashed #E0E0E0' }}
-          >
-            <h2 
-              className="text-xl md:text-2xl font-bold mb-2"
-              style={{
-                color: '#6FC8E5',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
-            >
-              「高松市みんなのアプリ」ダウンロードはこちら
-            </h2>
-            <p 
-              className="text-sm"
-              style={{
-                color: '#888',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
-            >
-              （登録無料）
-            </p>
-          </div>
-          
-          <p 
-            className="text-center text-sm md:text-base mb-6"
-            style={{
-              color: '#666',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif',
-              lineHeight: '1.8'
-            }}
-          >
-            「高松市みんなのアプリ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。<br />
-            市内在住の方はもちろん、市外の方も使える！
-          </p>
-
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex justify-center gap-3 mt-3 mb-3">
             <a
               href="https://apps.apple.com/jp/app/id6504632498"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-80 transition-opacity"
             >
-              <Image src="/app-store.svg" alt="App Storeからダウンロード" width={140} height={42} className="h-12 w-auto" />
+              <Image src="/app-store.svg" alt="App Store" width={100} height={30} className="h-8 w-auto" />
             </a>
             <a
               href="https://play.google.com/store/apps/details?id=jp.mydigi.kagawa"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-80 transition-opacity"
             >
-              <Image src="/google-play.svg" alt="Google Playからダウンロード" width={140} height={42} className="h-12 w-auto" />
+              <Image src="/google-play.svg" alt="Google Play" width={100} height={30} className="h-8 w-auto" />
             </a>
           </div>
 
           {/* 紐づけ方法 */}
           <div 
-            className="rounded-xl p-6"
-            style={{ backgroundColor: '#F5F9FB' }}
+            className="rounded-lg p-3 mt-2"
+            style={{ backgroundColor: '#F0F8FA', border: '2px solid #6FC8E5' }}
           >
             <h3 
-              className="text-lg font-bold mb-4 text-center"
-              style={{
-                color: '#6FC8E5',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+              className="text-sm font-bold mb-2 text-center"
+              style={{ color: '#6FC8E5' }}
             >
               「nomocaKagawa」と紐づけよう！
             </h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
+            <div className="flex gap-2 text-[9px]">
+              <div className="flex-1 text-center">
                 <span 
-                  className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: '#6FC8E5' }}
-                >
-                  1
-                </span>
-                <p 
-                  className="text-sm md:text-base"
-                  style={{
-                    color: '#333',
-                    fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                  }}
-                >
-                  「高松市みんなのアプリ」を開く
-                </p>
+                >1</span>
+                <p className="mt-1" style={{ color: '#333' }}>「高松市みんなのアプリ」を開く</p>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex-1 text-center">
                 <span 
-                  className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: '#6FC8E5' }}
-                >
-                  2
-                </span>
-                <p 
-                  className="text-sm md:text-base"
-                  style={{
-                    color: '#333',
-                    fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                  }}
-                >
-                  メニュー内「ユーザーID」をコピー
-                </p>
+                >2</span>
+                <p className="mt-1" style={{ color: '#333' }}>メニュー内「ユーザーID」をコピー</p>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex-1 text-center">
                 <span 
-                  className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: '#6FC8E5' }}
-                >
-                  3
-                </span>
-                <p 
-                  className="text-sm md:text-base"
-                  style={{
-                    color: '#333',
-                    fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                  }}
-                >
-                  「nomocaKagawa」マイページ内「アカウント」にコピーしたユーザーIDを入力
-                </p>
+                >3</span>
+                <p className="mt-1" style={{ color: '#333' }}>「nomocaKagawa」マイページ内「アカウント」にコピーしたユーザーIDを入力</p>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* キャンペーン条件セクション */}
-        <div 
-          className="rounded-2xl p-6 md:p-8 mb-6"
-          style={{
-            background: 'linear-gradient(135deg, #6FC8E5 0%, #4BA8C5 100%)'
-          }}
-        >
-          <div className="text-center mb-6">
-            <p 
-              className="text-white text-sm md:text-base mb-2"
-              style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
-            >
-              条件①②を2026年2月28日(土)までに達成すると
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {/* 条件1 */}
-            <div className="bg-white rounded-xl p-5 text-center">
-              <div 
-                className="inline-block px-4 py-1 rounded-full mb-3"
-                style={{ backgroundColor: '#FFD93B' }}
-              >
-                <span 
-                  className="font-bold text-sm"
-                  style={{
-                    color: '#333',
-                    fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                  }}
-                >
-                  条件①
-                </span>
-              </div>
-              <h3 
-                className="text-2xl md:text-3xl font-bold mb-2"
-                style={{
-                  color: '#6FC8E5',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                }}
-              >
-                3店舗利用
-              </h3>
-              <p 
-                className="text-sm"
-                style={{
-                  color: '#666',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                }}
-              >
-                期間中3店舗でnomocaKagawaを利用しよう！
-              </p>
-            </div>
-
-            {/* 条件2 */}
-            <div className="bg-white rounded-xl p-5 text-center">
-              <div 
-                className="inline-block px-4 py-1 rounded-full mb-3"
-                style={{ backgroundColor: '#FFD93B' }}
-              >
-                <span 
-                  className="font-bold text-sm"
-                  style={{
-                    color: '#333',
-                    fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                  }}
-                >
-                  条件②
-                </span>
-              </div>
-              <h3 
-                className="text-2xl md:text-3xl font-bold mb-2"
-                style={{
-                  color: '#6FC8E5',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                }}
-              >
-                掲載店1店舗リクエスト
-              </h3>
-              <p 
-                className="text-sm"
-                style={{
-                  color: '#666',
-                  fontFamily: '"Zen Kaku Gothic New", sans-serif'
-                }}
-              >
-                掲載店になって欲しいお店をリクエスト！
-              </p>
-            </div>
-          </div>
-
-          {/* 特典 */}
+      {/* キャンペーン条件セクション */}
+      <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
+        {/* 達成条件ヘッダー */}
+        <div className="text-center mb-3 relative">
           <div 
-            className="bg-white rounded-xl p-6 text-center"
-            style={{
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+            className="absolute -top-2 -left-1 w-12 h-12 flex items-center justify-center"
+            style={{ 
+              backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpolygon points=\'50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35\' fill=\'%23FFD93B\'/%3E%3C/svg%3E")',
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat'
             }}
           >
-            <p 
-              className="text-lg md:text-xl font-bold mb-2"
-              style={{
-                color: '#FF6F61',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+            <span className="text-[8px] font-bold" style={{ color: '#333' }}>達成!</span>
+          </div>
+          <p 
+            className="text-sm font-bold py-2 px-4 rounded-full inline-block"
+            style={{ backgroundColor: '#FFF', color: '#333' }}
+          >
+            条件<span style={{ color: '#FF6F61' }}>①</span><span style={{ color: '#FF6F61' }}>②</span>を2026年2月28日(土)までに達成すると
+          </p>
+        </div>
+
+        {/* 条件カード */}
+        <div className="flex gap-2 mb-3">
+          {/* 条件1 */}
+          <div className="flex-1 bg-white rounded-lg p-3 text-center">
+            <div 
+              className="inline-block px-3 py-0.5 rounded-full mb-2"
+              style={{ backgroundColor: '#FF6F61' }}
             >
-              2026年
+              <span className="text-white text-xs font-bold">❶</span>
+              <span className="text-white text-xs font-bold ml-1">3店舗利用</span>
+            </div>
+            <div className="flex items-center justify-center gap-1 mb-2">
+              <div className="flex -space-x-2">
+                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                  <span className="text-xs">👤</span>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                  <span className="text-xs">👤</span>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
+                  <span className="text-xs">👤</span>
+                </div>
+              </div>
+            </div>
+            <p className="text-[9px]" style={{ color: '#666' }}>
+              期間中3店舗で<br />nomocaKagawaを<br />利用しよう！
             </p>
-            <h3 
-              className="text-3xl md:text-4xl font-bold"
-              style={{
-                color: '#6FC8E5',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
+          </div>
+
+          {/* 条件2 */}
+          <div className="flex-1 bg-white rounded-lg p-3 text-center">
+            <div 
+              className="inline-block px-3 py-0.5 rounded-full mb-2"
+              style={{ backgroundColor: '#FF6F61' }}
             >
-              4月末まで無料期間延長!!
-            </h3>
+              <span className="text-white text-xs font-bold">❷</span>
+              <span className="text-white text-xs font-bold ml-1">掲載店1店舗リクエスト</span>
+            </div>
+            <div className="flex items-center justify-center mb-2">
+              <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center">
+                <span className="text-lg">🏪</span>
+              </div>
+            </div>
+            <p className="text-[9px]" style={{ color: '#666' }}>
+              掲載店になって欲しい<br />お店をリクエスト！
+            </p>
           </div>
         </div>
 
-        {/* 詳細ボタン */}
-        <div className="text-center mb-8">
-          <Link
-            href="/lp"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-full text-white font-bold text-base md:text-lg transition-all hover:opacity-90 hover:scale-105"
-            style={{
-              backgroundColor: '#6FC8E5',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif',
-              boxShadow: '0 4px 14px rgba(111, 200, 229, 0.4)'
-            }}
-          >
-            詳しくはWEBページをCHECK!
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="9"
-              height="16"
-              viewBox="0 0 9 16"
-              fill="none"
-              className="ml-3"
-            >
-              <path
-                d="M0.999838 14.3333L7.6665 7.66667L0.999838 1"
-                stroke="#FFF"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
-        </div>
-
-        {/* 注意事項 */}
+        {/* 特典 */}
         <div 
-          className="rounded-xl p-5 mb-8"
-          style={{ backgroundColor: '#F0F0F0' }}
+          className="rounded-lg p-4 text-center"
+          style={{ backgroundColor: '#FFD93B' }}
         >
           <p 
-            className="text-xs leading-relaxed"
-            style={{
-              color: '#666',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif'
-            }}
+            className="text-sm font-bold"
+            style={{ color: '#FF6F61' }}
           >
-            ※「nomocaKagawa」は、高松市を中心に&ldquo;Welcomeドリンク&rdquo;を楽しめる月額制（サブスク）サービスです。nomocaKagawa掲載店でサイト内クーポンを提示すると、各店舗につき1日に1杯の対象ドリンクが無料になります。※対象ドリンクや利用条件等は店舗・キャンペーンにより異なります。※本チラシのクーポンコードを入力した日から、2026年3月31日（火）までの期間、月額料金が無料でご利用いただけます。※無料期間が終了すると、通常の月額料金（一般会員980円／高松市みんなのアプリ会員480円）が自動的に課金されます。無料期間終了前であれば、いつでも無料でキャンセル可能です。※本キャンペーンは予告なく内容の変更、中止もしくは延長させていただく場合があります。あらかじめご了承ください。※本チラシの記載内容は、2026年1月1日時点の情報です。最新情報は公式サイトをご確認ください。
+            2026年
           </p>
-        </div>
-
-        {/* お問い合わせ */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
           <h3 
-            className="text-lg font-bold mb-4 text-center"
-            style={{
-              color: '#333',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif'
-            }}
+            className="text-2xl font-bold"
+            style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
           >
-            nomocaKagawaに関するお問い合わせ
+            4月末まで無料期間延長!!
           </h3>
-          <p 
-            className="text-sm text-center mb-4"
-            style={{
-              color: '#666',
-              fontFamily: '"Zen Kaku Gothic New", sans-serif'
-            }}
-          >
-            サイト内「ヘルプ・お問い合わせ」より受け付けております。
-          </p>
-          <div className="text-center">
-            <Link
-              href="/lp/contact"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm transition-all hover:opacity-90"
-              style={{
-                backgroundColor: '#F5F9FB',
-                color: '#6FC8E5',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif',
-                border: '2px solid #6FC8E5'
-              }}
-            >
-              お問い合わせはこちら
-            </Link>
-          </div>
-          <div className="text-center mt-4">
-            <p 
-              className="text-xs"
-              style={{
-                color: '#888',
-                fontFamily: '"Zen Kaku Gothic New", sans-serif'
-              }}
-            >
-              運営会社 株式会社つなぐ
-            </p>
+        </div>
+      </div>
+
+      {/* 詳しくはWEBページをCHECK */}
+      <div className="px-3 py-4 text-center" style={{ backgroundColor: '#6FC8E5' }}>
+        <Link
+          href="/lp"
+          className="inline-flex items-center justify-center px-6 py-3 rounded-full text-white font-bold text-sm"
+          style={{ backgroundColor: '#333' }}
+        >
+          詳しくはWEBページをCHECK!
+          <span className="ml-2">→</span>
+        </Link>
+      </div>
+
+      {/* 注意事項 */}
+      <div className="px-3 py-3" style={{ backgroundColor: '#6FC8E5' }}>
+        <div 
+          className="p-3 rounded-lg text-[8px] leading-relaxed"
+          style={{ backgroundColor: 'rgba(255,255,255,0.9)', color: '#666' }}
+        >
+          ※「nomocaKagawa」は、高松市を中心に&ldquo;Welcomeドリンク&rdquo;を楽しめる月額制（サブスク）サービスです。nomocaKagawa掲載店でサイト内クーポンを提示すると、各店舗につき1日に1杯の対象ドリンクが無料になります。※対象ドリンクや利用条件等は店舗・キャンペーンにより異なります。※本チラシのクーポンコードを入力した日から、2026年3月31日（火）までの期間、月額料金が無料でご利用いただけます。※無料期間が終了すると、通常の月額料金（一般会員980円／高松市みんなのアプリ会員480円）が自動的に課金されます。無料期間終了前であれば、いつでも無料でキャンセル可能です。※本キャンペーンは予告なく内容の変更、中止もしくは延長させていただく場合があります。あらかじめご了承ください。※本チラシの記載内容は、2026年1月1日時点の情報です。最新情報は公式サイトをご確認ください。
+        </div>
+      </div>
+
+      {/* お問い合わせ */}
+      <div className="px-3 py-4" style={{ backgroundColor: '#6FC8E5' }}>
+        <div className="bg-white rounded-lg p-4">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <h3 
+                className="text-sm font-bold mb-2"
+                style={{ color: '#333', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
+              >
+                nomocaKagawaに関するお問い合わせ
+              </h3>
+              <p className="text-[10px] mb-3" style={{ color: '#666' }}>
+                サイト内「ヘルプ・お問い合わせ」より受け付けております。
+              </p>
+              <p className="text-[9px]" style={{ color: '#888' }}>
+                運営会社 株式会社つなぐ
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-[9px] mb-1" style={{ color: '#6FC8E5' }}>公式サイト</p>
+              <div 
+                className="w-16 h-16 rounded flex items-center justify-center"
+                style={{ backgroundColor: '#F5F5F5' }}
+              >
+                <Image
+                  src="/main-logo.jpg"
+                  alt="QRコード"
+                  width={50}
+                  height={50}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* フッター */}
       <div 
-        className="w-full py-8 text-center"
-        style={{ backgroundColor: '#FFF' }}
+        className="w-full py-4 text-center"
+        style={{ backgroundColor: '#6FC8E5' }}
       >
-        <Image
-          src="/main-logo.jpg"
-          alt="nomocaKagawa"
-          width={120}
-          height={120}
-          className="mx-auto mb-4"
-        />
         <p 
-          className="text-sm"
-          style={{
-            color: '#6FC8E5',
-            fontFamily: 'Rubik, sans-serif'
-          }}
+          className="text-xs"
+          style={{ color: '#FFF', fontFamily: 'Rubik, sans-serif' }}
         >
           ©2025 nomocaKagawa
         </p>
@@ -572,4 +356,3 @@ export default function CampaignPage() {
     </div>
   )
 }
-
