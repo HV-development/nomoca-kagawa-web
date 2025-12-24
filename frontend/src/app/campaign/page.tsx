@@ -278,7 +278,7 @@ export default function CampaignPage() {
             </div>
             <div className="flex items-center justify-center mb-2">
               <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center">
-                <span className="text-lg">🏮</span>
+                <span className="text-lg">🏠</span>
               </div>
             </div>
             <p className="text-[9px]" style={{ color: '#666' }}>
