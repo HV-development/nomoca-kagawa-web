@@ -627,7 +627,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
           address: signupData.address,
           birthDate: signupData.birthDate,
           gender: signupData.gender,
-          saitamaAppId: "",
+          mydigiAppId: "",
         }}
         onRegister={onConfirmRegister}
         onEdit={onConfirmEdit}
@@ -686,7 +686,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
             ? signupData.gender
             : "male",
           phone: "",
-          saitamaAppId: "",
+          mydigiAppId: "",
           password: "",
           passwordConfirm: "",
         } : null}

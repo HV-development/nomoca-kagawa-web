@@ -14,7 +14,7 @@ export interface SignupFormData {
   birthDate: string
   gender: string
   phone?: string
-  saitamaAppId: string
+  mydigiAppId: string
 }
 
 /**
@@ -27,6 +27,6 @@ export interface ProfileEditFormData {
   birthDate: string
   gender: string
   phone?: string
-  saitamaAppId: string
+  mydigiAppId: string
 }
 

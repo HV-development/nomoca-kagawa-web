@@ -11,7 +11,7 @@ interface PlanRegistrationLayoutProps {
   plans: PlanListResponse['plans']
   error?: string
   saitamaAppLinked?: boolean
-  onSaitamaAppLinked?: () => void
+  onMydigiAppLinked?: () => void
   hasPaymentMethod?: boolean
   isPaymentMethodChangeOnly?: boolean
 }
@@ -24,7 +24,7 @@ export function PlanRegistrationLayout({
   plans,
   error,
   saitamaAppLinked,
-  onSaitamaAppLinked,
+  onMydigiAppLinked,
   hasPaymentMethod,
   isPaymentMethodChangeOnly,
 }: PlanRegistrationLayoutProps) {
@@ -41,7 +41,7 @@ export function PlanRegistrationLayout({
       plans={plans}
       error={error}
       saitamaAppLinked={saitamaAppLinked}
-      onSaitamaAppLinked={onSaitamaAppLinked}
+      onMydigiAppLinked={onMydigiAppLinked}
       hasPaymentMethod={hasPaymentMethod}
       isPaymentMethodChangeOnly={isPaymentMethodChangeOnly}
     />

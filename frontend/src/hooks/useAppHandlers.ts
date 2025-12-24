@@ -1096,10 +1096,10 @@ export const useAppHandlers = (
             }
             // Cookieは自動的に送信されるため、ヘッダーは不要
 
-            // saitamaAppIdは別テーブル管理のため、更新データから除外
+            // mydigiAppIdは別テーブル管理のため、更新データから除外
             // 日付フォーマットをISO形式に変換 (yyyy/MM/dd → yyyy-MM-dd)
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { saitamaAppId, ...restData } = data
+            const { mydigiAppId, ...restData } = data
             const updateData = {
                 ...restData,
                 birthDate: restData.birthDate ? restData.birthDate.replace(/\//g, '-') : restData.birthDate

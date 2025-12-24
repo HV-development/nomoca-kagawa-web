@@ -8,16 +8,16 @@ import { useRouter } from "next/navigation"
 import { ApiClient } from "../../lib/api-client"
 import { Modal } from "../../components/atoms/Modal"
 
-export default function SaitamaAppGuidePage() {
+export default function MydigiAppGuidePage() {
   const router = useRouter()
-  const [saitamaAppId, setSaitamaAppId] = useState<string>("")
+  const [mydigiAppId, setMydigiAppId] = useState<string>("")
   const [isLinking, setIsLinking] = useState<boolean>(false)
   const [linkError, setLinkError] = useState<string>("")
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [grantedPoints, setGrantedPoints] = useState<number>(0)
 
-  const handleLinkSaitamaApp = async () => {
-    if (!saitamaAppId || saitamaAppId.trim() === "") {
+  const handleLinkMydigiApp = async () => {
+    if (!mydigiAppId || mydigiAppId.trim() === "") {
       setLinkError("ユーザーIDを入力してください")
       return
     }
@@ -27,15 +27,15 @@ export default function SaitamaAppGuidePage() {
 
     try {
       const result = await ApiClient.post<{ success: boolean; message: string; pointsGranted?: number }>(
-        '/api/user/link-saitama-app',
-        { saitamaAppId: saitamaAppId.trim() }
+        '/api/user/link-mydigi-app',
+        { mydigiAppId: mydigiAppId.trim() }
       )
 
       if (result.data?.success) {
         const points = result.data.pointsGranted || 0
         setGrantedPoints(points)
         setShowSuccessModal(true)
-        setSaitamaAppId("")
+        setMydigiAppId("")
       } else if (result.error) {
         setLinkError(result.error.message || "連携に失敗しました")
       } else {
@@ -71,7 +71,7 @@ export default function SaitamaAppGuidePage() {
             プラン登録に戻る
           </Link>
           <h1 className="text-base font-bold text-gray-900 mb-2">
-            高松市みんなのアプリ 使い方ガイド
+            マイデジアプリ 使い方ガイド
           </h1>
           <p className="text-sm text-gray-600">
             ID連携の方法についてご説明します。
@@ -83,7 +83,7 @@ export default function SaitamaAppGuidePage() {
           <h2 className="text-sm font-bold text-gray-900 mb-4 text-center">Step 1: アプリのダウンロード</h2>
           <div className="flex justify-center gap-4 mb-4">
             <a
-              href="https://apps.apple.com/jp/app/%E3%81%95%E3%81%84%E3%81%9F%E3%81%BE%E5%B8%82%E3%81%BF%E3%82%93%E3%81%AA%E3%81%AE%E3%82%A2%E3%83%97%E3%83%AA/id6502677802"
+              href="https://apps.apple.com/jp/app/id6504632498"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:opacity-80 transition-opacity"
@@ -91,7 +91,7 @@ export default function SaitamaAppGuidePage() {
               <Image src="/app-store.svg" alt="App Storeからダウンロード" width={48} height={48} className="h-12" />
             </a>
             <a
-              href="http://play.google.com/store/apps/details?id=jp.saitamacity.rsa&hl=ja&pli=1"
+              href="https://play.google.com/store/apps/details?id=jp.mydigi.kagawa"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:opacity-80 transition-opacity"
@@ -111,7 +111,7 @@ export default function SaitamaAppGuidePage() {
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="font-bold text-gray-900 mb-2 text-sm">1. アプリを開く</h3>
               <p className="text-gray-700 text-xs">
-                ダウンロードした「高松市みんなのアプリ」を開いてください。
+                ダウンロードした「マイデジ」アプリを開いてください。
               </p>
             </div>
 
@@ -152,23 +152,23 @@ export default function SaitamaAppGuidePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                高松市みんなのアプリ ユーザーID
+                マイデジアプリ ユーザーID
               </label>
               <input
                 type="text"
-                value={saitamaAppId}
+                value={mydigiAppId}
                 onChange={(e) => {
-                  setSaitamaAppId(e.target.value)
+                  setMydigiAppId(e.target.value)
                   setLinkError("")
                 }}
-                placeholder="saitamacity_xxxxxx"
+                placeholder="ユーザーIDを入力してください"
                 disabled={isLinking}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
             <button
-              onClick={handleLinkSaitamaApp}
-              disabled={isLinking || !saitamaAppId}
+              onClick={handleLinkMydigiApp}
+              disabled={isLinking || !mydigiAppId}
               className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white p-3 text-sm font-bold flex items-center justify-center gap-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               {isLinking ? (
@@ -200,7 +200,7 @@ export default function SaitamaAppGuidePage() {
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">
-              高松市みんなのアプリとの連携が完了しました！
+              マイデジアプリとの連携が完了しました！
             </h3>
             <p className="text-gray-600 mb-4">
               {grantedPoints > 0 ? `${grantedPoints}ポイントを獲得しました！` : '連携が完了しました。'}
@@ -231,3 +231,4 @@ export default function SaitamaAppGuidePage() {
     </div>
   )
 }
+
