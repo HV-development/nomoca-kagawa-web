@@ -373,6 +373,18 @@ export default function CampaignPage() {
         </Link>
       </div>
 
+      {/* 新規登録ボタン */}
+      <div className="px-3 py-4 text-center" style={{ backgroundColor: '#6FC8E5' }}>
+        <Link
+          href="/email-registration"
+          className="inline-flex items-center justify-center px-8 py-3 rounded-full text-white font-bold text-base"
+          style={{ backgroundColor: '#FF6F61' }}
+        >
+          新規登録はこちら
+          <span className="ml-2">→</span>
+        </Link>
+      </div>
+
       {/* 注意事項 */}
       <div className="px-3 py-3" style={{ backgroundColor: '#6FC8E5' }}>
         <div 
