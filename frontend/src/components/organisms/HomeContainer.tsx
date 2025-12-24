@@ -29,7 +29,7 @@ interface HomeContainerProps {
 export function HomeContainer({ 
   selectedGenres: _selectedGenres, // eslint-disable-line @typescript-eslint/no-unused-vars
   selectedEvents, 
-  selectedAreas, 
+  selectedAreas: _selectedAreas, 
   isNearbyFilter, 
   isFavoritesFilter, 
   stores, 
@@ -115,7 +115,7 @@ export function HomeContainer({
     }
 
     return storesList
-  }, [stores, selectedAreas, selectedEvents, isFavoritesFilter, isNearbyFilter, currentLocation])
+  }, [stores, selectedEvents, isFavoritesFilter, isNearbyFilter, currentLocation])
 
   return (
     <div className={`flex-1 relative ${backgroundColorClass}`}>

@@ -25,7 +25,8 @@ import { EmailConfirmationComplete } from "../molecules/EmailConfirmationComplet
 import CouponConfirmationPage from "../molecules/CouponConfirmationPage"
 import { UsageGuidePage } from "../molecules/UsageGuidePage"
 import { FooterNavigation } from "../molecules/FooterNavigation"
-import { BannerCarousel } from "@/components/organisms/BannerCarousel"
+// TODO: バナーカルーセル機能再有効化時に使用
+// import { BannerCarousel } from "@/components/organisms/BannerCarousel"
 import { AreaPopup } from "../molecules/AreaPopup"
 import { GenrePopup } from "../molecules/GenrePopup"
 import { HamburgerMenu } from "../molecules/HamburgerMenu"

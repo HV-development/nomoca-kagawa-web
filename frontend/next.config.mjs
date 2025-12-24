@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-// Force rebuild - cache invalidation
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -10,21 +9,47 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
-      { protocol: 'http', hostname: 'localhost', port: '9000', pathname: '/tamanomi/**' },
-      { protocol: 'http', hostname: '127.0.0.1', port: '9000', pathname: '/tamanomi/**' },
+      // 開発環境（MinIO）
+      { protocol: 'http', hostname: 'localhost', port: '9000', pathname: '/nomoca-kagawa/**' },
+      { protocol: 'http', hostname: '127.0.0.1', port: '9000', pathname: '/nomoca-kagawa/**' },
       // Docker 内部名でのアクセスにも対応
-      { protocol: 'http', hostname: process.env.MINIO_HOST || 'minio', port: process.env.MINIO_PORT || '9000', pathname: '/tamanomi/**' },
+      { protocol: 'http', hostname: process.env.MINIO_HOST || 'minio', port: process.env.MINIO_PORT || '9000', pathname: '/nomoca-kagawa/**' },
+      // 本番環境（Cloudflare R2）
+      { protocol: 'https', hostname: 'dev-images.nomoca-kagawa.com' },
+      { protocol: 'https', hostname: 'images.nomoca-kagawa.com' },
+      { protocol: 'https', hostname: 'prod-images.nomoca-kagawa.com' },
     ],
   },
   // 静的ファイル配信の設定
   assetPrefix: '',
   trailingSlash: false,
-  // Google Maps API用の外部ドメイン許可
+  // セキュリティヘッダー設定
   async headers() {
+    const isDev = process.env.NODE_ENV === 'development';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+    
     const securityHeaders = [
       {
         key: 'Content-Security-Policy',
-        value: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://maps.gstatic.com https://api.mapbox.com https://vercel.live; object-src 'none'; worker-src 'self' blob:; child-src 'self' blob:; connect-src 'self' ws: wss: *.webcontainer-api.io https://api.mapbox.com https://events.mapbox.com https://zipcloud.ibsnet.co.jp http://localhost:3001 http://localhost:3002 https://tamanomi-api-develop.up.railway.app http://localhost:9000 http://127.0.0.1:9000; img-src 'self' data: blob: https: http: http://localhost:9000 http://127.0.0.1:9000 http://minio:9000 https://images.pexels.com *.webcontainer-api.io;"
+        value: [
+          "default-src 'self'",
+          isDev
+            ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live"
+            : "script-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline'",
+          isDev
+            ? `connect-src 'self' ws: wss: https://zipcloud.ibsnet.co.jp ${apiUrl} http://localhost:3002 http://localhost:9000 http://127.0.0.1:9000`
+            : `connect-src 'self' https://zipcloud.ibsnet.co.jp ${apiUrl}`,
+          isDev
+            ? "img-src 'self' data: blob: https: http: http://localhost:9000 http://127.0.0.1:9000 http://minio:9000"
+            : "img-src 'self' data: blob: https://dev-images.nomoca-kagawa.com https://images.nomoca-kagawa.com https://prod-images.nomoca-kagawa.com",
+          "object-src 'none'",
+          "worker-src 'self' blob:",
+          "child-src 'self' blob:",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "frame-ancestors 'none'",
+        ].join('; ')
       },
       {
         key: 'X-Frame-Options',
@@ -54,13 +79,13 @@ const nextConfig = {
         key: 'Pragma',
         value: 'no-cache',
       },
-    ]
+    ];
 
     if (process.env.VERCEL_ENV === 'preview') {
       securityHeaders.push({
         key: 'X-Robots-Tag',
         value: 'noindex, nofollow, noarchive'
-      })
+      });
     }
 
     return [
@@ -74,7 +99,20 @@ const nextConfig = {
         source: '/api/:path*',
         headers: securityHeaders,
       },
-    ]
+      {
+        // 静的ファイル（画像、フォント、CSS、JS）はキャッシュを有効化
+        source: '/:path*\\.(svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|css|js)$',
+        headers: [
+          ...securityHeaders.filter(h =>
+            h.key !== 'Cache-Control' && h.key !== 'Pragma'
+          ),
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
   // 静的ファイルのリライト設定
   async rewrites() {
@@ -83,9 +121,8 @@ const nextConfig = {
         source: '/:path*.png',
         destination: '/:path*.png',
       },
-    ]
+    ];
   },
+};
 
-}
-
-export default nextConfig
+export default nextConfig;
