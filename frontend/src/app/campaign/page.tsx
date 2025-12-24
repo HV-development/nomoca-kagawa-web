@@ -41,7 +41,6 @@ export default function CampaignPage() {
                 height={60}
                 className="mx-auto"
               />
-              <p className="text-[8px] mt-1" style={{ color: '#6FC8E5' }}>nomocaKagawa</p>
             </div>
             <Link
               href="/email-registration"
