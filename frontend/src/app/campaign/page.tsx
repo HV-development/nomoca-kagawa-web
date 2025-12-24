@@ -249,33 +249,35 @@ export default function CampaignPage() {
               <span className="text-white text-xs font-bold">❶</span>
               <span className="text-white text-xs font-bold ml-1">3店舗利用</span>
             </div>
-            <div className="flex items-center justify-center gap-1 mb-2">
-              {/* クーポン3枚のイラスト */}
-              <div className="flex -space-x-1">
-                {/* クーポン1 */}
-                <div 
-                  className="w-10 h-7 rounded flex items-center justify-center relative"
-                  style={{ backgroundColor: '#FFD93B', border: '1px dashed #F5C400' }}
-                >
-                  <span className="text-[8px] font-bold" style={{ color: '#333' }}>🍺</span>
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
-                </div>
-                {/* クーポン2 */}
-                <div 
-                  className="w-10 h-7 rounded flex items-center justify-center relative"
-                  style={{ backgroundColor: '#6FC8E5', border: '1px dashed #4BA8C5' }}
-                >
-                  <span className="text-[8px] font-bold" style={{ color: '#FFF' }}>🍷</span>
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
-                </div>
-                {/* クーポン3 */}
-                <div 
-                  className="w-10 h-7 rounded flex items-center justify-center relative"
-                  style={{ backgroundColor: '#FF6F61', border: '1px dashed #E55A4D' }}
-                >
-                  <span className="text-[8px] font-bold" style={{ color: '#FFF' }}>☕</span>
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
-                </div>
+            <div className="flex items-center justify-center mb-2">
+              {/* クーポン3枚のイラスト - チケット風 */}
+              <div className="flex flex-col gap-1">
+                {[1, 2, 3].map((num) => (
+                  <div 
+                    key={num}
+                    className="relative flex items-center"
+                    style={{ width: '70px', height: '18px' }}
+                  >
+                    {/* 左の半円切れ込み */}
+                    <div 
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
+                      style={{ backgroundColor: '#FFF' }}
+                    ></div>
+                    {/* クーポン本体 */}
+                    <div 
+                      className="w-full h-full flex items-center justify-between px-2 rounded-sm"
+                      style={{ backgroundColor: '#6FC8E5' }}
+                    >
+                      <span className="text-[7px] font-bold text-white">COUPON</span>
+                      <span className="text-[8px]">🍹</span>
+                    </div>
+                    {/* 右の半円切れ込み */}
+                    <div 
+                      className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 rounded-full"
+                      style={{ backgroundColor: '#FFF' }}
+                    ></div>
+                  </div>
+                ))}
               </div>
             </div>
             <p className="text-[9px]" style={{ color: '#666' }}>
