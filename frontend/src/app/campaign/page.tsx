@@ -250,15 +250,31 @@ export default function CampaignPage() {
               <span className="text-white text-xs font-bold ml-1">3店舗利用</span>
             </div>
             <div className="flex items-center justify-center gap-1 mb-2">
-              <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
-                  <span className="text-xs">👤</span>
+              {/* クーポン3枚のイラスト */}
+              <div className="flex -space-x-1">
+                {/* クーポン1 */}
+                <div 
+                  className="w-10 h-7 rounded flex items-center justify-center relative"
+                  style={{ backgroundColor: '#FFD93B', border: '1px dashed #F5C400' }}
+                >
+                  <span className="text-[8px] font-bold" style={{ color: '#333' }}>🍺</span>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
-                  <span className="text-xs">👤</span>
+                {/* クーポン2 */}
+                <div 
+                  className="w-10 h-7 rounded flex items-center justify-center relative"
+                  style={{ backgroundColor: '#6FC8E5', border: '1px dashed #4BA8C5' }}
+                >
+                  <span className="text-[8px] font-bold" style={{ color: '#FFF' }}>🍷</span>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center">
-                  <span className="text-xs">👤</span>
+                {/* クーポン3 */}
+                <div 
+                  className="w-10 h-7 rounded flex items-center justify-center relative"
+                  style={{ backgroundColor: '#FF6F61', border: '1px dashed #E55A4D' }}
+                >
+                  <span className="text-[8px] font-bold" style={{ color: '#FFF' }}>☕</span>
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-3 rounded-l" style={{ backgroundColor: '#FFF' }}></div>
                 </div>
               </div>
             </div>
