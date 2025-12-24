@@ -54,11 +54,29 @@ export default function TermsPage() {
 
           {/* PDF Viewer */}
           <div className="w-full mb-8">
-            <iframe
-              src="/terms-of-service.pdf"
+            <object
+              data="/terms-of-service.pdf"
+              type="application/pdf"
               className="w-full h-[600px] md:h-[800px] border border-gray-300 rounded-lg"
-              title="利用規約"
-            />
+            >
+              <embed
+                src="/terms-of-service.pdf"
+                type="application/pdf"
+                className="w-full h-[600px] md:h-[800px]"
+              />
+              <p className="text-center py-8 text-gray-600">
+                PDFを表示できません。
+                <a
+                  href="/terms-of-service.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:text-green-700 underline ml-1"
+                >
+                  こちらからダウンロード
+                </a>
+                してください。
+              </p>
+            </object>
           </div>
 
           {/* Download Link */}
@@ -73,7 +91,7 @@ export default function TermsPage() {
                 fontWeight: '500'
               }}
             >
-              PDFをダウンロード
+              PDFを開く
             </a>
           </div>
 
