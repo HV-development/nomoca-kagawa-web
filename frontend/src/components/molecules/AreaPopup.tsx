@@ -11,11 +11,12 @@ interface AreaPopupProps {
   onClear: () => void
 }
 
+// データベースに保存されているエリア値と一致させる（日本語ラベルがそのまま保存されている）
 const KAGAWA_AREAS = [
-  { value: "takamatsu", label: "高松市内エリア" },
-  { value: "tosan", label: "東讃エリア" },
-  { value: "chusan", label: "中讃エリア" },
-  { value: "seisan", label: "西讃エリア" },
+  { value: "高松市内エリア", label: "高松市内エリア" },
+  { value: "東讃エリア", label: "東讃エリア" },
+  { value: "中讃エリア", label: "中讃エリア" },
+  { value: "西讃エリア", label: "西讃エリア" },
 ]
 
 export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClear }: AreaPopupProps) {
