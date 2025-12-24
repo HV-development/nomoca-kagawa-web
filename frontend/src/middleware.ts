@@ -103,7 +103,7 @@ export async function middleware(request: NextRequest) {
 
   // メンテナンスモードチェック（最優先で実行）
   if (process.env.MAINTENANCE_MODE === 'true') {
-    // メンテナンスページ自体と静的ファイル、APIは除外
+    // メンテナンスページ自体と静的ファイルは除外
     if (pathname === '/maintenance' || pathname.startsWith('/_next/') || pathname.startsWith('/api/')) {
       // メンテナンスページはそのまま表示
       if (pathname === '/maintenance') {
@@ -111,24 +111,10 @@ export async function middleware(request: NextRequest) {
         response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
         return response;
       }
-      // /_next/ と /api/ はそのまま処理を継続（returnしない）
     } else {
       // IPホワイトリストチェック
       const clientIp = getClientIp(request);
       const allowedIps = (process.env.MAINTENANCE_ALLOWED_IPS || '').split(',').map(ip => ip.trim()).filter(Boolean);
-      
-      // デバッグログ（問題解決後は削除可能）
-      console.log('[Maintenance Mode] IP Check:', {
-        clientIp,
-        allowedIps,
-        isAllowed: allowedIps.includes(clientIp),
-        pathname,
-        headers: {
-          'x-vercel-forwarded-for': request.headers.get('x-vercel-forwarded-for'),
-          'x-forwarded-for': request.headers.get('x-forwarded-for'),
-          'x-real-ip': request.headers.get('x-real-ip'),
-        }
-      });
       
       if (!allowedIps.includes(clientIp)) {
         // メンテナンスページへリダイレクト
