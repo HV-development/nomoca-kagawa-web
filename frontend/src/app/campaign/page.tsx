@@ -122,11 +122,11 @@ export default function CampaignPage() {
                 className="text-sm font-bold leading-tight"
                 style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
               >
-                「高松市みんなのアプリ」ダウンロードはこちら
+                「マイデジ」ダウンロードはこちら
                 <span className="text-[10px] font-normal ml-1" style={{ color: '#888' }}>（登録無料）</span>
               </h2>
               <p className="text-[9px] mt-1 leading-relaxed" style={{ color: '#666' }}>
-                「高松市みんなのアプリ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。
+                「マイデジ」は、行政手続きや地域サービス、地域通貨が使える便利な生活アプリです。
               </p>
               <p 
                 className="text-[10px] font-bold mt-1"
@@ -160,32 +160,32 @@ export default function CampaignPage() {
             style={{ backgroundColor: '#F0F8FA', border: '2px solid #6FC8E5' }}
           >
             <h3 
-              className="text-sm font-bold mb-2 text-center"
+              className="text-sm font-bold mb-3 text-center"
               style={{ color: '#6FC8E5' }}
             >
               「nomocaKagawa」と紐づけよう！
             </h3>
-            <div className="flex gap-2 text-[9px]">
-              <div className="flex-1 text-center">
+            <div className="space-y-3 text-[10px]">
+              <div className="flex items-center gap-3">
                 <span 
-                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
+                  className="inline-flex w-6 h-6 rounded-full items-center justify-center text-white text-sm font-bold flex-shrink-0"
                   style={{ backgroundColor: '#6FC8E5' }}
                 >1</span>
-                <p className="mt-1" style={{ color: '#333' }}>「高松市みんなのアプリ」を開く</p>
+                <p style={{ color: '#333' }}>「マイデジ」を開く</p>
               </div>
-              <div className="flex-1 text-center">
+              <div className="flex items-center gap-3">
                 <span 
-                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
+                  className="inline-flex w-6 h-6 rounded-full items-center justify-center text-white text-sm font-bold flex-shrink-0"
                   style={{ backgroundColor: '#6FC8E5' }}
                 >2</span>
-                <p className="mt-1" style={{ color: '#333' }}>メニュー内「ユーザーID」をコピー</p>
+                <p style={{ color: '#333' }}>メニュー内「ユーザーID」をコピー</p>
               </div>
-              <div className="flex-1 text-center">
+              <div className="flex items-center gap-3">
                 <span 
-                  className="inline-flex w-5 h-5 rounded-full items-center justify-center text-white text-xs font-bold"
+                  className="inline-flex w-6 h-6 rounded-full items-center justify-center text-white text-sm font-bold flex-shrink-0"
                   style={{ backgroundColor: '#6FC8E5' }}
                 >3</span>
-                <p className="mt-1" style={{ color: '#333' }}>「nomocaKagawa」マイページ内「アカウント」にコピーしたユーザーIDを入力</p>
+                <p style={{ color: '#333' }}>「nomocaKagawa」マイページ内「アカウント」にコピーしたユーザーIDを入力</p>
               </div>
             </div>
           </div>
