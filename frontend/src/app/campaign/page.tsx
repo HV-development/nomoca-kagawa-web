@@ -277,8 +277,32 @@ export default function CampaignPage() {
               <span className="text-white text-xs font-bold ml-1">掲載店1店舗リクエスト</span>
             </div>
             <div className="flex items-center justify-center mb-2">
-              <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center">
-                <span className="text-lg">🏠</span>
+              {/* カスタムドリンク+お店アイコン */}
+              <div className="relative">
+                <div 
+                  className="w-10 h-10 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: '#F0F8FA', border: '2px solid #6FC8E5' }}
+                >
+                  {/* グラスアイコン */}
+                  <div className="relative">
+                    <div 
+                      className="w-5 h-6 rounded-b-lg border-2"
+                      style={{ borderColor: '#6FC8E5', backgroundColor: '#FFF' }}
+                    >
+                      <div 
+                        className="w-full h-3 rounded-b-md mt-1"
+                        style={{ backgroundColor: '#FFD93B' }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                {/* プラスバッジ */}
+                <div 
+                  className="absolute -right-1 -bottom-1 w-4 h-4 rounded-full flex items-center justify-center"
+                  style={{ backgroundColor: '#FF6F61' }}
+                >
+                  <span className="text-[10px] text-white font-bold">+</span>
+                </div>
               </div>
             </div>
             <p className="text-[9px]" style={{ color: '#666' }}>
