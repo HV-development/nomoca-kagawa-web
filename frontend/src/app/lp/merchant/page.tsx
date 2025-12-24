@@ -784,9 +784,9 @@ export default function MerchantLPPage() {
           <Link href="/lp/commercial-law" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
             特定商取引法に基づく表記
           </Link>
-          <Link href="/lp/terms" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
+          <a href="/nomocakagawaサービス利用規約.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
             ご利用規約
-          </Link>
+          </a>
           <a href="https://tsunagu.co.jp" target="_blank" rel="noopener noreferrer" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
             運営会社
           </a>

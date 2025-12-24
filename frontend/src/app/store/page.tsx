@@ -448,9 +448,9 @@ export default function StorePage() {
                         <a href="/特定商取引法.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             特定商取引法に基づく表記
                         </a>
-                        <Link href="/lp/terms" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
+                        <a href="/nomocakagawaサービス利用規約.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             ご利用規約
-                        </Link>
+                        </a>
                         <a href="#" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             運営会社
                         </a>

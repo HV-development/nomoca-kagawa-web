@@ -26,7 +26,7 @@ export function HamburgerMenu({ onMenuItemClick, isAuthenticated = false, classN
       id: "terms",
       label: "利用規約",
       onClick: () => {
-        window.location.href = "/lp/terms"
+        window.open("/nomocakagawaサービス利用規約.pdf", "_blank", "noopener,noreferrer")
         onMenuItemClick("terms")
       },
     },

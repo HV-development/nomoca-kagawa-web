@@ -380,7 +380,7 @@ export const useAppHandlers = (
 
         switch (itemId) {
             case "terms":
-                window.location.href = "/lp/terms"
+                window.open("/nomocakagawaサービス利用規約.pdf", "_blank", "noopener,noreferrer")
                 break
             case "privacy":
                 window.open("/プライバシーポリシー.pdf", "_blank")

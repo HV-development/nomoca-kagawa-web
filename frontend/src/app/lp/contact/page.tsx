@@ -129,7 +129,7 @@ function ContactFormContent() {
                 alt="TAMANOMI"
                 width={576}
                 height={96}
-                className="w-32 h-auto md:w-40"
+                className="w-24 h-auto md:w-32 lg:w-[320px]"
               />
             </Link>
             <div style={{ flex: 1 }}></div>
@@ -477,7 +477,7 @@ function ContactFormContent() {
                 alt="TAMANOMI"
                 width={576}
                 height={96}
-                className="w-48 h-auto md:w-64 lg:w-[320px]"
+                className="w-24 h-auto md:w-32 lg:w-[320px]"
               />
             </div>
 
