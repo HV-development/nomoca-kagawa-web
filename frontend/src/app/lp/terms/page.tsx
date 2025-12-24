@@ -52,46 +52,45 @@ export default function TermsPage() {
             </p>
           </div>
 
-          {/* PDF Viewer */}
-          <div className="w-full mb-8">
-            <object
-              data="/terms-of-service.pdf"
-              type="application/pdf"
-              className="w-full h-[600px] md:h-[800px] border border-gray-300 rounded-lg"
-            >
-              <embed
-                src="/terms-of-service.pdf"
-                type="application/pdf"
-                className="w-full h-[600px] md:h-[800px]"
-              />
-              <p className="text-center py-8 text-gray-600">
-                PDFを表示できません。
-                <a
-                  href="/terms-of-service.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-green-600 hover:text-green-700 underline ml-1"
-                >
-                  こちらからダウンロード
-                </a>
-                してください。
+          {/* PDF Link */}
+          <div className="text-center py-12">
+            <div className="mb-8">
+              <svg
+                className="w-24 h-24 mx-auto text-green-600 mb-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <p
+                className="text-gray-600 mb-8"
+                style={{
+                  fontFamily: '"Zen Kaku Gothic New"',
+                  fontWeight: '400',
+                  lineHeight: '160%'
+                }}
+              >
+                下記ボタンをクリックすると、利用規約のPDFが表示されます。
               </p>
-            </object>
-          </div>
-
-          {/* Download Link */}
-          <div className="text-center">
+            </div>
             <a
               href="/terms-of-service.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="inline-block px-8 py-4 bg-green-600 text-white text-lg rounded-lg hover:bg-green-700 transition-colors shadow-md"
               style={{
                 fontFamily: '"Zen Kaku Gothic New"',
                 fontWeight: '500'
               }}
             >
-              PDFを開く
+              利用規約を表示する
             </a>
           </div>
 
