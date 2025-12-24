@@ -1626,7 +1626,7 @@ export default function LPPage() {
               特定商取引法に基づく表記
             </a>
             <Link
-              href="/nomocakagawaサービス利用規約.pdf" target="_blank" rel="noopener noreferrer"
+              href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer"
               className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",

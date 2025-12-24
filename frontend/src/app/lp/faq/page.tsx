@@ -567,7 +567,7 @@ export default function FAQPage() {
                 特定商取引法に基づく表記
               </a>
               <a
-                href="/nomocakagawaサービス利用規約.pdf"
+                href="/terms-of-service.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
