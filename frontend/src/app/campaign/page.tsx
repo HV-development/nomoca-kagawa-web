@@ -418,7 +418,7 @@ export default function CampaignPage() {
                 運営会社 株式会社 PSYTEC AI
               </p>
             </div>
-            <div className="text-right">
+            <Link href="/lp" className="text-right block">
               <p className="text-xs mb-1" style={{ color: '#6FC8E5' }}>公式サイト</p>
               <div 
                 className="w-16 h-16 rounded-lg flex items-center justify-center"
@@ -426,12 +426,12 @@ export default function CampaignPage() {
               >
                 <Image
                   src="/main-logo.jpg"
-                  alt="QRコード"
+                  alt="公式サイト"
                   width={50}
                   height={50}
                 />
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
