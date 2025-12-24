@@ -241,15 +241,15 @@ export default function CampaignPage() {
         {/* 条件カード */}
         <div className="flex gap-2 mb-3">
           {/* 条件1 */}
-          <div className="flex-1 bg-white rounded-lg p-3 text-center">
+          <div className="flex-1 bg-white rounded-lg p-3 text-center flex flex-col">
             <div 
-              className="inline-block px-3 py-0.5 rounded-full mb-2"
+              className="inline-block px-3 py-0.5 rounded-full mb-2 self-center"
               style={{ backgroundColor: '#FF6F61' }}
             >
               <span className="text-white text-xs font-bold">❶</span>
               <span className="text-white text-xs font-bold ml-1">3店舗利用</span>
             </div>
-            <div className="flex items-center justify-center mb-2">
+            <div className="flex items-center justify-center" style={{ height: '50px' }}>
               {/* クーポン3枚重ね */}
               <div className="relative" style={{ width: '70px', height: '50px' }}>
                 {/* クーポン3（奥） */}
@@ -287,21 +287,21 @@ export default function CampaignPage() {
                 </div>
               </div>
             </div>
-            <p className="text-[9px]" style={{ color: '#666' }}>
+            <p className="text-[9px] mt-auto pt-2" style={{ color: '#666' }}>
               期間中3店舗で<br />nomocaKagawaを<br />利用しよう！
             </p>
           </div>
 
           {/* 条件2 */}
-          <div className="flex-1 bg-white rounded-lg p-3 text-center">
+          <div className="flex-1 bg-white rounded-lg p-3 text-center flex flex-col">
             <div 
-              className="inline-block px-3 py-0.5 rounded-full mb-2"
+              className="inline-block px-3 py-0.5 rounded-full mb-2 self-center"
               style={{ backgroundColor: '#FF6F61' }}
             >
               <span className="text-white text-xs font-bold">❷</span>
               <span className="text-white text-xs font-bold ml-1">掲載店1店舗リクエスト</span>
             </div>
-            <div className="flex items-center justify-center mb-2">
+            <div className="flex items-center justify-center" style={{ height: '50px' }}>
               {/* チェックリストアイコン */}
               <div className="relative">
                 <div 
@@ -337,7 +337,7 @@ export default function CampaignPage() {
                 </div>
               </div>
             </div>
-            <p className="text-[9px]" style={{ color: '#666' }}>
+            <p className="text-[9px] mt-auto pt-2" style={{ color: '#666' }}>
               掲載店になって欲しい<br />お店をリクエスト！
             </p>
           </div>
