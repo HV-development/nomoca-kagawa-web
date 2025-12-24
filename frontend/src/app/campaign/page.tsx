@@ -277,31 +277,38 @@ export default function CampaignPage() {
               <span className="text-white text-xs font-bold ml-1">掲載店1店舗リクエスト</span>
             </div>
             <div className="flex items-center justify-center mb-2">
-              {/* カスタムドリンク+お店アイコン */}
+              {/* チェックリストアイコン */}
               <div className="relative">
                 <div 
-                  className="w-10 h-10 rounded-lg flex items-center justify-center"
-                  style={{ backgroundColor: '#F0F8FA', border: '2px solid #6FC8E5' }}
+                  className="w-10 h-12 rounded border-2 flex flex-col items-start p-1 gap-0.5"
+                  style={{ backgroundColor: '#FFF', borderColor: '#6FC8E5' }}
                 >
-                  {/* グラスアイコン */}
-                  <div className="relative">
-                    <div 
-                      className="w-5 h-6 rounded-b-lg border-2"
-                      style={{ borderColor: '#6FC8E5', backgroundColor: '#FFF' }}
-                    >
-                      <div 
-                        className="w-full h-3 rounded-b-md mt-1"
-                        style={{ backgroundColor: '#FFD93B' }}
-                      ></div>
+                  {/* チェック項目1 */}
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-sm border" style={{ borderColor: '#6FC8E5', backgroundColor: '#6FC8E5' }}>
+                      <span className="text-[6px] text-white leading-none">✓</span>
                     </div>
+                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
+                  </div>
+                  {/* チェック項目2 */}
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-sm border" style={{ borderColor: '#6FC8E5', backgroundColor: '#6FC8E5' }}>
+                      <span className="text-[6px] text-white leading-none">✓</span>
+                    </div>
+                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
+                  </div>
+                  {/* 未チェック項目 */}
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-sm border" style={{ borderColor: '#FF6F61' }}></div>
+                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
                   </div>
                 </div>
-                {/* プラスバッジ */}
+                {/* ペンバッジ */}
                 <div 
                   className="absolute -right-1 -bottom-1 w-4 h-4 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: '#FF6F61' }}
                 >
-                  <span className="text-[10px] text-white font-bold">+</span>
+                  <span className="text-[8px] text-white">✎</span>
                 </div>
               </div>
             </div>
