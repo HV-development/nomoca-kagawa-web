@@ -269,33 +269,33 @@ export default function CampaignPage() {
         <div className="space-y-3 mb-4">
           {/* 条件1 */}
           <div className="bg-white rounded-xl p-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div 
-                className="px-4 py-1 rounded-full"
-                style={{ backgroundColor: '#FF6F61' }}
+                className="px-3 py-1 rounded-full flex-shrink-0"
+                style={{ backgroundColor: '#FF6F61', minWidth: '110px' }}
               >
-                <span className="text-white text-sm font-bold">❶ 3店舗利用</span>
+                <span className="text-white text-xs font-bold whitespace-nowrap">❶ 3店舗利用</span>
               </div>
-              <div className="flex-1">
-                <p className="text-sm" style={{ color: '#666' }}>
-                  期間中3店舗でnomocaKagawaを利用しよう！
+              <div className="flex-1 min-w-0">
+                <p className="text-xs" style={{ color: '#666' }}>
+                  期間中3店舗で利用しよう！
                 </p>
               </div>
               {/* クーポンアイコン */}
-              <div className="relative" style={{ width: '60px', height: '45px' }}>
-                <div className="absolute flex items-center" style={{ width: '50px', height: '14px', top: '0px', left: '10px' }}>
+              <div className="relative flex-shrink-0" style={{ width: '50px', height: '40px' }}>
+                <div className="absolute flex items-center" style={{ width: '45px', height: '12px', top: '0px', left: '5px' }}>
                   <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#4BA8C5' }}>
-                    <span className="text-[7px] font-bold text-white">COUPON</span>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
                   </div>
                 </div>
-                <div className="absolute flex items-center" style={{ width: '50px', height: '14px', top: '10px', left: '5px' }}>
+                <div className="absolute flex items-center" style={{ width: '45px', height: '12px', top: '9px', left: '2.5px' }}>
                   <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#5BB8D5' }}>
-                    <span className="text-[7px] font-bold text-white">COUPON</span>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
                   </div>
                 </div>
-                <div className="absolute flex items-center" style={{ width: '50px', height: '14px', top: '20px', left: '0px' }}>
+                <div className="absolute flex items-center" style={{ width: '45px', height: '12px', top: '18px', left: '0px' }}>
                   <div className="w-full h-full flex items-center justify-center rounded-sm" style={{ backgroundColor: '#6FC8E5' }}>
-                    <span className="text-[7px] font-bold text-white">COUPON</span>
+                    <span className="text-[6px] font-bold text-white">COUPON</span>
                   </div>
                 </div>
               </div>
@@ -304,42 +304,42 @@ export default function CampaignPage() {
 
           {/* 条件2 */}
           <div className="bg-white rounded-xl p-4">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div 
-                className="px-4 py-1 rounded-full"
-                style={{ backgroundColor: '#FF6F61' }}
+                className="px-3 py-1 rounded-full flex-shrink-0"
+                style={{ backgroundColor: '#FF6F61', minWidth: '110px' }}
               >
-                <span className="text-white text-sm font-bold">❷ 掲載店リクエスト</span>
+                <span className="text-white text-xs font-bold whitespace-nowrap">❷ 掲載店リクエスト</span>
               </div>
-              <div className="flex-1">
-                <p className="text-sm" style={{ color: '#666' }}>
-                  掲載店になって欲しいお店をリクエスト！
+              <div className="flex-1 min-w-0">
+                <p className="text-xs" style={{ color: '#666' }}>
+                  お店をリクエスト！
                 </p>
               </div>
               {/* チェックリストアイコン */}
-              <div className="relative">
+              <div className="relative flex-shrink-0" style={{ width: '50px', height: '40px' }}>
                 <div 
-                  className="w-10 h-12 rounded border-2 flex flex-col items-start p-1 gap-0.5"
+                  className="w-9 h-10 rounded border-2 flex flex-col items-start p-1 gap-0.5"
                   style={{ backgroundColor: '#FFF', borderColor: '#6FC8E5' }}
                 >
                   <div className="flex items-center gap-1">
-                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#6FC8E5' }}></div>
-                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
+                    <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: '#6FC8E5' }}></div>
+                    <div className="w-3 h-0.5 rounded" style={{ backgroundColor: '#DDD' }}></div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#6FC8E5' }}></div>
-                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
+                    <div className="w-2 h-2 rounded-sm" style={{ backgroundColor: '#6FC8E5' }}></div>
+                    <div className="w-3 h-0.5 rounded" style={{ backgroundColor: '#DDD' }}></div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-2.5 h-2.5 rounded-sm border" style={{ borderColor: '#FF6F61' }}></div>
-                    <div className="w-4 h-1 rounded" style={{ backgroundColor: '#DDD' }}></div>
+                    <div className="w-2 h-2 rounded-sm border" style={{ borderColor: '#FF6F61' }}></div>
+                    <div className="w-3 h-0.5 rounded" style={{ backgroundColor: '#DDD' }}></div>
                   </div>
                 </div>
                 <div 
-                  className="absolute -right-1 -bottom-1 w-5 h-5 rounded-full flex items-center justify-center"
+                  className="absolute right-0 bottom-0 w-4 h-4 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: '#FF6F61' }}
                 >
-                  <span className="text-xs text-white">✎</span>
+                  <span className="text-[8px] text-white">✎</span>
                 </div>
               </div>
             </div>
