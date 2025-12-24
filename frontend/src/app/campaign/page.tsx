@@ -395,7 +395,7 @@ export default function CampaignPage() {
                 nomocaKagawaに関するお問い合わせ
               </h3>
               <p className="text-[10px] mb-3" style={{ color: '#666' }}>
-                サイト内「ヘルプ・お問い合わせ」より受け付けております。
+                サイト内のお問い合わせより受け付けております。
               </p>
               <p className="text-[9px]" style={{ color: '#888' }}>
                 運営会社 株式会社つなぐ
