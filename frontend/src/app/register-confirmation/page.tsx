@@ -17,7 +17,7 @@ export default function RegisterConfirmationPage() {
   const [token, setToken] = useState<string>('')
   const [isClient, setIsClient] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-  const [showSaitamaFailedModal, setShowSaitamaFailedModal] = useState(false)
+  const [showMydigiFailedModal, setShowMydigiFailedModal] = useState(false)
   const [pointsGranted, setPointsGranted] = useState<number | null>(null)
   const [shopId, setShopId] = useState<string | undefined>(undefined)
   const [error, setError] = useState<string | null>(null)
@@ -128,7 +128,7 @@ export default function RegisterConfirmationPage() {
     setIsLoading(true)
 
     try {
-      const saitamaAppIdValue = formData.saitamaAppId && formData.saitamaAppId.trim() !== '' ? formData.saitamaAppId.trim() : undefined;
+      const mydigiAppIdValue = formData.saitamaAppId && formData.saitamaAppId.trim() !== '' ? formData.saitamaAppId.trim() : undefined;
 
       // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
       // referrerUserIdはURLパラメータから取得するか、Cookieから取得する
@@ -152,7 +152,7 @@ export default function RegisterConfirmationPage() {
           gender: formData.gender,
           phone: formData.phone,
           // 空文字列の場合はundefinedとして送信しない
-          saitamaAppId: saitamaAppIdValue,
+          mydigiAppId: mydigiAppIdValue,
           // 紹介者IDを追加
           referrerUserId: referrerUserId,
           token: token,
@@ -170,13 +170,13 @@ export default function RegisterConfirmationPage() {
         // トークンはサーバー側でCookieに設定されるため、フロントエンドでの保存は不要
         // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
 
-        // 高松市アプリ連携が失敗した場合（ポイント付与API失敗）
-        if (result.saitamaAppLinkFailed) {
-          setShowSaitamaFailedModal(true)
+        // マイデジアプリ連携が失敗した場合（ポイント付与API失敗）
+        if (result.mydigiAppLinkFailed) {
+          setShowMydigiFailedModal(true)
           return
         }
 
-        // 高松市アプリ連携でポイント付与があった場合はモーダルを表示
+        // マイデジアプリ連携でポイント付与があった場合はモーダルを表示
         if (result.pointsGranted) {
           setPointsGranted(result.pointsGranted)
           setShowSuccessModal(true)
@@ -198,6 +198,7 @@ export default function RegisterConfirmationPage() {
         if (response.status === 409 && result.errorCode === 'USER_ALREADY_EXISTS') {
           // ログイン画面にリダイレクト
           router.push(`/?error=already_registered`)
+          return // リダイレクト後は処理を終了
         } else {
           alert(errorMessage)
         }
@@ -224,15 +225,15 @@ export default function RegisterConfirmationPage() {
     // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     // window.location.hrefを使用して強制的に遷移
     if (typeof window !== 'undefined') {
-      window.location.href = '/plan-registration?saitamaAppLinked=true'
+      window.location.href = '/plan-registration?mydigiAppLinked=true'
     } else {
-      router.push('/plan-registration?saitamaAppLinked=true')
+      router.push('/plan-registration?mydigiAppLinked=true')
     }
   }
 
-  const handleSaitamaFailedModalClose = () => {
-    setShowSaitamaFailedModal(false)
-    // 高松市アプリ連携なしでプラン登録画面に遷移
+  const handleMydigiFailedModalClose = () => {
+    setShowMydigiFailedModal(false)
+    // マイデジアプリ連携なしでプラン登録画面に遷移
     // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     if (typeof window !== 'undefined') {
       window.location.href = '/plan-registration'
@@ -285,7 +286,7 @@ export default function RegisterConfirmationPage() {
       >
         <div className="space-y-4">
           <p className="text-gray-700 whitespace-pre-line">
-            {`高松市みんなのアプリとの連携が完了しました。\n\n${pointsGranted}ポイントを付与しました！\n\nお得なプランが表示されます。`}
+            {`マイデジアプリとの連携が完了しました。\n\n${pointsGranted}ポイントを付与しました！\n\nお得なプランが表示されます。`}
           </p>
           <Button
             onClick={handleModalClose}
@@ -296,18 +297,18 @@ export default function RegisterConfirmationPage() {
         </div>
       </Modal>
 
-      {/* 高松市アプリ連携失敗モーダル */}
+      {/* マイデジアプリ連携失敗モーダル */}
       <Modal
-        isOpen={showSaitamaFailedModal}
-        onClose={handleSaitamaFailedModalClose}
+        isOpen={showMydigiFailedModal}
+        onClose={handleMydigiFailedModalClose}
         title="⚠️ 登録完了（連携エラー）"
       >
         <div className="space-y-4">
           <p className="text-gray-700 whitespace-pre-line">
-            {`会員登録は完了しましたが、高松市みんなのアプリとの連携に失敗しました。\n\nプラン登録画面で再度連携をお試しください。`}
+            {`会員登録は完了しましたが、マイデジアプリとの連携に失敗しました。\n\nプラン登録画面で再度連携をお試しください。`}
           </p>
           <Button
-            onClick={handleSaitamaFailedModalClose}
+            onClick={handleMydigiFailedModalClose}
             className="w-full bg-green-600 hover:bg-green-700 text-white py-3"
           >
             連携なしで続行

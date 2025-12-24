@@ -361,14 +361,15 @@ const MenuButtons = React.memo(({
   
   return (
     <div className="space-y-3">
-      {onStoreIntroduction && (
+      {/* TODO: 店舗紹介メニュー - 一時的に非表示（後で戻す） */}
+      {/* {onStoreIntroduction && (
         <MenuButton 
           onClick={hasStoreIntroduction ? undefined : onStoreIntroduction} 
           icon={Store} 
           label={hasStoreIntroduction ? "店舗紹介（紹介済み）" : "店舗紹介"} 
           disabled={hasStoreIntroduction}
         />
-      )}
+      )} */}
       {appConfig.myPageSettings.showProfile && (
         <MenuButton onClick={onEditProfile} icon={SquarePen} label="プロフィール編集" />
       )}

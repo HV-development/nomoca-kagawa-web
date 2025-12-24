@@ -149,8 +149,8 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
           required={true}
         />
 
-        {/* キャンペーンコード案内リンク */}
-        <div className="text-center mt-3">
+        {/* TODO: キャンペーンコード案内リンク - 一時的に非表示（後で戻す） */}
+        {/* <div className="text-center mt-3">
           <button
             type="button"
             onClick={() => window.open("/モニターキャンペーン.pdf", "_blank")}
@@ -158,7 +158,7 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
           >
             キャンペーンコードはこちら
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="space-y-3">

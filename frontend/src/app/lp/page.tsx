@@ -1,1528 +1,1666 @@
 /// <reference path="../../types/shims-next.d.ts" />
+// @ts-nocheck
 'use client'
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
 
-const colors = {
-    primary: '#2B7A78',
-    accent: '#FFD93B',
-    orange: '#FF6F61',
-    base: '#FAF8F4',
-    dark: '#111',
-}
-
-const navLinks = [
-    { href: '#about', label: 'nomocaとは' },
-    { href: '#features', label: '魅力' },
-    { href: '#flow', label: '使い方' },
-    { href: '#pricing', label: '利用料金' },
-    { href: '#stores', label: '加盟店' },
-]
-
-const features = [
-    {
-        title: '1店舗につき1杯無料！',
-        description:
-            'お酒でもソフトドリンクでもOK。\n「nomoca（ノモカ）」の加盟店なら、ドリンク1杯が無料に。\nちょっと気になっていたお店に入ってみたり、気軽に一息ついたり。\nお財布にやさしく、気軽に乾杯を楽しめます。',
-        image: '/lp/nomoca/features-1.png',
-    },
-    {
-        title: '1日で複数店舗をハシゴできる！',
-        description:
-            '1店舗ごとに1杯無料だから、1日で何軒もまわれるのが「nomoca」の魅力。\n今日は仲間とカジュアルに、明日はしっとり一人飲み。\nその日の気分に合わせて、自由にドリンクめぐり！',
-        image: '/lp/nomoca/features-2.png',
-    },
-    {
-        title: 'お酒が苦手でも楽しめる！',
-        description:
-            '「nomoca」は"飲める人だけ"のサービスではありません。\nソフトドリンクも対象だから、ノンアル派や飲めない人でも安心。\n友達との軽い寄り道にも、一人時間のリフレッシュにも使えて、\n誰でも気軽に"乾杯"をシェアできます。',
-        image: '/lp/nomoca/features-3.png',
-    },
-    {
-        title: '新しいお店との出会い！',
-        description:
-            '普段行かないお店でも、1杯無料なら試しやすい。\n地元で愛される居酒屋から、雰囲気のいいカフェバーまで。\nnomocaがあれば、お店との新しい出会いを見つかるかも。\n街歩きしながら、思いがけない発見を楽しもう！',
-        image: '/lp/nomoca/features-4.png',
-    },
-]
-
-const steps = [
-    {
-        step: 'STEP',
-        num: '1',
-        title: 'お店を見つける',
-        description: '今いる場所の近くや、行ってみたいお店をマップやリストからチェック。',
-        image: '/lp/nomoca/flow-1.png',
-    },
-    {
-        step: 'STEP',
-        num: '2',
-        title: 'スマホを見せる',
-        description: 'お店でnomocaのクーポン画面を見せるだけ。対象ドリンクがその場で1杯無料に！',
-        image: '/lp/nomoca/flow-2.png',
-    },
-    {
-        step: 'STEP',
-        num: '3',
-        title: 'ハシゴして楽しむ',
-        description: 'お店を変えれば同じ日にもう1杯無料。あなたの“ちょい飲み”がもっと自由に。',
-        image: '/lp/nomoca/flow-3.png',
-    },
-]
-
-const storeImages = ['/lp/nomoca/stores-1.png', '/lp/nomoca/stores-2.png', '/lp/nomoca/stores-3.png']
+// カルーセル用のプレースホルダー（実際の画像がある場合は置き換えてください）
+const bannerImages = [
+  null, // プレースホルダー1
+  null, // プレースホルダー2
+  null, // プレースホルダー3
+];
 
 export default function LPPage() {
-    const router = useRouter()
-    const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(bannerImages.length * 7)
+  const [carouselImageWidth, setCarouselImageWidth] = useState(303)
 
-    const container = 'w-full max-w-[1200px] mx-auto px-6 lg:px-10'
+  // 無限ループ用：画像を15回複製
+  const extendedImages = [
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+    ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages, ...bannerImages,
+  ]
 
-    useEffect(() => {
-        document.body.classList.add('lp-page')
-        // スクロールバーを非表示にするスタイルを追加
-        const style = document.createElement('style')
-        style.textContent = `
-            .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-            }
-        `
-        document.head.appendChild(style)
-        return () => {
-            document.body.classList.remove('lp-page')
-            document.head.removeChild(style)
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (isTransitioning) return
+    
+    setIsTransitioning(true)
+    const delta = direction === 'right' ? 1 : -1
+    setCurrentSlide(prev => prev + delta)
+    
+    setTimeout(() => {
+      setIsTransitioning(false)
+      setCurrentSlide((prev) => {
+        if (prev >= bannerImages.length * 11) {
+          return prev - bannerImages.length * 5
         }
-    }, [])
-
-    const scrollLeft = () => {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollBy({ left: -400, behavior: 'smooth' })
+        if (prev < bannerImages.length * 3) {
+          return prev + bannerImages.length * 5
         }
+        return prev
+      })
+    }, 500)
+  }
+
+  const goToSlide = (index: number) => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
+    setCurrentSlide(bannerImages.length * 7 + index)
+    setTimeout(() => setIsTransitioning(false), 500)
+  }
+
+  // LPページ用：bodyの最大幅制限を解除
+  useEffect(() => {
+    document.body.style.maxWidth = '100vw'
+    return () => {
+      document.body.style.maxWidth = ''
     }
+  }, [])
 
-    const scrollRight = () => {
-        if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' })
-        }
+  // メディアクエリでカルーセル画像サイズを動的に変更
+  useEffect(() => {
+    const updateCarouselSize = () => {
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        setCarouselImageWidth(375)
+      } else {
+        setCarouselImageWidth(303)
+      }
     }
+    updateCarouselSize()
+    window.addEventListener('resize', updateCarouselSize)
+    return () => window.removeEventListener('resize', updateCarouselSize)
+  }, [])
 
-    return (
-        <>
-            <div className="w-full bg-white text-[#111] overflow-x-hidden" style={{ fontFamily: '"Zen Kaku Gothic New", sans-serif' }}>
-                <header className="w-full py-4">
-                    <div className={`${container} flex items-center justify-between`}>
-                        <Image src="/horizon-2.svg" alt="nomoca Kagawa" width={170} height={48} className="w-[160px] h-auto" priority />
-                        <nav className="flex items-center gap-6 text-[13px] font-semibold text-[#0f1524]">
-                            {navLinks.map((l) => (
-                                <a key={l.href} href={l.href} className="hover:text-[#2B7A78] transition-colors">
-                                    {l.label}
-                                </a>
-                            ))}
-                            <Link href="/lp/contact" className="hover:text-[#2B7A78] transition-colors">
-                                お問い合わせ
-                            </Link>
-                            <Link
-                                href="/lp/store"
-                                className="flex items-center justify-center rounded-full px-4 py-2 bg-[#2B7A78] text-white text-sm font-bold hover:brightness-110 transition ml-2"
-                            >
-                                お店の方はこちら
-                            </Link>
-                        </nav>
-                    </div>
-                </header>
+  return (
+    <div className="w-full overflow-x-hidden" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+      {/* First View */}
+      <div
+        className="relative w-full min-h-screen"
+        style={{
+          maxWidth: 'none',
+          width: '100vw',
+          margin: 0,
+          padding: 0,
+          overflow: 'visible',
+          position: 'relative',
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          backgroundColor: 'var(--sub, #FAF8F4)'
+        }}
+      >
+        {/* Header */}
+        <header className="relative w-full" style={{ zIndex: 100 }}>
+          <div className="w-full px-4 py-4 lg:px-8 lg:py-6" style={{ width: '100vw', margin: 0 }}>
+            <div className="flex items-center w-full justify-between">
+              <div className="flex items-center">
+                <Image
+                  src="/lp/images/logo-nomoca.svg"
+                  alt="nomoca"
+                  width={244}
+                  height={92}
+                  className="w-32 h-12 lg:w-[244px] lg:h-[92px]"
+                  style={{
+                    flexShrink: 0
+                  }}
+                />
+              </div>
+              <div className="flex items-center gap-4 lg:gap-11">
+                <nav className="hidden lg:flex items-center space-x-6 lg:space-x-10">
+                  <a href="#about" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">nomocaとは</a>
+                  <a href="#features" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">魅力</a>
+                  <a href="#flow" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">使い方</a>
+                  <a href="#pricing" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">利用料金</a>
+                  <a href="#stores" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-base lg:text-lg font-medium">加盟店一覧</a>
+                </nav>
 
-                {/* FV */}
-                <section className="relative w-full text-[#0f1524] bg-[#f9f4ec]">
-                    <div className={`${container} py-10`}>
-                        <div className="grid grid-cols-[1.05fr_0.95fr] items-center gap-2 min-h-[520px]">
-                            <div className="relative z-20 flex flex-col self-center" style={{ gap: '0px' }}>
-                                <div className="flex items-center gap-1 -ml-2" style={{ textAlign: 'left', justifyContent: 'center' }}>
-                                    <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FFD93B] text-3xl font-black">1</span>
-                                    <span className="relative z-30 text-2xl font-bold text-[#111] -ml-3">店舗</span>
-                                    <span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FFD93B] text-3xl font-black -ml-3">1</span>
-                                    <span className="text-2xl font-bold text-[#111] -ml-2">杯無料</span>
-                                </div>
-                                <div
-                                    className="flex gap-1"
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        verticalAlign: 'middle',
-                                        height: '60px',
-                                        gap: '5px',
-                                    }}
-                                >
-                                    <div className="flex flex-col leading-none text-[#2B7A78]">
-                                        <span
-                                            className="text-[70px] font-bold tracking-tight"
-                                            style={{
-                                                fontFamily: '"Segoe UI Symbol", sans-serif',
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                marginBottom: '8px',
-                                                height: '60px',
-                                            }}
-                                        >
-                                            nomoca
-                                        </span>
-                                    </div>
-                                    <span
-                                        className="text-[28px] font-extrabold text-[#0f1524] mb-2"
-                                        style={{
-                                            marginBottom: '0px',
-                                            height: '60px',
-                                            verticalAlign: 'bottom',
-                                            marginTop: '0px',
-                                        }}
-                                    >
-                                        で
-                                    </span>
-                                </div>
-                                <p
-                                    className="text-[20px] font-bold text-[#333]"
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        marginTop: '0px',
-                                        height: '40px',
-                                    }}
-                                >
-                                    もっと気軽に、楽しく街歩き！
-                                </p>
-                            </div>
+                <Link
+                  href="/lp/merchant"
+                  className="text-white font-bold hover:opacity-90 transition-opacity text-xs lg:text-sm lg:text-base px-4 py-2 lg:px-6 lg:py-3"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '10px',
+                    borderRadius: '9999px',
+                    background: 'var(--main, #2B7A78)'
+                  }}
+                >
+                  お店の方はこちら
+                  <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none" className="w-2 h-3 lg:w-3 lg:h-4">
+                    <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </Link>
 
-                            <div className="relative w-full min-h-[420px] flex justify-end">
-                                <div
-                                    className="absolute top-1/2 -translate-y-1/2 bg-[#2B7A78]"
-                                    style={{
-                                        left: '100px',
-                                        width: '320px',
-                                        height: '350px',
-                                    }}
-                                />
-                                <div
-                                    className="absolute shadow-lg bg-white"
-                                    style={{
-                                        width: '300px',
-                                        height: '270px',
-                                        left: '-25px',
-                                        top: '93px',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    <Image
-                                        src="/lp/nomoca/fv-bg.png"
-                                        alt="乾杯イメージ"
-                                        width={300}
-                                        height={250}
-                                        style={{
-                                            position: 'absolute',
-                                            width: '300px',
-                                            height: '270px',
-                                            objectPosition: 'center',
-                                            objectFit: 'cover',
-                                        }}
-                                        priority
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* fv-phone.pngをセクション直下に配置 */}
-                    <Image
-                        src="/lp/nomoca/fv-phone.png"
-                        alt="nomoca app"
-                        width={230}
-                        height={380}
-                        className="absolute drop-shadow-2xl"
-                        style={{
-                            top: '233px',
-                            left: '790px',
-                            width: '140px',
-                            height: '283px',
-                            objectFit: 'cover',
-                        }}
-                        priority
-                    />
-
-                    {/* 新しい要素 */}
-                    <div
-                        className="absolute"
-                        style={{
-                            width: '204px',
-                            height: '413px',
-                            aspectRatio: '204/413',
-                            right: '160px',
-                            bottom: '151px',
-                            left: '834px',
-                            top: '413px',
-                        }}
-                    />
-                </section>
-
-                {/* News (シンプル帯) */}
-                <section className="w-full bg-white border-y border-[#d9e2de]">
-                    <div
-                        className="relative w-full"
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'stretch',
-                            gap: '24px',
-                            padding: '40px 120px',
-                        }}
-                    >
-                        <div
-                            ref={scrollContainerRef}
-                            className="flex items-center overflow-x-auto scrollbar-hide"
-                            style={{
-                                scrollbarWidth: 'none',
-                                msOverflowStyle: 'none',
-                                gap: '20px',
-                                width: '100%',
-                                justifyContent: 'stretch',
-                                alignItems: 'stretch',
-                            }}
-                        >
-                            <div
-                                className="flex-shrink-0"
-                                style={{
-                                    width: '375px',
-                                    height: '210px',
-                                    backgroundColor: '#D9D9D9',
-                                }}
-                            />
-                            <div
-                                className="flex-shrink-0"
-                                style={{
-                                    width: '375px',
-                                    height: '210px',
-                                    backgroundColor: '#D9D9D9',
-                                }}
-                            />
-                            <div
-                                className="flex-shrink-0"
-                                style={{
-                                    width: '375px',
-                                    height: '210px',
-                                    backgroundColor: '#D9D9D9',
-                                }}
-                            />
-                        </div>
-                        <button
-                            onClick={scrollLeft}
-                            className="absolute flex items-center justify-center bg-[#2B7A78] rounded-full hover:opacity-80 transition-opacity"
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                left: '-20px',
-                                top: '85px',
-                            }}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <path d="M18.6667 22.6666L12 15.9999L18.6667 9.33325" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
-                        <button
-                            onClick={scrollRight}
-                            className="absolute flex items-center justify-center bg-[#2B7A78] rounded-full hover:opacity-80 transition-opacity"
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                right: '-20px',
-                                top: '85px',
-                            }}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-                                <path d="M13.3333 9.33325L20 15.9999L13.3333 22.6666" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {/* Indicators */}
-                    <div className="flex items-center justify-center gap-5">
-                        {[0, 1, 2].map((idx) => (
-                            <div
-                                key={idx}
-                                style={{
-                                    width: '16px',
-                                    height: '16px',
-                                    borderRadius: '9999px',
-                                    backgroundColor: idx === 0 ? '#2B7A78' : 'rgba(43, 122, 120, 0.25)',
-                                }}
-                            />
-                        ))}
-                    </div>
-                </section>
-
-                {/* About */}
-                <section id="about" className="w-full bg-white">
-                    <div
-                        className="w-full max-w-[1200px] mx-auto px-6 lg:px-10 py-20 lg:py-28"
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignSelf: 'stretch',
-                            gap: '40px',
-                        }}
-                    >
-                        {/* Header */}
-                        <div
-                            className="flex flex-row items-end gap-6 lg:gap-10 pb-6 border-b border-[#2B7A78]"
-                            style={{
-                                alignSelf: 'stretch',
-                                width: '813px',
-                            }}
-                        >
-                            <h2
-                                className="text-4xl lg:text-[56px]"
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 500,
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                ABOUT
-                            </h2>
-                            <p
-                                className="text-base lg:text-[22px]"
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                nomocaとは？
-                            </p>
-                        </div>
-
-                        {/* Content */}
-                        <div
-                            className="flex flex-col lg:flex-row items-start gap-8 lg:gap-16 relative w-full"
-                        >
-                            {/* Text Section */}
-                            <div
-                                className="flex flex-1 min-w-0 w-full lg:w-auto"
-                            >
-                                <div
-                                    className="flex flex-col justify-center items-center gap-6 p-8 lg:p-12 xl:p-[120px_220px_120px_120px] w-full bg-[rgba(43,122,120,0.1)]"
-                                    style={{
-                                        boxSizing: 'border-box',
-                                        width: '700px',
-                                    }}
-                                >
-                                    <p
-                                        className="text-lg lg:text-2xl"
-                                        style={{
-                                            fontFamily: '"Noto Sans JP", sans-serif',
-                                            fontWeight: 700,
-                                            lineHeight: '1.6000000635782878em',
-                                            textAlign: 'justify',
-                                            color: '#000000',
-                                            width: '350px',
-                                        }}
-                                    >
-                                        nomocaを片手に、<br />
-                                        気になるお店をハシゴしよう。
-                                    </p>
-                                    <p
-                                        className="text-sm lg:text-base"
-                                        style={{
-                                            fontFamily: '"Noto Sans JP", sans-serif',
-                                            fontWeight: 500,
-                                            lineHeight: '1.7999999523162842em',
-                                            textAlign: 'justify',
-                                            color: '#000000',
-                                            width: '350px',
-                                        }}
-                                    >
-                                        「nomoca」は、毎日1軒につきドリンクが1杯無料になる新しい&quot;Welcomeドリンク&quot;サービスです。
-                                        お酒でもソフトドリンクでもOK。
-                                        気になるお店をみつけたら、仲間と乾杯したり、自分だけの寄り道を楽しんだり。
-                                        今日の一杯をきっかけに、街の楽しさがどんどん広がる。
-                                        あなたの「今日はどこで飲もう？」をもっと自由に、もっとおトクにします。
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Image Section */}
-                            <div
-                                className="flex-shrink-0 relative z-[100] w-full lg:w-[350px] h-[250px] lg:h-[350px] mt-0 lg:mt-[102px] flex items-center justify-center"
-                            >
-                                <Image
-                                    src="/lp/nomoca/about-illustration.png"
-                                    alt="nomoca about"
-                                    width={350}
-                                    height={350}
-                                    className="object-cover"
-                                    style={{
-                                        position: 'absolute',
-                                        left: '-103px',
-                                        top: '-38px',
-                                        width: '400px',
-                                        height: '300px',
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Features */}
-                <section id="features" className="w-full" style={{ backgroundColor: '#2B7A78' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            padding: '120px 130px',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '40px',
-                            alignSelf: 'stretch',
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'flex-start',
-                                gap: '40px',
-                                width: '979px',
-                            }}
-                        >
-                            {/* Header */}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'flex-end',
-                                    width: '813px',
-                                    gap: '40px',
-                                    padding: '0px 0px 24px',
-                                    borderBottom: '1px solid #FFD93B',
-                                }}
-                            >
-                                <h2
-                                    style={{
-                                        fontFamily: '"Oswald", sans-serif',
-                                        fontWeight: 500,
-                                        fontSize: '56px',
-                                        lineHeight: '1em',
-                                        color: '#FFD93B',
-                                    }}
-                                >
-                                    FEATURES
-                                </h2>
-                                <p
-                                    style={{
-                                        fontFamily: '"Noto Sans JP", sans-serif',
-                                        fontWeight: 700,
-                                        fontSize: '22px',
-                                        lineHeight: '1em',
-                                        color: '#FFD93B',
-                                    }}
-                                >
-                                    nomocaの魅力
-                                </p>
-                            </div>
-
-                            {/* Content */}
-                            <div
-                                style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(2, 1fr)',
-                                    width: '100%',
-                                    gap: '40px',
-                                }}
-                            >
-                                {features.map((f, idx) => {
-                                    const isFirst = idx === 0
-                                    const isSecond = idx === 1
-                                    const isThird = idx === 2
-
-                                    const cardWidth = isSecond ? '400px' : '100%'
-                                    const imageWrapperWidth = isFirst || isThird ? '400px' : '100%'
-                                    const imageWrapperHeight = isFirst ? '250px' : isSecond ? '250px' : '400px'
-                                    const imageWidth = isFirst ? 400 : 800
-                                    const imageHeight = isSecond ? 250 : isFirst ? 250 : 400
-                                    const textWidth = isFirst ? '350px' : isThird ? '400px' : '100%'
-
-                                    return (
-                                        <div
-                                            key={f.title}
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                justifyContent: 'flex-start',
-                                                gap: '24px',
-                                                backgroundColor: 'rgba(43, 122, 120, 0.1)',
-                                                width: cardWidth,
-                                                minHeight: '400px',
-                                            }}
-                                        >
-                                            <div
-                                                className="overflow-hidden"
-                                                style={{
-                                                    width: imageWrapperWidth,
-                                                    height: imageWrapperHeight,
-                                                    flexShrink: 0,
-                                                    display: isFirst ? 'flex' : 'block',
-                                                    flexDirection: isFirst ? 'column' : undefined,
-                                                    minHeight: isFirst ? '0px' : undefined,
-                                                    maxHeight: isFirst ? '250px' : undefined,
-                                                }}
-                                            >
-                                                <Image
-                                                    src={f.image}
-                                                    alt={f.title}
-                                                    width={imageWidth}
-                                                    height={imageHeight}
-                                                    sizes="(min-width: 1024px) 50vw, 100vw"
-                                                    className="w-full h-full object-cover"
-                                                    priority={idx === 0}
-                                                />
-                                            </div>
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    justifyContent: 'flex-start',
-                                                    alignItems: 'flex-start',
-                                                    gap: '16px',
-                                                    width: '100%',
-                                                    padding: '0 0 24px 0',
-                                                    boxSizing: 'border-box',
-                                                }}
-                                            >
-                                                <h3
-                                                    style={{
-                                                        fontFamily: '"Noto Sans JP", sans-serif',
-                                                        fontWeight: 700,
-                                                        fontSize: '24px',
-                                                        lineHeight: '1.6000000635782878em',
-                                                        textAlign: 'justify',
-                                                        color: '#FAF8F4',
-                                                        width: textWidth,
-                                                        paddingLeft: '0',
-                                                    }}
-                                                >
-                                                    {f.title}
-                                                </h3>
-                                                <p
-                                                    style={{
-                                                        fontFamily: '"Noto Sans JP", sans-serif',
-                                                        fontWeight: 500,
-                                                        fontSize: '16px',
-                                                        lineHeight: '1.7999999523162842em',
-                                                        textAlign: 'left',
-                                                        color: '#FAF8F4',
-                                                        width: textWidth,
-                                                        whiteSpace: 'pre-line',
-                                                        paddingLeft: '0',
-                                                    }}
-                                                >
-                                                    {f.description}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Flow */}
-                <section id="flow" className="w-full" style={{ backgroundColor: '#FFFFFF' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            padding: '120px 130px',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            alignSelf: 'stretch',
-                            gap: '40px',
-                        }}
-                    >
-                        {/* Header */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                                padding: '0px 0px 24px',
-                                borderBottom: '1px solid #2B7A78',
-                            }}
-                        >
-                            <h2
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 500,
-                                    fontSize: '56px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                FLOW
-                            </h2>
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '22px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                nomocaの使い方
-                            </p>
-                        </div>
-
-                        {/* Content */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'stretch',
-                                alignItems: 'stretch',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                            }}
-                        >
-                            {steps.map((s) => (
-                                <div
-                                    key={s.num}
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        gap: '36px',
-                                        flex: '1 1 0',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                        minHeight: '477px',
-                                        marginTop: '10px',
-                                    }}
-                                >
-                                    {/* Image Section with STEP Badge */}
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            alignSelf: 'stretch',
-                                            gap: '-56px',
-                                            position: 'relative',
-                                            marginBottom: '60px',
-                                        }}
-                                    >
-                                        {/* Circular Image */}
-                                        <div
-                                            style={{
-                                                width: '250px',
-                                                height: '250px',
-                                                borderRadius: '9999px',
-                                                overflow: 'hidden',
-                                                position: 'relative',
-                                                margin: '0 auto',
-                                            }}
-                                        >
-                                            <Image
-                                                src={s.image}
-                                                alt={s.title}
-                                                fill
-                                                className="object-cover"
-                                                style={{
-                                                    objectFit: 'cover',
-                                                }}
-                                            />
-                                        </div>
-                                        {/* STEP Badge */}
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                gap: '8px',
-                                                padding: '16px',
-                                                backgroundColor: '#FFD93B',
-                                                borderRadius: '9999px',
-                                                position: 'absolute',
-                                                bottom: '-50px',
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
-                                            }}
-                                        >
-                                            <span
-                                                style={{
-                                                    fontFamily: '"Oswald", sans-serif',
-                                                    fontWeight: 500,
-                                                    fontSize: '14px',
-                                                    lineHeight: '1em',
-                                                    color: '#2B7A78',
-                                                }}
-                                            >
-                                                {s.step}
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontFamily: '"Oswald", sans-serif',
-                                                    fontWeight: 500,
-                                                    fontSize: '32px',
-                                                    lineHeight: '1em',
-                                                    color: '#2B7A78',
-                                                }}
-                                            >
-                                                {s.num}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {/* Text Section */}
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            alignSelf: 'stretch',
-                                            gap: '10px',
-                                            marginTop: '10px',
-                                        }}
-                                    >
-                                        <h3
-                                            style={{
-                                                fontFamily: '"Noto Sans JP", sans-serif',
-                                                fontWeight: 700,
-                                                fontSize: '24px',
-                                                lineHeight: '1.6000000635782878em',
-                                                textAlign: 'justify',
-                                                color: '#000000',
-                                                width: '100%',
-                                            }}
-                                        >
-                                            {s.title}
-                                        </h3>
-                                        <p
-                                            style={{
-                                                fontFamily: '"Noto Sans JP", sans-serif',
-                                                fontWeight: 500,
-                                                fontSize: '16px',
-                                                lineHeight: '1.7999999523162842em',
-                                                textAlign: 'left',
-                                                color: '#000000',
-                                                width: '100%',
-                                                whiteSpace: 'pre-line',
-                                            }}
-                                        >
-                                            {s.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Pricing */}
-                <section id="pricing" className="w-full relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignSelf: 'stretch',
-                            gap: '20px',
-                            padding: '0px 130px 120px 130px',
-                        }}
-                    >
-                        {/* Header */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                                padding: '0px 0px 24px',
-                                borderBottom: '1px solid #2B7A78',
-                            }}
-                        >
-                            <h2
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 500,
-                                    fontSize: '56px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                PRICING
-                            </h2>
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '22px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                利用料金
-                            </p>
-                        </div>
-
-                        {/* Subtitle */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'stretch',
-                                gap: '10px',
-                            }}
-                        >
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '26px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                    textAlign: 'left',
-                                }}
-                            >
-                                1日あたり約30円でちょい飲み体験！
-                            </p>
-                        </div>
-
-                        {/* Pricing Card */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '20px',
-                                padding: '56px 0px 64px',
-                                width: '1180px',
-                                margin: '0 auto',
-                                backgroundImage: 'url(/lp/nomoca/pricing-card.png)',
-                                backgroundSize: '100% 100%',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundColor: '#FFFFFF',
-                                position: 'relative',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
-                            {/* Regular Plan */}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    padding: '24px 0px',
-                                    width: '580px',
-                                    backgroundColor: '#FAF8F4',
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        gap: '16px',
-                                        padding: '7px 32px',
-                                        backgroundColor: '#FFD93B',
-                                    }}
-                                >
-                                    <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2 2L10 10L2 18" stroke="#2B7A78" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                    <p
-                                        style={{
-                                            fontFamily: '"Noto Sans JP", sans-serif',
-                                            fontWeight: 700,
-                                            fontSize: '24px',
-                                            lineHeight: '1em',
-                                            color: '#2B7A78',
-                                            textAlign: 'center',
-                                        }}
-                                    >
-                                        １日1軒1杯無料
-                                    </p>
-                                    <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10 2L2 10L10 18" stroke="#2B7A78" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </div>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        gap: '16px',
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            gap: '10px',
-                                            width: '68px',
-                                            height: '68px',
-                                            backgroundColor: '#FFD93B',
-                                            borderRadius: '9999px',
-                                        }}
-                                    >
-                                        <p
-                                            style={{
-                                                fontFamily: '"Noto Sans JP", sans-serif',
-                                                fontWeight: 700,
-                                                fontSize: '20px',
-                                                lineHeight: '1em',
-                                                color: '#000000',
-                                            }}
-                                        >
-                                            月額
-                                        </p>
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            alignItems: 'flex-end',
-                                            gap: '8px',
-                                        }}
-                                    >
-                                        <p
-                                            style={{
-                                                fontFamily: '"Oswald", sans-serif',
-                                                fontWeight: 600,
-                                                fontSize: '100px',
-                                                lineHeight: '1em',
-                                                letterSpacing: '-0.06em',
-                                                color: '#000000',
-                                            }}
-                                        >
-                                            980
-                                        </p>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                gap: '10px',
-                                                padding: '0px 0px 5px',
-                                            }}
-                                        >
-                                            <p
-                                                style={{
-                                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                                    fontWeight: 700,
-                                                    fontSize: '22px',
-                                                    lineHeight: '1em',
-                                                    color: '#000000',
-                                                }}
-                                            >
-                                                円（税込）
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Mydigi Plan */}
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    gap: '16px',
-                                    padding: '0px 0px 0px 24px',
-                                    width: '580px',
-                                    height: '160px',
-                                    backgroundColor: '#2B7A78',
-                                }}
-                            >
-                                <Image
-                                    src="/lp/nomoca/mydigi-logo.png"
-                                    alt="mydigi"
-                                    width={152}
-                                    height={179}
-                                    style={{
-                                        width: '152px',
-                                        height: '179px',
-                                        objectFit: 'cover',
-                                    }}
-                                />
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            alignSelf: 'stretch',
-                                            gap: '10px',
-                                            padding: '5px 0px',
-                                            backgroundColor: '#FFD93B',
-                                            borderRadius: '9999px',
-                                        }}
-                                    >
-                                        <p
-                                            style={{
-                                                fontFamily: '"Zen Kaku Gothic New", sans-serif',
-                                                fontWeight: 700,
-                                                fontSize: '22px',
-                                                lineHeight: '1em',
-                                                color: '#000000',
-                                                textAlign: 'center',
-                                            }}
-                                        >
-                                            マイデジ会員なら
-                                        </p>
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            gap: '4px',
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                gap: '10px',
-                                                width: '68px',
-                                                height: '68px',
-                                                backgroundColor: '#FFFFFF',
-                                                borderRadius: '9999px',
-                                            }}
-                                        >
-                                            <p
-                                                style={{
-                                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                                    fontWeight: 700,
-                                                    fontSize: '20px',
-                                                    lineHeight: '1em',
-                                                    color: '#000000',
-                                                }}
-                                            >
-                                                月額
-                                            </p>
-                                        </div>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                justifyContent: 'center',
-                                                alignItems: 'flex-end',
-                                                gap: '4px',
-                                            }}
-                                        >
-                                            <p
-                                                style={{
-                                                    fontFamily: '"Oswald", sans-serif',
-                                                    fontWeight: 700,
-                                                    fontSize: '108px',
-                                                    lineHeight: '1em',
-                                                    color: '#FFFFFF',
-                                                }}
-                                            >
-                                                480
-                                            </p>
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    gap: '10px',
-                                                    padding: '0px 0px 4px',
-                                                }}
-                                            >
-                                                <p
-                                                    style={{
-                                                        fontFamily: '"Noto Sans JP", sans-serif',
-                                                        fontWeight: 700,
-                                                        fontSize: '20px',
-                                                        lineHeight: '1.2em',
-                                                        color: '#FFFFFF',
-                                                        textAlign: 'left',
-                                                    }}
-                                                >
-                                                    円で
-                                                    <br />
-                                                    利用可能！
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Footer Note */}
-                        <p
-                            style={{
-                                fontFamily: '"Noto Sans JP", sans-serif',
-                                fontWeight: 400,
-                                fontSize: '15px',
-                                lineHeight: '1.6em',
-                                color: '#000000',
-                                textAlign: 'left',
-                                whiteSpace: 'pre-line',
-                            }}
-                        >
-                            {`※対象ドリンクは店舗により異なります。
-※同一店舗での無料適用は1日お一人さま1杯までです。`}
-                        </p>
-                    </div>
-                </section>
-
-                {/* Stores */}
-                <section id="stores" className="w-full bg-[#FFD93B]" style={{ position: 'relative' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'stretch',
-                            gap: '45px',
-                            padding: '120px',
-                            position: 'relative',
-                            zIndex: 1,
-                        }}
-                    >
-                        {/* Store Images Background */}
-                        <div
-                            style={{
-                                position: 'absolute',
-                                width: '100%',
-                                height: '493px',
-                                left: '0',
-                                top: '0',
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'stretch',
-                                alignItems: 'stretch',
-                                zIndex: 0,
-                            }}
-                        >
-                            {storeImages.map((src, i) => (
-                                <div key={src} style={{ flex: '1 1 0', position: 'relative', height: '493px' }}>
-                                    <Image
-                                        src={src}
-                                        alt={`store-${i + 1}`}
-                                        fill
-                                        style={{
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                    {/* Dark overlay */}
-                                    <div
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                                            zIndex: 1,
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Header - Figma node-id=21-168 */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                                padding: '0px 0px 24px',
-                                borderBottom: '1px solid #FAF8F4',
-                                position: 'relative',
-                                zIndex: 2,
-                            }}
-                        >
-                            <h2
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 500,
-                                    fontSize: '56px',
-                                    lineHeight: '1em',
-                                    color: '#FAF8F4',
-                                    textAlign: 'left',
-                                }}
-                            >
-                                STORES
-                            </h2>
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '22px',
-                                    lineHeight: '1em',
-                                    color: '#FAF8F4',
-                                    textAlign: 'left',
-                                }}
-                            >
-                                加盟店
-                            </p>
-                        </div>
-
-                        {/* Content */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '24px',
-                                padding: '0px 120px',
-                                borderRadius: '80px',
-                                position: 'relative',
-                                zIndex: 2,
-                            }}
-                        >
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '25px',
-                                    lineHeight: '1.6em',
-                                    color: '#FAF8F4',
-                                    textAlign: 'center',
-                                }}
-                            >
-                                加盟店、ぞくぞく拡大中！
-                            </p>
-                            <button
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    gap: '10px',
-                                    padding: '16px 24px 16px 40px',
-                                    backgroundColor: '#FFD93B',
-                                    borderRadius: '9999px',
-                                }}
-                            >
-                                <p
-                                    style={{
-                                        fontFamily: '"Noto Sans JP", sans-serif',
-                                        fontWeight: 700,
-                                        fontSize: '18px',
-                                        lineHeight: '1em',
-                                        color: '#000000',
-                                        textAlign: 'center',
-                                    }}
-                                >
-                                    店舗一覧はこちら
-                                </p>
-                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.3333 9.33325L20 15.9999L13.3333 22.6666" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* FAQ */}
-                <section id="faq" className="w-full bg-white">
-                    <div className="max-w-[900px] min-w-[900px] mx-auto px-6 lg:px-10 py-20 lg:py-24 text-center text-[#111]">
-                        {/* Header */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                                padding: '0px 0px 24px',
-                                borderBottom: '1px solid #2B7A78',
-                            }}
-                        >
-                            <h2
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 500,
-                                    fontSize: '56px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                FAQ
-                            </h2>
-                            <p
-                                style={{
-                                    fontFamily: '"Noto Sans JP", sans-serif',
-                                    fontWeight: 700,
-                                    fontSize: '22px',
-                                    lineHeight: '1em',
-                                    color: '#2B7A78',
-                                }}
-                            >
-                                よくあるご質問
-                            </p>
-                        </div>
-                        <p className="text-base md:text-lg font-bold mb-8" style={{ color: 'rgba(43, 122, 120, 1)', paddingTop: '20px', paddingBottom: '20px' }}>
-                            お問い合わせの多い質問をまとめました。
-                            <br className="hidden md:block" />
-                            お問い合わせの前に、ご確認ください。
-                        </p>
-                        <Link
-                            href="/lp/faq"
-                            className="inline-flex items-center gap-3 px-10 py-4 rounded-full text-lg font-bold text-white"
-                            style={{ backgroundColor: colors.primary }}
-                        >
-                            よくあるご質問はこちら
-                            <span className="text-xl">›</span>
-                        </Link>
-                    </div>
-                </section>
-
-                {/* CTA for merchants */}
-                <section id="cta" className="w-full" style={{ backgroundColor: colors.accent }}>
-                    <div className="max-w-[800px] min-w-[800px] mx-auto px-6 lg:px-10 py-16 text-center text-[#111]">
-                        <h2 className="text-xl md:text-2xl font-bold mb-6" style={{ color: 'rgba(43, 122, 120, 1)' }}>掲載店募集中！</h2>
-                        <button
-                            onClick={() => router.push('/lp/store')}
-                            className="inline-flex items-center gap-3 px-10 py-4 rounded-full text-lg font-bold transition"
-                            style={{
-                                color: 'rgba(255, 255, 255, 1)',
-                                backgroundColor: 'rgba(43, 122, 120, 1)',
-                                border: 'none',
-                            }}
-                        >
-                            お店の方はこちら
-                            <span className="text-xl">›</span>
-                        </button>
-                    </div>
-                </section>
-
-                {/* Footer */}
-                <footer className="w-full bg-white border-t border-[#eee]">
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            alignSelf: 'stretch',
-                            gap: '24px',
-                            padding: '56px 0px 0px',
-                        }}
-                    >
-                        {/* Logo */}
-                        <Image
-                            src="/favicon.png"
-                            alt="nomoca Kagawa"
-                            width={294}
-                            height={294}
-                            style={{
-                                width: '294px',
-                                height: '294px',
-                            }}
-                        />
-
-                        {/* Links */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                gap: '40px',
-                            }}
-                        >
-                            <Link href="/lp/faq" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                よくあるご質問
-                            </Link>
-                            <Link href="/lp/contact" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                お問い合わせ
-                            </Link>
-                            <a href="/プライバシーポリシー.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                プライバシーポリシー
-                            </a>
-                            <a href="/特定商取引法.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                特定商取引法に基づく表記
-                            </a>
-                            <Link href="/lp/terms" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                ご利用規約
-                            </Link>
-                            <a href="#" className="hover:text-[#2B7A78] transition-colors" style={{ fontFamily: '"Noto Sans JP", sans-serif', fontWeight: 500, fontSize: '16px', lineHeight: '1em', color: '#000000' }}>
-                                運営会社
-                            </a>
-                        </div>
-
-                        {/* Copyright */}
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                alignSelf: 'stretch',
-                                gap: '40px',
-                                padding: '40px 0px',
-                                borderTop: '1px solid #000000',
-                            }}
-                        >
-                            <p
-                                style={{
-                                    fontFamily: '"Oswald", sans-serif',
-                                    fontWeight: 400,
-                                    fontSize: '16px',
-                                    lineHeight: '1em',
-                                    color: '#000000',
-                                    textAlign: 'center',
-                                }}
-                            >
-                                ©2025 nomoca Kagawa
-                            </p>
-                        </div>
-                    </div>
-                </footer>
+                {/* ハンバーガーメニューアイコン（モバイルのみ表示） */}
+                <button
+                  className="lg:hidden flex flex-col justify-center items-center cursor-pointer"
+                  style={{
+                    gap: '6px'
+                  }}
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  aria-label="メニュー"
+                >
+                  <div style={{ width: '24px', height: '2px', background: '#2B7A78' }}></div>
+                  <div style={{ width: '24px', height: '2px', background: '#2B7A78' }}></div>
+                  <div style={{ width: '24px', height: '2px', background: '#2B7A78' }}></div>
+                </button>
+              </div>
             </div>
-        </>
-    )
-}
+          </div>
 
+          {/* モバイルメニュー */}
+          {isMobileMenuOpen && (
+            <div
+              className="lg:hidden fixed inset-0 w-full h-full"
+              style={{
+                background: '#FFF',
+                display: 'flex',
+                paddingBottom: '184px',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                gap: '32px',
+                flex: '1 0 0',
+                alignSelf: 'stretch',
+                zIndex: 9999
+              }}
+            >
+              {/* 閉じるボタン */}
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
+                aria-label="メニューを閉じる"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="#2B7A78" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <nav className="flex flex-col items-center gap-8 py-8">
+                <a
+                  href="#about"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  nomocaとは
+                </a>
+                <a
+                  href="#features"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  魅力
+                </a>
+                <a
+                  href="#flow"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  使い方
+                </a>
+                <a
+                  href="#pricing"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  利用料金
+                </a>
+                <a
+                  href="#stores"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  加盟店一覧
+                </a>
+                <Link
+                  href="/lp/contact"
+                  className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  お問い合わせ
+                </Link>
+              </nav>
+            </div>
+          )}
+        </header>
+
+        {/* FV Main Content - Mobile */}
+        <div className="lg:hidden flex flex-col items-center justify-center px-8 pt-[100px] pb-6 gap-6">
+          {/* 左コンテンツ - Mobile */}
+          <div className="flex flex-col items-center gap-4">
+            {/* 毎日 1店舗 1日 1杯無料 - Mobile用 */}
+            <div className="relative flex items-center" style={{ width: '320px', height: '70px' }}>
+              {/* 毎日 - 最前面 z-index: 40 */}
+              <span
+                className="absolute text-xl font-bold flex items-center"
+                style={{ 
+                  fontFamily: "'Noto Sans JP', sans-serif", 
+                  color: '#000',
+                  left: '0px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  zIndex: 40
+                }}
+              >
+                毎日
+              </span>
+              
+              {/* 1店舗 - z-index: 30 */}
+              <div className="absolute flex items-center" style={{ left: '40px', top: '50%', transform: 'translateY(-50%)', zIndex: 30 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  店舗
+                </span>
+              </div>
+
+              {/* 1日 - z-index: 20 */}
+              <div className="absolute flex items-center" style={{ left: '125px', top: '50%', transform: 'translateY(-50%)', zIndex: 20 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  日
+                </span>
+              </div>
+
+              {/* 1杯無料 - z-index: 10 */}
+              <div className="absolute flex items-center" style={{ left: '200px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
+                <div
+                  className="absolute w-[70px] h-[70px] rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', left: '-14px', top: '50%', transform: 'translateY(-50%)', zIndex: -1 }}
+                />
+                <span
+                  className="relative text-[54px] font-bold"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', lineHeight: '1' }}
+                >
+                  1
+                </span>
+                <span
+                  className="relative text-[24px] font-bold flex items-center"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1', height: '54px' }}
+                >
+                  杯無料
+                </span>
+              </div>
+            </div>
+
+            {/* nomoca で - Mobile */}
+            <div className="flex items-end justify-center gap-2 w-full">
+              <Image
+                src="/lp/images/logo-nomoca-text.png"
+                alt="nomoca"
+                width={292}
+                height={40}
+                className="h-[40px] w-auto"
+              />
+              <span
+                className="text-2xl"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                で
+              </span>
+            </div>
+
+            {/* サブテキスト - Mobile */}
+            <p
+              className="text-[21px] font-bold text-center"
+              style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', lineHeight: '1' }}
+            >
+              ちょっとお得に、ちょっと楽しく
+            </p>
+          </div>
+
+          {/* ビールとスマホ - Mobile (緑背景) */}
+          <div 
+            className="relative flex flex-col items-center w-[100vw] -mx-8 px-4 pt-4 pb-0 overflow-hidden"
+            style={{ 
+              backgroundColor: 'var(--main, #2B7A78)',
+              height: '486px'
+            }}
+          >
+            {/* ビール画像 */}
+            <div className="w-full flex-shrink-0 rounded-lg overflow-hidden" style={{ maxWidth: '358px', height: '224px' }}>
+              <Image
+                src="/lp/images/user-fv-beer-mobile.png"
+                alt="乾杯"
+                width={358}
+                height={224}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* スマホ画像（ビール画像に重ねる） */}
+            <div className="flex-shrink-0" style={{ marginTop: '-52px' }}>
+              <Image
+                src="/lp/images/user-fv-phone.png"
+                alt="スマホ画面"
+                width={206}
+                height={418}
+                className="w-[206px] h-auto"
+              />
+            </div>
+          </div>
+
+          {/* CTAボタン - Mobile */}
+          <Link
+            href="/register"
+            className="flex items-center justify-between w-full py-4 px-6 rounded-full"
+            style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+          >
+            <div className="flex-1" />
+            <div className="flex flex-col items-center gap-2">
+              <span
+                className="text-lg font-bold"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                今すぐはじめる
+              </span>
+              <span
+                className="text-[26px] font-bold"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                &ldquo;一杯無料&rdquo;
+              </span>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M16.67 11.67L25 20L16.67 28.33" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </Link>
+        </div>
+
+        {/* FV Main Content - Desktop */}
+        <div className="hidden lg:flex relative w-full flex-row items-center justify-center px-20 py-24 gap-20">
+          {/* 左コンテンツ - Desktop */}
+          <div className="flex flex-col items-center gap-6">
+            {/* 1店舗 1日 1杯無料 テキスト - absoluteで重ねる */}
+            <div className="flex flex-row items-center justify-center whitespace-nowrap">
+              {/* 1店舗 */}
+              <div className="relative flex items-center">
+                {/* 黄色い丸（背面） */}
+                <div
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
+                />
+                {/* 1の数字 */}
+                <span
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
+                >
+                  1
+                </span>
+                {/* 店舗テキスト */}
+                <span
+                  className="relative text-3xl lg:text-4xl font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
+                >
+                  店舗
+                </span>
+              </div>
+
+              {/* 1日 - absoluteで重ねる */}
+              <div className="relative flex items-center -ml-2 lg:-ml-3">
+                {/* 黄色い丸（背面） */}
+                <div
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
+                />
+                {/* 1の数字 */}
+                <span
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
+                >
+                  1
+                </span>
+                {/* 日テキスト */}
+                <span
+                  className="relative text-3xl lg:text-4xl font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
+                >
+                  日
+                </span>
+              </div>
+
+              {/* 1杯無料 - absoluteで重ねる */}
+              <div className="relative flex items-center ml-1 lg:ml-2">
+                {/* 黄色い丸（背面） */}
+                <div
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-20 lg:w-24 h-20 lg:h-24 rounded-full"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)', zIndex: 0 }}
+                />
+                {/* 1の数字 */}
+                <span
+                  className="relative text-6xl lg:text-7xl font-bold pl-4 lg:pl-5"
+                  style={{ fontFamily: 'Oswald, sans-serif', color: '#000', zIndex: 1 }}
+                >
+                  1
+                </span>
+                {/* 杯無料テキスト */}
+                <span
+                  className="relative text-3xl lg:text-4xl font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000', zIndex: 2 }}
+                >
+                  杯無料
+                </span>
+              </div>
+            </div>
+
+            {/* nomoca で - Desktop */}
+            <div className="flex items-end gap-4">
+              <Image
+                src="/lp/images/logo-nomoca-text.png"
+                alt="nomoca"
+                width={410}
+                height={57}
+                className="w-[300px] h-auto"
+              />
+              <span
+                className="text-4xl"
+                style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+              >
+                で
+              </span>
+            </div>
+
+            {/* サブテキスト - Desktop */}
+            <p
+              className="text-2xl font-bold text-center"
+              style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+            >
+              もっと気軽に、楽しく街歩き！
+            </p>
+          </div>
+
+          {/* イラストとスマホ - Desktop */}
+          <div className="relative flex items-center justify-center">
+            <Image
+              src="/lp/images/user-fv-illustration.svg"
+              alt="街のイラスト"
+              width={602}
+              height={578}
+              className="w-[400px] lg:w-[500px] h-auto"
+            />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[25%]">
+              <Image
+                src="/lp/images/user-fv-phone.png"
+                alt="スマホ画面"
+                width={204}
+                height={413}
+                className="w-32 lg:w-[180px] h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Banner Carousel Section */}
+      <div className="w-full py-10 lg:py-20" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div 
+          className="w-full px-4 lg:px-8 lg:px-20"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '24px',
+            alignSelf: 'stretch'
+          }}
+        >
+          {/* Carousel Container */}
+          <div className="relative w-full max-w-6xl" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Banner Images Container */}
+            <div className="relative overflow-hidden w-full max-w-[375px] h-[170px] lg:max-w-[1157px] lg:h-[210px]">
+              <div 
+                className="flex absolute left-1/2"
+                style={{ 
+                  gap: '16px',
+                  transform: `translateX(calc(-50% - ${currentSlide * (carouselImageWidth + 16)}px))`,
+                  transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
+                }}
+              >
+                {extendedImages.map((src, i) => (
+                  <div
+                    key={i}
+                    className="relative flex-shrink-0 overflow-hidden w-[303px] h-[170px] lg:w-[375px] lg:h-[210px]"
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      aspectRatio: '303/170',
+                      borderRadius: '20px',
+                      background: '#D9D9D9'
+                    }}
+                  >
+                    {src ? (
+                      <Image
+                        src={src}
+                        alt={`banner-${i}`}
+                        fill
+                        className="object-cover"
+                        priority={i < 2}
+                      />
+                    ) : (
+                      <p style={{ color: '#999', fontSize: '16px', fontWeight: 400 }}>準備中</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Left Arrow */}
+            <button 
+              className="absolute z-10 hover:opacity-80 transition-opacity left-[12px] top-[69px] lg:left-[70px] lg:top-[89px] w-8 h-8 lg:w-12 lg:h-12"
+              onClick={() => handleScroll('left')}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+                aspectRatio: '1/1',
+                borderRadius: '9999px',
+                background: 'var(--main, #2B7A78)',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                <path d="M6 1L1 6L6 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            {/* Right Arrow */}
+            <button 
+              className="absolute z-10 hover:opacity-80 transition-opacity right-[12px] top-[69px] lg:right-[70px] lg:top-[89px] w-8 h-8 lg:w-12 lg:h-12"
+              onClick={() => handleScroll('right')}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
+                aspectRatio: '1/1',
+                borderRadius: '9999px',
+                background: 'var(--main, #2B7A78)',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                <path d="M1 1L6 6L1 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Pagination Dots */}
+          <div className="flex justify-center space-x-2 lg:space-x-3">
+            {bannerImages.map((_, index) => {
+              const actualIndex = ((currentSlide % bannerImages.length) + bannerImages.length) % bannerImages.length
+              return (
+                <button 
+                  key={index} 
+                  className="p-1 hover:opacity-80 transition-opacity"
+                  onClick={() => goToSlide(index)}
+                >
+                  <div
+                    className="w-3 h-3 lg:w-4 lg:h-4"
+                    style={{
+                      borderRadius: '50%',
+                      backgroundColor: actualIndex === index ? '#2B7A78' : '#D9D9D9',
+                      transition: 'background-color 0.3s ease'
+                    }}
+                  />
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div id="about" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* About Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              ABOUT
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              nomocaとは？
+            </p>
+          </div>
+
+          {/* About Content */}
+          <div className="relative flex flex-col-reverse lg:flex-row items-stretch justify-center">
+            {/* テキストコンテンツ */}
+            <div
+              className="flex flex-col justify-center items-start gap-6 relative z-0 px-4 py-8 lg:py-[150px] lg:pr-[150px] lg:pl-[120px]"
+              style={{ 
+                backgroundColor: 'rgba(43, 122, 120, 0.1)',
+                maxWidth: '620px',
+                minHeight: '480px'
+              }}
+            >
+              <h3
+                className="text-xl lg:text-2xl font-bold"
+                style={{
+                  fontFamily: "'Noto Sans JP', sans-serif",
+                  color: '#000',
+                  lineHeight: '1.6'
+                }}
+              >
+                nomocaを片手に、<br />
+                気になるお店をハシゴしよう。
+              </h3>
+              <p
+                className="text-xs lg:text-sm"
+                style={{
+                  fontFamily: "'Noto Sans JP', sans-serif",
+                  color: '#000',
+                  fontWeight: '500',
+                  lineHeight: '2'
+                }}
+              >
+                「nomoca」は、毎日1軒につきドリンクが1杯無料になる新しい&ldquo;Welcomeドリンク&rdquo;サービスです。<br />
+                お酒でもソフトドリンクでもOK。<br />
+                気になるお店をみつけたら、仲間と乾杯したり、自分だけの寄り道を楽しんだり。<br />
+                今日の一杯をきっかけに、街の楽しさがどんどん広がる。<br />
+                あなたの「今日はどこで飲もう？」をもっと自由に、もっとおトクにします。
+              </p>
+            </div>
+
+            {/* 画像 - テキスト背景に重なるように配置 */}
+            <div className="flex-shrink-0 lg:-ml-8 lg:-ml-12 relative z-10 self-center">
+              <Image
+                src="/lp/images/user-about.png"
+                alt="nomocaを楽しむ人々"
+                width={510}
+                height={440}
+                className="w-full lg:w-[380px] lg:w-[480px] h-auto rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div id="features" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--main, #2B7A78)' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* Features Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--accent, #FFD93B)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--accent, #FFD93B)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              FEATURES
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--accent, #FFD93B)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              nomocaの魅力
+            </p>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:gap-16">
+            {/* Feature 01 */}
+            <div
+              className="flex flex-col gap-6"
+              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
+            >
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
+                <Image
+                  src="/lp/images/user-feature-01.png"
+                  alt="1店舗につき1杯無料！"
+                  width={558}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="px-6 pb-6">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  1店舗につき1杯無料！
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  お酒でもソフトドリンクでもOK。<br />
+                  「nomoca（ノモカ）」の加盟店なら、ドリンク1杯が無料に。<br />
+                  ちょっと気になっていたお店に入ってみたり、気軽に一息ついたり。<br />
+                  お財布にやさしく、気軽に乾杯を楽しめます。
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 02 */}
+            <div
+              className="flex flex-col gap-6"
+              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
+            >
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
+                <Image
+                  src="/lp/images/user-feature-02.png"
+                  alt="1日で複数店舗をハシゴできる！"
+                  width={558}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="px-6 pb-6">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  1日で複数店舗をハシゴできる！
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  1店舗ごとに1杯無料だから、1日で何軒もまわれるのが「nomoca」の魅力。<br />
+                  今日は仲間とカジュアルに、明日はしっとり一人飲み。<br />
+                  その日の気分に合わせて、自由にドリンクめぐり！
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 03 */}
+            <div
+              className="flex flex-col gap-6"
+              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
+            >
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
+                <Image
+                  src="/lp/images/user-feature-03.png"
+                  alt="お酒が苦手でも楽しめる！"
+                  width={558}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="px-6 pb-6">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  お酒が苦手でも楽しめる！
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  「nomoca」は&ldquo;飲める人だけ&rdquo;のサービスではありません。<br />
+                  ソフトドリンクも対象だから、ノンアル派や飲めない人でも安心。<br />
+                  友達との軽い寄り道にも、一人時間のリフレッシュにも使えて、<br />
+                  誰でも気軽に&ldquo;乾杯&rdquo;をシェアできます。
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 04 */}
+            <div
+              className="flex flex-col gap-6"
+              style={{ backgroundColor: 'rgba(43, 122, 120, 0.1)' }}
+            >
+              <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
+                <Image
+                  src="/lp/images/user-feature-04.png"
+                  alt="新しいお店との出会い！"
+                  width={558}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="px-6 pb-6">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  新しいお店との出会い！
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: 'var(--sub, #FAF8F4)',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  普段行かないお店でも、1杯無料なら試しやすい。<br />
+                  地元で愛される居酒屋から、雰囲気のいいカフェバーまで。<br />
+                  nomocaがあれば、お店との新しい出会いを見つかるかも。<br />
+                  街歩きしながら、思いがけない発見を楽しもう！
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Flow Section */}
+      <div id="flow" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* Flow Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              FLOW
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              nomocaの使い方
+            </p>
+          </div>
+
+          {/* Flow Steps */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 lg:gap-16">
+            {/* Step 1 */}
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col items-center gap-[-56px]">
+                <div className="w-full flex justify-center">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                    <Image
+                      src="/lp/images/user-flow-01.png"
+                      alt="お店を見つける"
+                      width={350}
+                      height={400}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div
+                  className="flex flex-col items-center justify-center gap-2 px-6 py-4 rounded-full -mt-8 z-10"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                >
+                  <span
+                    className="text-sm"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    STEP
+                  </span>
+                  <span
+                    className="text-3xl"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    1
+                  </span>
+                </div>
+              </div>
+              <div className="px-6 pb-6 text-center">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  お店を見つける
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  今いる場所の近くや、行ってみたいお店をマップやリストからチェック。
+                </p>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col items-center gap-[-56px]">
+                <div className="w-full flex justify-center">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+                    <Image
+                      src="/lp/images/user-flow-02.png"
+                      alt="スマホを見せる"
+                      width={350}
+                      height={400}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div
+                  className="flex flex-col items-center justify-center gap-2 px-6 py-4 rounded-full -mt-8 z-10"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                >
+                  <span
+                    className="text-sm"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    STEP
+                  </span>
+                  <span
+                    className="text-3xl"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    2
+                  </span>
+                </div>
+              </div>
+              <div className="px-6 pb-6 text-center">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  スマホを見せる
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  お店でnomocaのクーポン画面を見せるだけ。<br />
+                  対象ドリンクが&ldquo;その場で1杯無料&rdquo;に！
+                </p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col items-center gap-[-56px]">
+                <div className="w-full flex justify-center">
+                  <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
+                    <Image
+                      src="/lp/images/user-flow-03.png"
+                      alt="ハシゴして楽しむ"
+                      width={350}
+                      height={400}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div
+                  className="flex flex-col items-center justify-center gap-2 px-6 py-4 rounded-full -mt-8 z-10"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                >
+                  <span
+                    className="text-sm"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    STEP
+                  </span>
+                  <span
+                    className="text-3xl"
+                    style={{
+                      fontFamily: 'Oswald, sans-serif',
+                      fontWeight: '500',
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    3
+                  </span>
+                </div>
+              </div>
+              <div className="px-6 pb-6 text-center">
+                <h3
+                  className="text-xl lg:text-2xl font-bold mb-4"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    lineHeight: '1.6'
+                  }}
+                >
+                  ハシゴして楽しむ
+                </h3>
+                <p
+                  className="text-sm lg:text-base"
+                  style={{
+                    fontFamily: "'Noto Sans JP', sans-serif",
+                    color: '#000',
+                    fontWeight: '500',
+                    lineHeight: '1.8'
+                  }}
+                >
+                  お店を変えれば、同じ日にまた1杯無料。<br />
+                  あなたの&ldquo;ちょい飲み&rdquo;がもっと自由に。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Pricing Section */}
+      <div id="pricing" className="w-full py-0 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* Pricing Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              PRICING
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              利用料金
+            </p>
+          </div>
+
+          {/* Pricing Subtitle */}
+          <div className="text-center mb-8 lg:mb-12">
+            <p
+              className="text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              1日あたり約30円でちょい飲み体験！
+            </p>
+          </div>
+
+          {/* Pricing Cards */}
+          <div
+            className="relative p-8 lg:p-12 lg:p-16 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/lp/images/user-pricing-bg.png)',
+              backgroundColor: '#FFF'
+            }}
+          >
+            <div className="flex flex-col gap-6 lg:gap-8 justify-center items-center">
+              {/* 通常プラン */}
+              <div
+                className="flex flex-col items-center gap-4 p-6 lg:p-8"
+              >
+                {/* 1日1軒1杯無料 */}
+                <div
+                  className="flex items-center gap-4 px-6 py-2"
+                  style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                >
+                  <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M1 1L11 10L1 19" stroke="#2B7A78" strokeWidth="2"/>
+                  </svg>
+                  <span
+                    className="text-xl lg:text-2xl font-bold"
+                    style={{
+                      fontFamily: "'Noto Sans JP', sans-serif",
+                      color: 'var(--main, #2B7A78)'
+                    }}
+                  >
+                    １日1軒1杯無料
+                  </span>
+                  <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M11 1L1 10L11 19" stroke="#2B7A78" strokeWidth="2"/>
+                  </svg>
+                </div>
+
+                {/* 価格 */}
+                <div className="flex items-center gap-4">
+                  <div
+                    className="flex items-center justify-center w-16 h-16 rounded-full"
+                    style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+                  >
+                    <span
+                      className="text-lg font-bold"
+                      style={{
+                        fontFamily: "'Noto Sans JP', sans-serif",
+                        color: '#000'
+                      }}
+                    >
+                      月額
+                    </span>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <span
+                      className="text-6xl lg:text-7xl lg:text-8xl font-semibold"
+                      style={{
+                        fontFamily: 'Oswald, sans-serif',
+                        color: '#000',
+                        letterSpacing: '-0.06em'
+                      }}
+                    >
+                      980
+                    </span>
+                    <span
+                      className="text-lg lg:text-xl font-bold pb-2"
+                      style={{
+                        fontFamily: "'Noto Sans JP', sans-serif",
+                        color: '#000'
+                      }}
+                    >
+                      円（税込）
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* マイデジ会員プラン */}
+              <div
+                className="flex flex-col lg:flex-row items-center gap-4 p-6 lg:p-8 relative overflow-visible"
+                style={{ backgroundColor: 'var(--main, #2B7A78)' }}
+              >
+                {/* PC: 左にスマホ画像 */}
+                <Image
+                  src="/lp/images/user-pricing-phone.png"
+                  alt="マイデジアプリ"
+                  width={200}
+                  height={236}
+                  className="hidden lg:block w-32 lg:w-40 lg:w-[200px] h-auto -mt-8 -mb-16 lg:-mb-20"
+                />
+                {/* 金額情報 */}
+                <div className="flex flex-col gap-2 items-center lg:items-start">
+                  <div
+                    className="px-4 py-1 text-center"
+                    style={{ backgroundColor: 'var(--accent, #FFD93B)', borderRadius: '9999px' }}
+                  >
+                    <span
+                      className="text-lg lg:text-xl font-bold"
+                      style={{
+                        fontFamily: "'Zen Kaku Gothic New', sans-serif",
+                        color: '#000'
+                      }}
+                    >
+                      マイデジ会員なら
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-full"
+                      style={{ backgroundColor: '#FFF' }}
+                    >
+                      <span
+                        className="text-sm lg:text-base font-bold"
+                        style={{
+                          fontFamily: "'Noto Sans JP', sans-serif",
+                          color: '#000'
+                        }}
+                      >
+                        月額
+                      </span>
+                    </div>
+                    <span
+                      className="text-5xl lg:text-6xl lg:text-7xl font-bold"
+                      style={{
+                        fontFamily: 'Oswald, sans-serif',
+                        color: '#FFF'
+                      }}
+                    >
+                      480
+                    </span>
+                    <div className="flex flex-col">
+                      <span
+                        className="text-base lg:text-lg font-bold"
+                        style={{
+                          fontFamily: "'Noto Sans JP', sans-serif",
+                          color: '#FFF'
+                        }}
+                      >
+                        円で
+                      </span>
+                      <span
+                        className="text-base lg:text-lg font-bold"
+                        style={{
+                          fontFamily: "'Noto Sans JP', sans-serif",
+                          color: '#FFF'
+                        }}
+                      >
+                        利用可能！
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                {/* スマホ: 下にスマホ画像 */}
+                <Image
+                  src="/lp/images/user-pricing-phone.png"
+                  alt="マイデジアプリ"
+                  width={152}
+                  height={179}
+                  className="lg:hidden w-[152px] h-auto mt-2"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 注意事項 */}
+          <div className="text-center mt-8">
+            <p
+              className="text-sm lg:text-base mb-2"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                color: '#000',
+                lineHeight: '1.6'
+              }}
+            >
+              ※対象ドリンクは店舗により異なります。
+            </p>
+            <p
+              className="text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                color: '#000',
+                lineHeight: '1.6'
+              }}
+            >
+              ※同一店舗での無料適用は1日お一人さま1杯までです。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Stores Section */}
+      <div
+        id="stores"
+        className="relative w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32"
+      >
+        {/* 背景画像 - スマホ */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/user-stores-mobile-bg.png)'
+          }}
+        />
+        {/* 背景画像 - PC */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
+          style={{
+            backgroundImage: 'url(/lp/images/user-stores-bg.svg)'
+          }}
+        />
+
+        <div className="relative z-10 max-w-6xl mx-auto">
+          {/* Stores Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--sub, #FAF8F4)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--sub, #FAF8F4)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              STORES
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--sub, #FAF8F4)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              加盟店
+            </p>
+          </div>
+
+          {/* Stores Content */}
+          <div className="text-center">
+            <p
+              className="text-xl lg:text-2xl font-bold mb-8"
+              style={{
+                color: 'var(--sub, #FAF8F4)',
+                fontFamily: "'Noto Sans JP', sans-serif",
+                lineHeight: '1.6'
+              }}
+            >
+              加盟店、ぞくぞく拡大中！
+            </p>
+
+            {/* Store List Button */}
+            <button
+              className="inline-flex items-center gap-4 px-8 py-4 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
+              style={{
+                backgroundColor: 'var(--accent, #FFD93B)'
+              }}
+              onClick={() => router.push('/home')}
+            >
+              <span
+                className="text-lg font-bold"
+                style={{
+                  fontFamily: "'Noto Sans JP', sans-serif",
+                  color: '#000'
+                }}
+              >
+                店舗一覧はこちら
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div id="faq" className="w-full py-16 lg:py-24 lg:py-32 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--sub, #FAF8F4)' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* FAQ Title */}
+          <div className="flex items-end gap-6 lg:gap-10 mb-8 lg:mb-12 pb-6 border-b" style={{ borderColor: 'var(--main, #2B7A78)' }}>
+            <h2
+              className="text-4xl lg:text-5xl lg:text-6xl"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: 'Oswald, sans-serif',
+                fontWeight: '500',
+                lineHeight: '1'
+              }}
+            >
+              FAQ
+            </h2>
+            <p
+              className="text-lg lg:text-xl lg:text-2xl font-bold"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif"
+              }}
+            >
+              よくあるご質問
+            </p>
+          </div>
+
+          {/* FAQ Content */}
+          <div className="text-center">
+            <p
+              className="text-lg lg:text-xl font-bold mb-8"
+              style={{
+                color: 'var(--main, #2B7A78)',
+                fontFamily: "'Noto Sans JP', sans-serif",
+                lineHeight: '1.6'
+              }}
+            >
+              お問い合わせの多い質問をまとめました。<br />
+              お問い合わせの前に、ご確認ください。
+            </p>
+
+            <Link
+              href="/lp/faq"
+              className="inline-flex items-center gap-4 px-8 py-4 rounded-full hover:opacity-90 transition-opacity"
+              style={{
+                backgroundColor: 'var(--main, #2B7A78)'
+              }}
+            >
+              <span
+                className="text-lg font-bold"
+                style={{
+                  fontFamily: "'Noto Sans JP', sans-serif",
+                  color: 'var(--sub, #FAF8F4)'
+                }}
+              >
+                よくあるご質問はこちら
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#FAF8F4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="w-full py-16 lg:py-20 px-4 lg:px-8 lg:px-32" style={{ backgroundColor: 'var(--accent, #FFD93B)' }}>
+        <div className="max-w-6xl mx-auto text-center">
+          <h2
+            className="text-2xl lg:text-3xl lg:text-4xl font-bold mb-8"
+            style={{
+              color: 'var(--main, #2B7A78)',
+              fontFamily: "'Noto Sans JP', sans-serif"
+            }}
+          >
+            掲載店募集中！
+          </h2>
+
+          <button
+            className="inline-flex items-center gap-4 px-8 py-4 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
+            style={{
+              backgroundColor: 'var(--main, #2B7A78)'
+            }}
+            onClick={() => router.push('/lp/merchant')}
+          >
+            <span
+              className="text-lg font-bold"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                color: 'var(--sub, #FAF8F4)'
+              }}
+            >
+              お店の方はこちら
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#FAF8F4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Footer Section */}
+      <div className="w-full bg-white py-12 lg:py-16 px-4 lg:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6 lg:gap-8">
+          {/* Logo */}
+          <Image
+            src="/lp/images/logo-footer.svg"
+            alt="nomoca"
+            width={294}
+            height={294}
+            className="w-48 lg:w-64 lg:w-[294px] h-auto"
+          />
+
+          {/* Footer Links */}
+          <div className="flex flex-wrap justify-center gap-4 lg:gap-8 lg:gap-10">
+            <Link
+              href="/lp/faq"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              よくあるご質問
+            </Link>
+            <Link
+              href="/lp/contact"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              お問い合わせ
+            </Link>
+            <a
+              href="/プライバシーポリシー.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              プライバシーポリシー
+            </a>
+            <a
+              href="/特定商取引法.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              特定商取引法に基づく表記
+            </a>
+            <Link
+              href="/lp/terms"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              ご利用規約
+            </Link>
+            <a
+              href="#"
+              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
+              style={{
+                fontFamily: "'Noto Sans JP', sans-serif",
+                fontWeight: '500'
+              }}
+            >
+              運営会社
+            </a>
+          </div>
+
+          {/* Copyright */}
+          <div className="pt-6 lg:pt-8 border-t border-gray-200 w-full text-center">
+            <p
+              className="text-sm lg:text-base"
+              style={{
+                fontFamily: 'Oswald, sans-serif',
+                color: '#000'
+              }}
+            >
+              ©2025 nomoca Kagawa
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

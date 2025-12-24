@@ -72,6 +72,13 @@ export function buildCommonHeaders(
     }
   }
 
+  // X-Forwarded-Hostヘッダーを追加（ユーザーの接続元URLをバックエンドに伝える）
+  // メールのリンクURL生成などで使用される
+  const userHost = request.headers.get('host')
+  if (userHost) {
+    headers['X-Forwarded-Host'] = userHost
+  }
+
   // カスタムヘッダーをマージ（後から追加されたヘッダーが優先）
   Object.assign(headers, customHeaders)
 

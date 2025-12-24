@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status') || 'active'
     const limit = searchParams.get('limit') || '50'
-    const saitamaAppLinked = searchParams.get('saitamaAppLinked')
+    const mydigiAppLinked = searchParams.get('mydigiAppLinked')
 
     // クエリパラメータを構築
     const queryParams = new URLSearchParams({
@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
       limit,
     })
 
-    if (saitamaAppLinked !== null) {
-      queryParams.append('saitamaAppLinked', saitamaAppLinked)
+    if (mydigiAppLinked !== null) {
+      queryParams.append('mydigiAppLinked', mydigiAppLinked)
     }
 
     const fullUrl = `${buildApiUrl('/plans')}?${queryParams.toString()}`
