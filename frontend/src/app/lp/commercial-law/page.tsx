@@ -206,7 +206,7 @@ export default function CommercialLawPage() {
               特定商取引法に基づく表記
             </Link>
             <a
-              href="/nomocakagawaサービス利用規約.pdf" target="_blank" rel="noopener noreferrer"
+              href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer"
               className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
               style={{
                 fontFamily: '"Zen Kaku Gothic New"',
