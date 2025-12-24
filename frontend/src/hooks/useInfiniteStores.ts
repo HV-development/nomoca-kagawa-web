@@ -364,9 +364,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     // refを使用することで、loadNextが再作成されずに最新の状態を参照できる
     if (isLoading || isLoadingMore || !hasMoreRef.current || error) return null
     
-    // 連続呼び出しを防ぐ（500ms以内の再呼び出しはスキップ）
+    // 連続呼び出しを防ぐ（1000ms以内の再呼び出しはスキップ）
     const now = Date.now()
-    if (now - lastLoadTimeRef.current < 500) {
+    if (now - lastLoadTimeRef.current < 1000) {
       return null
     }
     lastLoadTimeRef.current = now
@@ -526,13 +526,18 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
             return
           }
           if (entry.isIntersecting) {
+            // 連続呼び出しを防ぐ追加チェック
+            const now = Date.now()
+            if (now - lastLoadTimeRef.current < 1000) {
+              return
+            }
             void loadNext()
           }
         },
         {
           root: null,
-          // 画面下端から200px手前で次ページを取得開始（連続呼び出しを防ぐため小さめに）
-          rootMargin: '200px 0px',
+          // 画面下端でのみ次ページを取得開始（連続呼び出しを防ぐ）
+          rootMargin: '0px',
           threshold: 0,
         }
       )
