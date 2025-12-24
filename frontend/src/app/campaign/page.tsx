@@ -209,7 +209,7 @@ export default function CampaignPage() {
                   className="inline-flex w-6 h-6 rounded-full items-center justify-center text-white text-sm font-bold flex-shrink-0"
                   style={{ backgroundColor: '#6FC8E5' }}
                 >3</span>
-                <p style={{ color: '#333' }}>「nomocaKagawa」マイページ内「アカウント」にコピーしたユーザーIDを入力</p>
+                <p style={{ color: '#333' }}>「nomocaKagawa」マイページ内「マイデジID」にコピーしたユーザーIDを入力</p>
               </div>
             </div>
           </div>
