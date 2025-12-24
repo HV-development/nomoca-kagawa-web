@@ -38,6 +38,8 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
   const sentinelElementRef = useRef<Element | null>(null)
   const isFirstLoadRef = useRef(true)
   const [items, setItems] = useState<Store[]>([])
+  // 連続呼び出しを防ぐためのタイムスタンプ
+  const lastLoadTimeRef = useRef<number>(0)
 
   // pageとhasMoreをrefで保持（loadNextのコールバックが古いステートを参照する問題を回避）
   const pageRef = useRef(page)
@@ -361,6 +363,14 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     // 直近でエラーが発生している場合や、ロード中/末尾到達時は再取得しない
     // refを使用することで、loadNextが再作成されずに最新の状態を参照できる
     if (isLoading || isLoadingMore || !hasMoreRef.current || error) return null
+    
+    // 連続呼び出しを防ぐ（500ms以内の再呼び出しはスキップ）
+    const now = Date.now()
+    if (now - lastLoadTimeRef.current < 500) {
+      return null
+    }
+    lastLoadTimeRef.current = now
+    
     setIsLoadingMore(true)
     setError(null)
     try {
@@ -511,14 +521,18 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
             isFirstLoadRef.current = false
             return
           }
+          // hasMoreがfalseの場合はスキップ
+          if (!hasMoreRef.current) {
+            return
+          }
           if (entry.isIntersecting) {
             void loadNext()
           }
         },
         {
           root: null,
-          // 画面下端から800px手前で次ページを取得開始（空白スクロールを防ぐ）
-          rootMargin: '800px 0px',
+          // 画面下端から200px手前で次ページを取得開始（連続呼び出しを防ぐため小さめに）
+          rootMargin: '200px 0px',
           threshold: 0,
         }
       )

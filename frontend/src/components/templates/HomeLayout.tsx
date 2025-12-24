@@ -315,11 +315,15 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const isStoreDetailPopupOpen = state.isStoreDetailPopupOpen
   const currentUserRank = computedValues.currentUserRank
 
+  // 安定した参照を保持するために、空配列のデフォルト値をメモ化
+  const stableSelectedAreas = useMemo(() => selectedAreas ?? [], [selectedAreas])
+  const stableSelectedGenres = useMemo(() => selectedGenres ?? [], [selectedGenres])
+
   // 無限スクロール: 初回ロードと追加ロード
   const { isLoading: isStoresLoading, isLoadingMore, error, sentinelRef, items } = useInfiniteStores({
     limit: 10, // 1回の取得件数を増加（空白スクロールを防ぐ）
-    selectedAreas: selectedAreas ?? [],
-    selectedGenres: selectedGenres ?? [],
+    selectedAreas: stableSelectedAreas,
+    selectedGenres: stableSelectedGenres,
   })
 
   // itemsとstate.storesをマージして、isFavorite状態を同期
