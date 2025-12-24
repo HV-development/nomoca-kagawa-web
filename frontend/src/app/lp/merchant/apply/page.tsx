@@ -50,6 +50,7 @@ export default function MerchantApplyPage() {
   const [isSearchingAddress, setIsSearchingAddress] = useState(false)
   const [serverError, setServerError] = useState<string>('')
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleInputChange = (field: keyof MerchantApplyFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -273,18 +274,127 @@ export default function MerchantApplyPage() {
   ) : (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/lp/merchant" className="inline-flex items-center">
-            <Image
-              src="/lp/images/logo.png"
-              alt="nomocaKagawa"
-              width={160}
-              height={160}
-              className="h-10 w-auto"
-            />
-          </Link>
+      <header className="relative w-full bg-white border-b" style={{ zIndex: 100 }}>
+        <div className="w-full px-4 py-4 md:px-8 md:py-6">
+          <div className="flex items-center w-full max-w-6xl mx-auto">
+            <Link href="/lp" className="flex items-center">
+              <Image
+                src="/logo.svg"
+                alt="TAMANOMI"
+                width={576}
+                height={96}
+                className="w-24 h-auto md:w-32 lg:w-[320px]"
+              />
+            </Link>
+            <div style={{ flex: 1 }}></div>
+            <div className="flex items-center gap-4 md:gap-8">
+              <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <Link href="/lp#about" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  nomocaKagawaとは
+                </Link>
+                <Link href="/lp#features" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  魅力
+                </Link>
+                <Link href="/lp#howto" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  使い方
+                </Link>
+                <Link href="/lp#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">
+                  利用料金
+                </Link>
+              </nav>
+
+              <Link
+                href="/lp/merchant"
+                className="text-white font-bold hover:opacity-90 transition-opacity text-xs md:text-sm px-4 py-2 md:px-6 md:py-3 rounded-full"
+                style={{
+                  background: 'var(--main, #6FC8E5)'
+                }}
+              >
+                お店の方はこちら
+              </Link>
+
+              <button
+                className="md:hidden flex flex-col justify-center items-center cursor-pointer"
+                style={{ gap: '6px' }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="メニュー"
+              >
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+                <div style={{ width: '24px', height: '2px', background: '#333' }}></div>
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* モバイルメニュー */}
+        {isMobileMenuOpen && (
+          <div
+            className="md:hidden fixed inset-0 w-full h-full bg-white"
+            style={{
+              display: 'flex',
+              paddingBottom: '184px',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: '32px',
+              zIndex: 9999
+            }}
+          >
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center cursor-pointer hover:opacity-70 transition-opacity"
+              aria-label="メニューを閉じる"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="#007D4F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <nav className="flex flex-col items-center gap-8 py-8">
+              <Link
+                href="/lp#about"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                nomocaKagawaとは
+              </Link>
+              <Link
+                href="/lp#features"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                魅力
+              </Link>
+              <Link
+                href="/lp#howto"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                使い方
+              </Link>
+              <Link
+                href="/lp#pricing"
+                className="text-gray-800 hover:text-blue-600 transition-colors text-lg"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                利用料金
+              </Link>
+            </nav>
+
+            <Link
+              href="/lp/merchant"
+              className="text-white font-bold hover:opacity-90 transition-opacity text-base px-8 py-4 rounded-full mb-8"
+              style={{
+                background: 'var(--main, #6FC8E5)',
+                textDecoration: 'none'
+              }}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              お店の方はこちら
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* Main Content */}
@@ -353,7 +463,7 @@ export default function MerchantApplyPage() {
                   onBlur={() => handleBlur('nameKana')}
                   className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.nameKana ? 'border-red-500' : 'border-gray-300'
                     }`}
-                  placeholder="カブシキガイシャタマノミ"
+                  placeholder="カブシキガイシャノモカカガワ"
                 />
                 <div className="mt-1">
                   {errors.nameKana && (
@@ -361,7 +471,7 @@ export default function MerchantApplyPage() {
                   )}
                 </div>
               </div>
-
+カガワカガワ
               {/* 代表者名（姓・名） */}
               <div className="flex gap-4">
                 <div className="w-50">
@@ -423,7 +533,7 @@ export default function MerchantApplyPage() {
                     onBlur={() => handleBlur('representativeNameLastKana')}
                     className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${errors.representativeNameLastKana ? 'border-red-500' : 'border-gray-300'
                       }`}
-                    placeholder="タマノミ"
+                    placeholder="ノモカ"
                     maxLength={50}
                   />
                   <div className="mt-1">

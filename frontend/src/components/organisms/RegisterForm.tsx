@@ -521,7 +521,7 @@ export function RegisterForm({
           />
           <label htmlFor="terms" className="ml-2 text-sm text-gray-700 cursor-pointer">
             <a
-              href="/lp/terms"
+              href="/nomocakagawaサービス利用規約.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-600 hover:text-green-700 underline font-medium"

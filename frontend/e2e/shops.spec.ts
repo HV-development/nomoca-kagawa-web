@@ -34,7 +34,7 @@ async function setupAuthenticatedState(page: Page, request: APIRequestContext) {
             if (otp && otp.match(/^\d{6}$/)) {
                 break;
             }
-        } catch (error) {
+        } catch {
             retryCount++;
             if (retryCount < maxOtpRetries) {
                 await page.waitForTimeout(1000); // リトライ前に待機（短縮）
@@ -139,6 +139,7 @@ test.describe('店舗一覧・詳細のテスト', () => {
         
         // 最初の店舗名を取得してログに出力
         const firstStoreName = await storeCards.first().textContent();
+        expect(firstStoreName).toBeTruthy();
     });
 
     test('店舗一覧から店舗詳細が表示されることを確認', async ({ page }) => {

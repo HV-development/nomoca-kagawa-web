@@ -24,10 +24,10 @@ declare module "react" {
   export interface MutableRefObject<T> {
     current: T
   }
-  export interface HTMLAttributes<T> {
+  export interface HTMLAttributes<_T = any> {
     [key: string]: any
   }
-  export interface ImgHTMLAttributes<T> extends HTMLAttributes<T> {
+  export interface ImgHTMLAttributes<_T = any> extends HTMLAttributes<_T> {
     src?: string
     alt?: string
     width?: number | string
@@ -35,7 +35,7 @@ declare module "react" {
     loading?: "lazy" | "eager"
     decoding?: "async" | "auto" | "sync"
   }
-  export interface AnchorHTMLAttributes<T> extends HTMLAttributes<T> {
+  export interface AnchorHTMLAttributes<_T = any> extends HTMLAttributes<_T> {
     href?: string
     target?: string
     rel?: string
