@@ -55,7 +55,7 @@ export default function TermsPage() {
           {/* PDF Viewer */}
           <div className="w-full mb-8">
             <iframe
-              src="/nomocakagawaサービス利用規約.pdf"
+              src="/terms-of-service.pdf"
               className="w-full h-[600px] md:h-[800px] border border-gray-300 rounded-lg"
               title="利用規約"
             />
@@ -64,7 +64,7 @@ export default function TermsPage() {
           {/* Download Link */}
           <div className="text-center">
             <a
-              href="/nomocakagawaサービス利用規約.pdf"
+              href="/terms-of-service.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
