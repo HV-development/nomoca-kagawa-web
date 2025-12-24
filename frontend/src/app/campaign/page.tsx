@@ -398,7 +398,7 @@ export default function CampaignPage() {
                 サイト内のお問い合わせより受け付けております。
               </p>
               <p className="text-[9px]" style={{ color: '#888' }}>
-                運営会社 株式会社つなぐ
+                運営会社 株式会社 PSYTEC AI
               </p>
             </div>
             <div className="text-right">
