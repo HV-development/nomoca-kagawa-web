@@ -103,9 +103,8 @@ export default function RegisterConfirmationPage() {
           return
         }
 
-        // ローカルstateに保存してから、セキュリティ: データ取得後、即座にストアから削除（メモリからも削除）
+        // ローカルstateに保存（編集に戻る際に値を保持するため、ストアは保持）
         setFormData(currentFormData)
-        clearFormData()
       } catch {
         setError('エラーが発生しました。再度お試しください。')
         setTimeout(() => router.push('/email-registration'), 3000)
@@ -212,7 +211,7 @@ export default function RegisterConfirmationPage() {
 
   const handleEdit = () => {
     // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
-    // 編集モードで登録画面に戻る（フォームデータは再入力してもらう）
+    // 編集モードで登録画面に戻る（パスワード等のみ再入力）
     const shopIdParam = formData?.shopId ? `&shop_id=${encodeURIComponent(formData?.shopId)}` : ''
     router.push(`/register?token=${encodeURIComponent(token)}&edit=true${shopIdParam}`)
   }

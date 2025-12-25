@@ -26,6 +26,17 @@ function ContactFormContent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState<string>('')
+  const [agreedToPrivacyPolicy, setAgreedToPrivacyPolicy] = useState(false)
+  const [privacyPolicyError, setPrivacyPolicyError] = useState<string>('')
+
+  // LPページではグローバルのスマホ幅固定を解除して全幅表示にする
+  useEffect(() => {
+    const previousMaxWidth = document.body.style.maxWidth
+    document.body.style.maxWidth = '100vw'
+    return () => {
+      document.body.style.maxWidth = previousMaxWidth
+    }
+  }, [])
 
   // 問い合わせ種別の自動判別（初期値のみ）
   useEffect(() => {
@@ -72,6 +83,12 @@ function ContactFormContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (!agreedToPrivacyPolicy) {
+      setPrivacyPolicyError('個人情報の取扱について同意してください')
+      return
+    }
+    setPrivacyPolicyError('')
+
     if (!validateForm()) {
       // エラーをアラートで表示（デバッグ用）
       const errorMessages = Object.entries(errors).map(([key, value]) => `${key}: ${value}`).join('\n')
@@ -103,6 +120,7 @@ function ContactFormContent() {
           message: '',
           inquiryType: formData.inquiryType,
         })
+        setAgreedToPrivacyPolicy(false)
       } else {
         setSubmitError(data.message || 'お問い合わせの送信に失敗しました')
       }
@@ -294,11 +312,14 @@ function ContactFormContent() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-8 max-w-4xl mx-auto w-full"
+          >
             {/* Inquiry Type Radio Buttons */}
-            <div className="md:grid md:grid-cols-2 md:gap-6 md:items-center">
+            <div className="space-y-3">
               <label
-                className="block mb-3 text-sm md:text-base"
+                className="block text-sm md:text-base"
                 style={{
                   color: '#333',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -307,7 +328,7 @@ function ContactFormContent() {
               >
                 お問い合わせ種別 <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <div className="flex gap-6">
+              <div className="flex flex-wrap items-center gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
@@ -350,10 +371,10 @@ function ContactFormContent() {
             </div>
 
             {/* Name Field */}
-            <div className="md:grid md:grid-cols-2 md:gap-6">
+            <div className="space-y-2">
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm md:text-base"
+                className="block text-sm md:text-base"
                 style={{
                   color: '#333',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -362,30 +383,28 @@ function ContactFormContent() {
               >
                 {nameLabel} <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <div>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder={namePlaceholder}
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
-                  style={{
-                    borderColor: errors.name ? '#ef4444' : '#d1d5db',
-                    fontFamily: '"Zen Kaku Gothic New"',
-                  }}
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
-                )}
-              </div>
+              <input
+                type="text"
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                placeholder={namePlaceholder}
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
+                style={{
+                  borderColor: errors.name ? '#ef4444' : '#d1d5db',
+                  fontFamily: '"Zen Kaku Gothic New"',
+                }}
+              />
+              {errors.name && (
+                <p className="text-sm" style={{ color: '#ef4444' }}>{errors.name}</p>
+              )}
             </div>
 
             {/* Email Field */}
-            <div className="md:grid md:grid-cols-2 md:gap-6">
+            <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm md:text-base"
+                className="block text-sm md:text-base"
                 style={{
                   color: '#333',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -394,30 +413,28 @@ function ContactFormContent() {
               >
                 メールアドレス <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <div>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  placeholder="例：example@tamanomi.com"
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
-                  style={{
-                    borderColor: errors.email ? '#ef4444' : '#d1d5db',
-                    fontFamily: '"Zen Kaku Gothic New"',
-                  }}
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
-                )}
-              </div>
+              <input
+                type="email"
+                id="email"
+                value={formData.email}
+                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                placeholder="例：example@tamanomi.com"
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78]"
+                style={{
+                  borderColor: errors.email ? '#ef4444' : '#d1d5db',
+                  fontFamily: '"Zen Kaku Gothic New"',
+                }}
+              />
+              {errors.email && (
+                <p className="text-sm" style={{ color: '#ef4444' }}>{errors.email}</p>
+              )}
             </div>
 
             {/* Message Field */}
-            <div className="md:grid md:grid-cols-2 md:gap-6">
+            <div className="space-y-2">
               <label
                 htmlFor="message"
-                className="block mb-2 text-sm md:text-base"
+                className="block text-sm md:text-base"
                 style={{
                   color: '#333',
                   fontFamily: '"Zen Kaku Gothic New"',
@@ -426,21 +443,144 @@ function ContactFormContent() {
               >
                 お問い合わせ内容 <span style={{ color: '#ef4444' }}>*</span>
               </label>
-              <div className="md:col-span-1">
-                <textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                  placeholder="お問い合わせ内容をご記入ください"
-                  rows={8}
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] resize-vertical"
+              <textarea
+                id="message"
+                value={formData.message}
+                onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                placeholder="お問い合わせ内容をご記入ください"
+                rows={8}
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] resize-vertical"
+                style={{
+                  borderColor: errors.message ? '#ef4444' : '#d1d5db',
+                  fontFamily: '"Zen Kaku Gothic New"',
+                }}
+              />
+              {errors.message && (
+                <p className="text-sm" style={{ color: '#ef4444' }}>{errors.message}</p>
+              )}
+            </div>
+
+            {/* 個人情報の取扱について */}
+            <div className="space-y-4">
+              <label
+                className="block text-sm md:text-base"
+                style={{
+                  color: '#333',
+                  fontFamily: '"Zen Kaku Gothic New"',
+                  fontWeight: '700',
+                }}
+              >
+                個人情報の取扱について <span style={{ color: '#ef4444' }}>*</span>
+              </label>
+
+              <p
+                className="text-sm md:text-base mb-4"
+                style={{
+                  color: '#666',
+                  fontFamily: '"Zen Kaku Gothic New"',
+                }}
+              >
+                下記の個人情報の取扱いに関する事項についてご確認いただき、同意される方は「同意する」をチェックしてください。
+              </p>
+
+              <div
+                className="border rounded-lg p-4 md:p-6 mb-4"
+                style={{
+                  borderColor: '#d1d5db',
+                  backgroundColor: '#f9fafb',
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                }}
+              >
+                <div
+                  className="space-y-4 text-sm md:text-base"
                   style={{
-                    borderColor: errors.message ? '#ef4444' : '#d1d5db',
+                    color: '#333',
                     fontFamily: '"Zen Kaku Gothic New"',
+                    lineHeight: '1.8',
                   }}
-                />
-                {errors.message && (
-                  <p className="mt-1 text-sm" style={{ color: '#ef4444' }}>{errors.message}</p>
+                >
+                  <div>
+                    <p className="font-bold mb-2">・事業者の名称</p>
+                    <p className="ml-4">株式会社つなぐ</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・個人情報保護管理者</p>
+                    <p className="ml-4">管理者名：個人情報保護管理責任者</p>
+                    <p className="ml-4">所属部署：株式会社つなぐ　管理部長</p>
+                    <p className="ml-4">連絡先メールアドレス：personal-info@saitama-tsunagu.com</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・個人情報の利用目的</p>
+                    <p className="ml-4">お預かりした個人情報は、当社の運営するサービスに関するお問合せへの対応に利用します。</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・お預かりする個人情報の項目</p>
+                    <p className="ml-4">本手続きでは、以下の項目をフォームに入力いただきます。</p>
+                    <p className="ml-4">氏名（漢字）、メールアドレス、連絡先、生年月日、性別、住所</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・個人情報の第三者提供について</p>
+                    <p className="ml-4">ご本人の同意がある場合または法令に基づく場合を除き、今回ご入力いただく個人情報は第三者に提供しません。</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・個人情報の委託について</p>
+                    <p className="ml-4">個人情報の取扱いを外部に委託する場合は、当社が規定する個人情報管理基準を満たす企業を選定して委託を行い、適切な取扱いが行われるように監督します。</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・取得した個人情報の開示等に応じる問合せ窓口</p>
+                    <p className="ml-4">本人からの請求等により、当社が本件により取得した個人情報の利用目的の通知・開示・内容の訂正・追加または削除・利用の停止・消去または第三者への提供の停止、第三者提供記録の開示（「開示等」といいます。）に応じます。</p>
+                    <p className="ml-4">開示等に応じる窓口は、株式会社つなぐ　個人情報問合せ窓口になります。</p>
+                    <p className="ml-4">メールアドレス：personal-info@saitama-tsunagu.com</p>
+                    <p className="ml-4">受付時間　平日9:30～12:00、13:00～16:30</p>
+                    <p className="ml-4">（土・日曜日、祝日、年末年始は翌営業日以降の対応とさせていただきます。）</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・個人情報を与えることの任意性及び当該情報を与えなかった場合に生じる結果</p>
+                    <p className="ml-4">個人情報を取得する項目は、すべてご本人によってご提供いただくものです。ただし、必要な項目をいただけない場合、利用目的に記載の諸手続きまたは処理に支障が生じる可能性があります。</p>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mb-2">・本人が容易に知覚できない方法による個人情報の取得</p>
+                    <p className="ml-4">本フォームではCookieで個人情報を取得していませんが、セッション管理のためにだけCookieを使用しています。</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-start">
+                  <input
+                    type="checkbox"
+                    id="privacyPolicy"
+                    checked={agreedToPrivacyPolicy}
+                    onChange={(e) => {
+                      setAgreedToPrivacyPolicy(e.target.checked)
+                      if (e.target.checked) {
+                        setPrivacyPolicyError('')
+                      }
+                    }}
+                    className="mt-1 h-4 w-4 text-blue-600 focus:ring-2 focus:ring-[#2B7A78] border-gray-300 rounded cursor-pointer"
+                  />
+                  <label
+                    htmlFor="privacyPolicy"
+                    className="ml-2 text-sm md:text-base cursor-pointer"
+                    style={{
+                      color: '#333',
+                      fontFamily: '"Zen Kaku Gothic New"',
+                    }}
+                  >
+                    同意する
+                  </label>
+                </div>
+                {privacyPolicyError && (
+                  <p className="text-sm ml-6" style={{ color: '#ef4444' }}>{privacyPolicyError}</p>
                 )}
               </div>
             </div>

@@ -6,7 +6,7 @@ import { FavoriteButton } from "@/components/atoms/FavoriteButton"
 import type { Store } from "@/types/store"
 import { getGenreColor } from "@/utils/genre-colors"
 import { formatDistance } from "@/utils/location"
-import { useState, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface StoreCardProps {
   store: Store
@@ -17,51 +17,35 @@ interface StoreCardProps {
   className?: string
 }
 
-// ジャンルに応じた店内画像を取得
-const getStoreInteriorImage = (genre: string) => {
-  const interiorImages: Record<string, string> = {
-    izakaya: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    italian: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    yakiniku: "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    japanese: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    bar: "https://images.pexels.com/photos/274192/pexels-photo-274192.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    default: "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2"
-  }
-  return interiorImages[genre] || interiorImages.default
-}
-
-// ジャンルに応じた料理画像を取得
-const getStoreFoodImage = (genre: string) => {
-  const foodImages: Record<string, string> = {
-    izakaya: "https://images.pexels.com/photos/5490778/pexels-photo-5490778.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    italian: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    yakiniku: "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    japanese: "https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    bar: "https://images.pexels.com/photos/1407846/pexels-photo-1407846.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2",
-    default: "https://images.pexels.com/photos/5490778/pexels-photo-5490778.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2"
-  }
-  return foodImages[genre] || foodImages.default
-}
-
 export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClick, showDistance = false, className = "" }: StoreCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isImageError, setIsImageError] = useState(false)
   const touchStartX = useRef<number | null>(null)
   const touchEndX = useRef<number | null>(null)
 
-  // 画像配列を作成
-  const images = [
-    store.thumbnailUrl || "",
-    getStoreInteriorImage(store.genre),
-    getStoreFoodImage(store.genre)
-  ]
+  // 店舗に紐付く画像のみを使用（サンプル画像は除外）
+  const images = Array.from(
+    new Set(
+      [
+        store.thumbnailUrl,
+        ...(store.images || []),
+      ]
+        .map((img) => (img ? img.trim() : ""))
+        .filter((img) => img.length > 0)
+    )
+  )
 
-  const hasThumbnail = Boolean(store.thumbnailUrl)
-  const shouldShowPlaceholder = !hasThumbnail || isImageError
+  const shouldShowPlaceholder = images.length === 0 || isImageError
+
+  useEffect(() => {
+    setCurrentImageIndex(0)
+    setIsImageError(false)
+  }, [store.id, images.length])
 
   const handleImageClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    if (images.length <= 1) return
     setCurrentImageIndex((prev) => (prev + 1) % images.length)
   }
 
@@ -132,12 +116,6 @@ export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClic
 
     // デフォルトで店舗詳細を表示
     onStoreClick(store)
-  }
-
-  const handleImageAreaClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onCouponsClick(store.id)
   }
 
   return (
@@ -213,7 +191,11 @@ export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClic
       <div className="relative overflow-hidden">
         {shouldShowPlaceholder ? (
           <button
-            onClick={handleImageAreaClick}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onCouponsClick(store.id)
+            }}
             className="w-full aspect-[4/3] md:aspect-[16/9] rounded-lg border border-gray-300 bg-gray-200 flex items-center justify-center cursor-pointer"
             aria-label="画像なし"
           >
@@ -223,7 +205,7 @@ export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClic
           <>
             <div
               className="w-full aspect-[4/3] md:aspect-[16/9] cursor-pointer select-none relative rounded-lg overflow-hidden"
-              onClick={handleImageAreaClick}
+              onClick={handleImageClick}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
