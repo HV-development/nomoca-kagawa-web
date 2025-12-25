@@ -9,6 +9,7 @@ import type { useFilters } from './useFilters'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { getCurrentPosition } from '@/utils/location'
 import { toast } from 'sonner'
+import { useCouponAudio } from './use-audio'
 
 // ハンドラー作成フック
 export const useAppHandlers = (
@@ -29,6 +30,8 @@ export const useAppHandlers = (
 
     // OTP requestIdを管理するローカルstate
     const [otpRequestId, setOtpRequestId] = useState<string>("")
+
+    const { initializeAudio } = useCouponAudio()
 
     const handleCurrentLocationClick = useCallback(async () => {
         const newFilterState = !filters.isNearbyFilter
@@ -972,6 +975,9 @@ export const useAppHandlers = (
             return
         }
 
+        // 音声再生をユーザー操作イベント内で初期化（自動再生制限対策）
+        initializeAudio()
+
         // storeCouponsからクーポンを取得
         const coupon = state.storeCoupons.find((c) => c.id === couponId)
         if (coupon) {
@@ -979,7 +985,7 @@ export const useAppHandlers = (
             navigation.navigateToView("coupon-confirmation")
             dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: false })
         }
-    }, [auth.isAuthenticated, auth.plan, state.storeCoupons, navigation, dispatch])
+    }, [auth.isAuthenticated, auth.plan, state.storeCoupons, navigation, dispatch, initializeAudio])
 
     const handleConfirmCoupon = useCallback(async () => {
         if (!state.selectedCoupon || !state.selectedStore) {
@@ -1290,12 +1296,14 @@ export const useAppHandlers = (
 
     // 店舗紹介登録
     const handleStoreIntroductionSubmit = useCallback(async (data: {
-        storeName1: string
-        recommendedMenu1: string
-        storeName2: string
-        recommendedMenu2: string
-        storeName3: string
-        recommendedMenu3: string
+        storeName1?: string
+        recommendedMenu1?: string
+        storeName2?: string
+        recommendedMenu2?: string
+        storeName3?: string
+        recommendedMenu3?: string
+        referrerUserId?: string
+        shopId?: string
     }) => {
         try {
             const response = await fetch('/api/store-introductions', {
