@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const [token, setToken] = useState<string | undefined>(undefined)
   const [shopId, setShopId] = useState<string | undefined>(undefined)
   const [isClient, setIsClient] = useState(false)
-  const [initialFormData, _setInitialFormData] = useState<UserRegistrationComplete | null>(null)
+  const [initialFormData, setInitialFormData] = useState<UserRegistrationComplete | null>(null)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const { setFormData } = useRegisterStore()
@@ -30,7 +30,7 @@ export default function RegisterPage() {
       const tokenParam = urlParams.get('token') || undefined
       const shop_id = urlParams.get('shop_id') || undefined
       // const ref = urlParams.get('ref') // 紹介者IDを取得（将来使用予定）
-      // const isEdit = urlParams.get('edit') === 'true' // 編集モード（将来使用予定）
+      const isEdit = urlParams.get('edit') === 'true' // 編集モード
 
       // トークンが存在しない場合はメール登録画面にリダイレクト
       if (!tokenParam || tokenParam.trim() === '') {
@@ -67,6 +67,20 @@ export default function RegisterPage() {
           setError('トークンが無効です。再度メール登録からやり直してください。')
           setTimeout(() => router.push('/email-registration'), 3000)
           return
+        }
+        
+        // 編集モードの場合はZustandに保持しているフォームデータを再適用（パスワードとマイデジIDはクリア）
+        if (isEdit) {
+          const storedFormData = useRegisterStore.getState().formData
+          if (storedFormData) {
+            setInitialFormData({
+              ...storedFormData,
+              password: "",
+              passwordConfirm: "",
+              // 任意連携IDは再入力してもらう
+              mydigiAppId: "",
+            })
+          }
         }
         // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
       } catch {

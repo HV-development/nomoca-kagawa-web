@@ -99,25 +99,33 @@ export function useFavorites(isOpen: boolean, isAuthenticated: boolean, options?
         const existingThumbnailUrl = existingStore?.thumbnailUrl || ''
         
         // 画像配列を処理（shop.imagesは配列またはnull/undefined）
-        let images: string[] = []
-        
-        if (Array.isArray(shop.images)) {
-          images = shop.images.filter((img: string | null | undefined) => img && String(img).trim().length > 0)
-        } else if (shop.images) {
-          // 単一の文字列の場合も配列に変換
-          const imgStr = String(shop.images).trim()
-          if (imgStr.length > 0) {
-            images = [imgStr]
+        const imagesFromApi: string[] = (() => {
+          if (Array.isArray(shop.images)) {
+            return shop.images
+              .map((img: string | null | undefined) => (img ? String(img).trim() : ''))
+              .filter((img: string) => img.length > 0)
           }
-        }
-        
-        // APIから取得したimagesがない場合は、既存のthumbnailUrlを使用
-        let thumbnailUrl = ''
-        if (images.length > 0 && images[0]) {
-          thumbnailUrl = String(images[0]).trim()
-        } else if (existingThumbnailUrl) {
-          thumbnailUrl = existingThumbnailUrl
-        }
+          if (shop.images) {
+            const imgStr = String(shop.images).trim()
+            return imgStr.length > 0 ? [imgStr] : []
+          }
+          return []
+        })()
+
+        // APIの画像と既存のStore画像をマージし、空文字や重複を除去
+        const mergedImages = Array.from(
+          new Set(
+            [
+              ...imagesFromApi,
+              ...(existingStore?.images || []),
+              existingThumbnailUrl,
+            ]
+              .map((img) => (img ? img.trim() : ''))
+              .filter((img) => img.length > 0)
+          )
+        )
+
+        const thumbnailUrl = mergedImages[0] || existingThumbnailUrl || ''
 
         // 既存のStoreから必要なフィールドをマージ
         return {
@@ -132,6 +140,7 @@ export function useFavorites(isOpen: boolean, isAuthenticated: boolean, options?
           phone: shop.phone || existingStore?.phone || '',
           description: shop.description || existingStore?.description || '',
           thumbnailUrl, // 上で処理したthumbnailUrlを使用
+          images: mergedImages,
           isFavorite: true,
           latitude: shop.latitude ? Number(shop.latitude) : (existingStore?.latitude || undefined),
           longitude: shop.longitude ? Number(shop.longitude) : (existingStore?.longitude || undefined),

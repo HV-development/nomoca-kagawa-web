@@ -9,6 +9,7 @@ import type { useFilters } from './useFilters'
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { getCurrentPosition } from '@/utils/location'
 import { toast } from 'sonner'
+import { useCouponAudio } from './use-audio'
 
 // ハンドラー作成フック
 export const useAppHandlers = (
@@ -30,33 +31,32 @@ export const useAppHandlers = (
     // OTP requestIdを管理するローカルstate
     const [otpRequestId, setOtpRequestId] = useState<string>("")
 
+    const { initializeAudio } = useCouponAudio()
+
     const handleCurrentLocationClick = useCallback(async () => {
-        const newFilterState = !filters.isNearbyFilter
-        filters.setIsNearbyFilter(newFilterState)
-
-        if (newFilterState) {
-            // フィルターをONにする場合、位置情報を取得
-            dispatch({ type: 'SET_LOCATION_LOADING', payload: true })
-            dispatch({ type: 'SET_LOCATION_ERROR', payload: null })
-
-            try {
-                const location = await getCurrentPosition()
-                dispatch({ type: 'SET_CURRENT_LOCATION', payload: location })
-                dispatch({ type: 'SET_LOCATION_ERROR', payload: null })
-            } catch (error) {
-                // 位置情報取得に失敗した場合
-                const errorMessage = error instanceof Error ? error.message : '位置情報の取得に失敗しました'
-                dispatch({ type: 'SET_LOCATION_ERROR', payload: errorMessage })
-                dispatch({ type: 'SET_CURRENT_LOCATION', payload: null })
-                // エラーをユーザーに通知（後で実装）
-                alert(errorMessage)
-            } finally {
-                dispatch({ type: 'SET_LOCATION_LOADING', payload: false })
-            }
-        } else {
-            // フィルターをOFFにする場合、位置情報をクリア
+        if (filters.isNearbyFilter) {
+            filters.setIsNearbyFilter(false)
             dispatch({ type: 'SET_CURRENT_LOCATION', payload: null })
             dispatch({ type: 'SET_LOCATION_ERROR', payload: null })
+            return
+        }
+
+        dispatch({ type: 'SET_LOCATION_LOADING', payload: true })
+        dispatch({ type: 'SET_LOCATION_ERROR', payload: null })
+
+        try {
+            const location = await getCurrentPosition()
+            dispatch({ type: 'SET_CURRENT_LOCATION', payload: location })
+            dispatch({ type: 'SET_LOCATION_ERROR', payload: null })
+            filters.setIsNearbyFilter(true)
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : '位置情報の取得に失敗しました'
+            dispatch({ type: 'SET_LOCATION_ERROR', payload: errorMessage })
+            dispatch({ type: 'SET_CURRENT_LOCATION', payload: null })
+            filters.setIsNearbyFilter(false)
+            alert(errorMessage)
+        } finally {
+            dispatch({ type: 'SET_LOCATION_LOADING', payload: false })
         }
     }, [filters, dispatch])
 
@@ -972,6 +972,9 @@ export const useAppHandlers = (
             return
         }
 
+        // 音声再生をユーザー操作イベント内で初期化（自動再生制限対策）
+        initializeAudio()
+
         // storeCouponsからクーポンを取得
         const coupon = state.storeCoupons.find((c) => c.id === couponId)
         if (coupon) {
@@ -979,7 +982,7 @@ export const useAppHandlers = (
             navigation.navigateToView("coupon-confirmation")
             dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: false })
         }
-    }, [auth.isAuthenticated, auth.plan, state.storeCoupons, navigation, dispatch])
+    }, [auth.isAuthenticated, auth.plan, state.storeCoupons, navigation, dispatch, initializeAudio])
 
     const handleConfirmCoupon = useCallback(async () => {
         if (!state.selectedCoupon || !state.selectedStore) {
@@ -1290,12 +1293,14 @@ export const useAppHandlers = (
 
     // 店舗紹介登録
     const handleStoreIntroductionSubmit = useCallback(async (data: {
-        storeName1: string
-        recommendedMenu1: string
-        storeName2: string
-        recommendedMenu2: string
-        storeName3: string
-        recommendedMenu3: string
+        storeName1?: string
+        recommendedMenu1?: string
+        storeName2?: string
+        recommendedMenu2?: string
+        storeName3?: string
+        recommendedMenu3?: string
+        referrerUserId?: string
+        shopId?: string
     }) => {
         try {
             const response = await fetch('/api/store-introductions', {

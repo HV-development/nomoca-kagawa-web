@@ -499,22 +499,54 @@ export default function LPPage() {
             </p>
           </div>
 
-          {/* イラストとスマホ - Desktop */}
-          <div className="relative flex items-center justify-center">
-            <Image
-              src="/lp/images/user-fv-illustration.png"
-              alt="街のイラスト"
-              width={602}
-              height={578}
-              className="w-[400px] lg:w-[500px] h-auto"
+          {/* ビール＋スマホ - Desktop（PCのみ切り替え） */}
+          <div className="relative flex items-center justify-center w-[760px] h-[640px]">
+            <div
+              className="absolute"
+              style={{
+                width: '420px',
+                height: '520px',
+                backgroundColor: 'var(--main, #2B7A78)',
+                top: '70px',
+                left: '220px',
+                zIndex: 0
+              }}
             />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[25%]">
+            <div
+              className="relative overflow-hidden"
+              style={{
+                width: '360px',
+                height: '460px',
+                zIndex: 1,
+                transform: 'translateX(-135px)'
+              }}
+            >
+              <Image
+                src="/lp/images/user-fv-beer-desktop.png"
+                alt="乾杯"
+                fill
+                className="object-cover"
+                style={{ left: -1 }}
+                sizes="360px"
+                priority
+              />
+            </div>
+            <div
+              className="absolute"
+              style={{
+                width: '210px',
+                height: '432px',
+                bottom: '0px',
+                right: '150px',
+                zIndex: 2
+              }}
+            >
               <Image
                 src="/lp/images/user-fv-phone.png"
                 alt="スマホ画面"
-                width={204}
-                height={413}
-                className="w-32 lg:w-[180px] h-auto"
+                width={210}
+                height={432}
+                className="w-full h-auto drop-shadow-[0_16px_32px_rgba(0,0,0,0.25)]"
               />
             </div>
           </div>

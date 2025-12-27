@@ -79,6 +79,8 @@ export function RegisterForm({
         // セキュリティのためパスワードフィールドはクリア
         password: "",
         passwordConfirm: "",
+        // 任意連携IDは再入力してもらう
+        mydigiAppId: "",
       }
       setFormData(newFormData)
     }
