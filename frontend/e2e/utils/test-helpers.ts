@@ -61,6 +61,7 @@ export async function mockAuthenticatedUser(
     email?: string;
     nickname?: string;
     rank?: number;
+    plan?: { id: string } | null;
   }
 ): Promise<void> {
   const defaultUser = {
@@ -68,11 +69,22 @@ export async function mockAuthenticatedUser(
     email: 'test@example.com',
     nickname: 'テストユーザー',
     rank: 1,
+    plan: { id: 'test-plan-id' }, // プランがあることを示す
+    createdAt: new Date().toISOString(), // 作成日時を追加（ISO文字列形式）
   };
 
   const mockData = { ...defaultUser, ...userData };
 
-  // /api/me エンドポイントをモック
+  // /api/user/me エンドポイントをモック（実際のアプリケーションのエンドポイントに合わせる）
+  await page.route('**/api/user/me', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(mockData),
+    });
+  });
+
+  // /api/me エンドポイントもモック（後方互換性のため）
   await page.route('**/api/me', async (route) => {
     await route.fulfill({
       status: 200,
@@ -88,6 +100,21 @@ export async function mockAuthenticatedUser(
       value: 'mock_user_token',
       domain: 'localhost',
       path: '/',
+      httpOnly: false, // Playwrightで設定可能にする
+      sameSite: 'Lax',
+      secure: false,
+    },
+  ]);
+  // 認証ミドルウェアがチェックするCookieを設定
+  await page.context().addCookies([
+    {
+      name: 'accessToken',
+      value: 'test-access-token',
+      domain: 'localhost',
+      path: '/',
+      httpOnly: true,
+      secure: false,
+      sameSite: 'Lax',
     },
   ]);
 }
@@ -128,15 +155,29 @@ export async function mockApiError(
   message: string
 ): Promise<void> {
   await page.route(urlPattern, async (route) => {
-    await route.fulfill({
-      status,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        error: true,
-        message,
-        statusCode: status,
-      }),
-    });
+    // 500系エラーの場合は、実際のAPIルートと同じ形式で返す
+    if (status >= 500) {
+      await route.fulfill({
+        status,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          error: {
+            message: 'システムエラーが発生しました。しばらくしてから再度お試しください。',
+          },
+        }),
+      });
+    } else {
+      // 4xxエラーなどの場合は、エラーメッセージをそのまま返す
+      await route.fulfill({
+        status,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          error: {
+            message: message,
+          },
+        }),
+      });
+    }
   });
 }
 
@@ -167,7 +208,12 @@ export async function clearAllMocks(page: Page): Promise<void> {
  * @param page Playwrightのページオブジェクト
  */
 export async function waitForPageLoad(page: Page): Promise<void> {
-  await page.waitForLoadState('networkidle');
+  try {
+    await page.waitForLoadState('networkidle', { timeout: 5000 });
+  } catch {
+    // networkidleでタイムアウトした場合、domcontentloadedで待機
+    await page.waitForLoadState('domcontentloaded');
+  }
 }
 
 /**

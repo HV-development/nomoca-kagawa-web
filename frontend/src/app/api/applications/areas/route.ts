@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils';
-import { createNoCacheResponse } from '@/lib/response-utils';
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils';
 import { FULL_API_URL } from '@/lib/api-config';
 
 /**
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     console.error('❌ API Route: Application areas error', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return createNoCacheResponse({ message: 'Internal Server Error', error: errorMessage }, { status: 500 });
+    return createNoCacheResponse({ message: SERVER_ERROR_MESSAGE, error: errorMessage }, { status: 500 });
   }
 }
 

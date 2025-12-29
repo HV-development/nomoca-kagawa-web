@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Email change error:', error)
     return createNoCacheResponse(
-      { error: { message: 'メールアドレス変更に失敗しました' } },
+      { error: { message: SERVER_ERROR_MESSAGE } },
       { status: 500 }
     )
   }

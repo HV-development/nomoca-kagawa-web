@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 // サーバーサイドなのでNEXT_PUBLIC_プレフィックスなしの環境変数を使用
 // api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     return createNoCacheResponse(
       {
         success: false,
-        message: 'お問い合わせの送信中にエラーが発生しました',
+        message: SERVER_ERROR_MESSAGE,
         error: errorMessage,
       },
       { status: 500 }

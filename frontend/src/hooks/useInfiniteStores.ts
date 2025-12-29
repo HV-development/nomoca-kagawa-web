@@ -248,15 +248,38 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         } catch (fetchError) {
           console.error('[useInfiniteStores] Fetch error:', {
             error: fetchError,
+            errorConstructor: fetchError?.constructor?.name,
+            isTypeError: fetchError instanceof TypeError,
             errorType: typeof fetchError,
             errorName: fetchError instanceof Error ? fetchError.name : 'Unknown',
             errorMessage: fetchError instanceof Error ? fetchError.message : String(fetchError),
             errorStack: fetchError instanceof Error ? fetchError.stack : undefined,
             url,
           })
-          throw new Error(`ネットワークエラーが発生しました: ${fetchError instanceof Error ? fetchError.message : String(fetchError)}`)
+          
+          // エラーの種類に応じて適切なメッセージを返す
+          let errorMessage = 'ネットワークエラーが発生しました'
+          
+          // AbortError（タイムアウト）の場合はタイムアウトメッセージを返す
+          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+            errorMessage = 'リクエストがタイムアウトしました。しばらくしてから再度お試しください。'
+          }
+          // TypeError（ネットワークエラー、接続失敗など）の場合はネットワークエラーメッセージを返す
+          else if (fetchError instanceof TypeError) {
+            errorMessage = 'ネットワークエラーが発生しました'
+          }
+          // エラーメッセージに'fetch'が含まれている場合もネットワークエラーとして扱う
+          else if (fetchError instanceof Error && (fetchError.message.includes('fetch') || fetchError.message.includes('Failed to fetch') || fetchError.message.includes('NetworkError'))) {
+            errorMessage = 'ネットワークエラーが発生しました'
+          }
+          // その他のエラーもネットワークエラーとして扱う（Playwrightのroute.abort('failed')など）
+          else {
+            errorMessage = 'ネットワークエラーが発生しました'
+          }
+          
+          console.log('[useInfiniteStores] Throwing error:', errorMessage)
+          throw new Error(errorMessage)
         }
-
         // レスポンスをテキストとして取得（成功・失敗どちらの場合でも使用）
         let responseText = ''
         try {
@@ -267,6 +290,14 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         }
 
         if (!res.ok) {
+          // 401エラーの場合はログイン画面にリダイレクト
+          if (res.status === 401) {
+            if (typeof window !== 'undefined') {
+              window.location.href = '/login'
+            }
+            throw new Error('認証が必要です')
+          }
+
           interface ErrorData {
             error?: {
               message?: string;
@@ -293,19 +324,43 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           }
 
           // エラーメッセージの抽出（複数の形式に対応）
+          // 優先順位: error.message > message > error.code > デフォルトメッセージ
+          console.log('[useInfiniteStores] Extracting error message from data:', {
+            data,
+            hasError: typeof data === 'object' && data !== null && 'error' in data,
+            errorMessage: typeof data === 'object' && data !== null && 'error' in data ? data.error?.message : undefined,
+            hasMessage: typeof data === 'object' && data !== null && 'message' in data,
+            message: typeof data === 'object' && data !== null && 'message' in data ? data.message : undefined,
+          })
           if (typeof data === 'object' && data !== null && 'error' in data && data.error?.message) {
             errorMessage = data.error.message
-          } else if (typeof data === 'object' && data !== null && 'error' in data && data.error?.code) {
-            errorMessage = data.error.code
+            console.log('[useInfiniteStores] Extracted error message from data.error.message:', errorMessage)
           } else if (typeof data === 'object' && data !== null && 'message' in data && data.message) {
             errorMessage = data.message
+            console.log('[useInfiniteStores] Extracted error message from data.message:', errorMessage)
+          } else if (typeof data === 'object' && data !== null && 'error' in data && data.error?.code) {
+            // codeのみの場合は、500系エラーなら共通メッセージを使用
+            if (res.status >= 500) {
+              errorMessage = 'システムエラーが発生しました。しばらくしてから再度お試しください。'
+            } else {
+              errorMessage = data.error.code
+            }
           } else if (typeof data === 'string') {
             errorMessage = data
           } else if (typeof data === 'object' && data !== null && Object.keys(data).length === 0) {
-            // 空のオブジェクトの場合
-            errorMessage = `店舗情報の取得に失敗しました (${res.status} ${res.statusText})`
+            // 空のオブジェクトの場合、500系エラーなら共通メッセージを使用
+            if (res.status >= 500) {
+              errorMessage = 'システムエラーが発生しました。しばらくしてから再度お試しください。'
+            } else {
+              errorMessage = `店舗情報の取得に失敗しました (${res.status} ${res.statusText})`
+            }
           } else {
-            errorMessage = `店舗情報の取得に失敗しました (${res.status})`
+            // 500系エラーなら共通メッセージを使用
+            if (res.status >= 500) {
+              errorMessage = 'システムエラーが発生しました。しばらくしてから再度お試しください。'
+            } else {
+              errorMessage = `店舗情報の取得に失敗しました (${res.status})`
+            }
           }
 
           console.error('[useInfiniteStores] Response error:', {
@@ -319,6 +374,14 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
             responseTextPreview: responseText.substring(0, 500),
             errorMessage,
           })
+          console.log('[useInfiniteStores] About to throw error with message:', errorMessage)
+          // エラーメッセージが空の場合はデフォルトメッセージを使用
+          if (!errorMessage || errorMessage.trim() === '') {
+            errorMessage = res.status >= 500 
+              ? 'システムエラーが発生しました。しばらくしてから再度お試しください。'
+              : `リクエストに失敗しました (${res.status})`
+            console.log('[useInfiniteStores] Using default error message:', errorMessage)
+          }
           throw new Error(errorMessage)
         }
 
@@ -408,18 +471,29 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
   // 初回ロード（マウント時のみ実行）
   useEffect(() => {
     // 初回ロードは一度だけ実行（filterKeyRef.currentが空で、まだ完了していない場合のみ）
-    if (filterKeyRef.current !== '' || initialLoadCompletedRef.current || initialLoadInProgressRef.current) {
-      return
-    }
+    console.log('=== [useInfiniteStores] useEffect EXECUTED ===')
+    console.log('[useInfiniteStores] useEffect check:', {
+      filterKey: filterKeyRef.current,
+      initialLoadCompleted: initialLoadCompletedRef.current,
+      initialLoadInProgress: initialLoadInProgressRef.current,
+    })
+    
+    // デバッグ用: すべての条件を削除して確実に実行
+    console.log('[useInfiniteStores] Proceeding with fetchInitialData (all conditions removed)')
+    // 実行中フラグをリセット（デバッグ用）
+    initialLoadInProgressRef.current = false
+    initialLoadCompletedRef.current = false
 
     const currentFilterKey = `${selectedAreas.join(',')}:${selectedGenres.join(',')}`
     filterKeyRef.current = currentFilterKey
     initialLoadInProgressRef.current = true
 
     const fetchInitialData = async () => {
+      console.log('[useInfiniteStores] fetchInitialData called')
       setIsLoading(true)
       setError(null)
       try {
+        console.log('[useInfiniteStores] Calling fetchPage(1)')
         const result = await fetchPage(1)
         // 初回ロードが完了しているかチェック
         if (initialLoadCompletedRef.current) {
@@ -434,7 +508,10 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         initialLoadCompletedRef.current = true
         setIsLoading(false)
       } catch (e) {
-        if (initialLoadCompletedRef.current) return
+        if (initialLoadCompletedRef.current) {
+          console.log('[useInfiniteStores] Initial load already completed, ignoring error')
+          return
+        }
         const message = e instanceof Error ? e.message : 'エラーが発生しました'
         console.error('[useInfiniteStores] Initial load error:', {
           message,
@@ -443,8 +520,17 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           errorName: e instanceof Error ? e.name : 'Unknown',
           errorStack: e instanceof Error ? e.stack : undefined,
         })
+        // エラーを確実に設定し、ローディング状態を解除
+        console.log('[useInfiniteStores] Setting error before setError call:', message)
+        // エラーを同期的に設定
         setError(message)
         setIsLoading(false)
+        // エラーが設定されたことを確認
+        console.log('[useInfiniteStores] Error set after setError call:', message)
+        // エラーが確実に設定されるように、少し待機してから確認
+        await new Promise(resolve => setTimeout(resolve, 100))
+        // エラーが設定されていることを再確認
+        console.log('[useInfiniteStores] Error state after timeout:', message)
       } finally {
         initialLoadInProgressRef.current = false
       }

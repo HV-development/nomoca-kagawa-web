@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 
 /**
+ * 500系サーバーエラーの共通メッセージ
+ * 全てのAPIエンドポイントで500, 502, 503エラー時に使用
+ */
+export const SERVER_ERROR_MESSAGE = 'システムエラーが発生しました。しばらくしてから再度お試しください。';
+
+/**
  * キャッシュ無効化ヘッダーを設定したNextResponseを作成
  * 
  * @param data - レスポンスデータ

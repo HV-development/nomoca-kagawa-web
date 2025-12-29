@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest } from 'next/server'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 // サーバーサイドなので NEXT_PUBLIC_ なしの環境変数を使用
 // api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
           {
             error: {
               code: 'INTERNAL_SERVER_ERROR',
-              message: 'ジャンル情報の取得に失敗しました。時間を置いて再度お試しください。',
+              message: SERVER_ERROR_MESSAGE,
             },
           },
           { status: 500 }

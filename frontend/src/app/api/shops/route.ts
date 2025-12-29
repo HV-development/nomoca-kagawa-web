@@ -2,7 +2,7 @@
 import { NextRequest } from 'next/server'
 import { getAuthHeader } from '@/lib/auth-header'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 // サーバーサイドなので NEXT_PUBLIC_ なしの環境変数を使用
 // api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
       if (errorName === 'TypeError' && errorMessage.includes('fetch failed')) {
         userMessage = 'バックエンドAPIサーバーに接続できません。APIサーバーが起動しているか確認してください。'
       } else if (errorName === 'AbortError') {
-        userMessage = 'リクエストがタイムアウトしました。しばらく待ってから再度お試しください。'
+        userMessage = 'リクエストがタイムアウトしました。しばらくしてから再度お試しください。'
       }
       
       return createNoCacheResponse(
@@ -133,8 +133,7 @@ export async function GET(request: NextRequest) {
         return createNoCacheResponse(
           {
             error: {
-              code: 'INTERNAL_SERVER_ERROR',
-              message: data?.error?.message || data?.message || '店舗情報の取得に失敗しました。時間を置いて再度お試しください。',
+              message: SERVER_ERROR_MESSAGE,
             },
           },
           { status: 500 }

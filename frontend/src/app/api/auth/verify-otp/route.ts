@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     return res
   } catch {
     return createNoCacheResponse(
-      { error: 'OTP検証処理中にエラーが発生しました' },
+      { error: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }

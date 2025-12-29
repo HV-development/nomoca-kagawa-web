@@ -121,6 +121,25 @@ export function HomeContainer({
     <div className={`flex-1 relative ${backgroundColorClass}`}>
       {/* 店舗リスト */}
       <div className="h-full overflow-y-auto p-4">
+        {/* エラー表示（初回ロード時・追加ロード時共通） - 最上部に表示 */}
+        {(() => {
+          if (bottomError) {
+            const trimmedError = bottomError.trim()
+            if (trimmedError !== '') {
+              console.log('[HomeContainer] Displaying error:', bottomError)
+              return (
+                <div className="mt-4 mx-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm" data-testid="error-message" role="alert">
+                  {bottomError}
+                </div>
+              )
+            } else {
+              console.log('[HomeContainer] Error is empty string, bottomError:', bottomError)
+            }
+          }
+          console.log('[HomeContainer] No error to display, bottomError:', bottomError, 'type:', typeof bottomError)
+          return null
+        })()}
+
         <StoreList
           stores={filteredStores}
           onFavoriteToggle={onFavoriteToggle}
@@ -138,13 +157,6 @@ export function HomeContainer({
           <div className="mt-4 mx-2 flex flex-col items-center justify-center py-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mb-2"></div>
             <div className="text-gray-500 text-sm">読み込み中...</div>
-          </div>
-        )}
-
-        {/* 追加ロード時のエラー表示 */}
-        {bottomError && (
-          <div className="mt-4 mx-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-            {bottomError}
           </div>
         )}
 

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -62,7 +62,7 @@ export async function POST(
   } catch (error) {
     console.error('❌ [favorites] Route error:', error)
     return createNoCacheResponse(
-      { error: 'お気に入りの登録/削除中にエラーが発生しました' },
+      { error: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }
@@ -125,7 +125,7 @@ export async function DELETE(
   } catch (error) {
     console.error('❌ [favorites] Route error:', error)
     return createNoCacheResponse(
-      { error: 'お気に入りの削除中にエラーが発生しました' },
+      { error: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }

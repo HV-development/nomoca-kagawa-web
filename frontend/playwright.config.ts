@@ -6,73 +6,121 @@ import { config } from 'dotenv';
 const envPath = path.resolve(__dirname, 'e2e', '.env');
 config({ path: envPath });
 
+// 認証状態ファイルのパス
+const authFile = '.auth/user.json';
+
 /**
  * Playwright設定ファイル
+ * 
+ * テストプロジェクトの分類:
+ * 1. setup - 認証セットアップ（OTP認証を1回実行してstorageStateを保存）
+ * 2. authenticated - storageStateを使用する全テスト（実データ使用）
+ * 3. auth-flow - 認証フローのテスト（シリアル実行、認証状態を使用しない）
+ * 
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './e2e',
   /* テストの最大実行時間 */
-  timeout: 45 * 1000, // 45秒（適切なバランス）
+  timeout: 30 * 1000,
   expect: {
     /* アサーションのタイムアウト */
-    timeout: 8000, // 8秒
+    timeout: 5000,
   },
-  /* テストを並列実行しない（OTP検証の競合を避けるため） */
-  fullyParallel: false,
+  /* テストを並列実行 */
+  fullyParallel: true,
   /* CIで失敗したテストを再実行しない */
   forbidOnly: !!process.env.CI,
   /* CIでのみ失敗したテストを再実行 */
   retries: process.env.CI ? 2 : 0,
-  /* 並列実行を無効化（OTP検証の競合を避けるため） */
-  workers: 1, // 順次実行
+  /* 並列実行数を設定 */
+  workers: process.env.CI ? 2 : 4,
   /* レポーター設定 */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
-    ['list'], // コンソールに各テストの実行状況を表示
-    ['line'], // 実行進捗を1行ずつ表示
+    ['list'],
+    ['line'],
   ],
   /* 共有設定 */
   use: {
-    /* ベースURL（開発サーバーのURL） */
+    /* ベースURL */
     baseURL: process.env.E2E_BASE_URL || process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     /* アクションのタイムアウト */
-    actionTimeout: 12 * 1000, // 12秒
+    actionTimeout: 10 * 1000,
     /* ナビゲーションのタイムアウト */
-    navigationTimeout: 45 * 1000, // 45秒
-    /* スクリーンショット設定（常にフルページで取得） */
+    navigationTimeout: 30 * 1000,
+    /* スクリーンショット設定 */
     screenshot: {
-      mode: 'on',
+      mode: 'only-on-failure',
       fullPage: true,
     },
-    /* 動画設定（常に録画、720p） */
+    /* 動画設定 */
     video: {
-      mode: 'on',
+      mode: 'retain-on-failure',
       size: { width: 1280, height: 720 },
     },
-    /* トレース（失敗時に保持） */
+    /* トレース */
     trace: 'retain-on-failure',
   },
 
   /* プロジェクト設定 */
   projects: [
+    // セットアップ: 認証状態を作成（OTP認証を1回だけ実行）
     {
-      name: 'chromium',
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // 認証済みテスト: storageStateを使用して認証を再利用（実データ使用）
+    {
+      name: 'authenticated',
+      dependencies: ['setup'],
+      testMatch: [
+        'shops.spec.ts',
+        'coupons.spec.ts',
+        'favorites.spec.ts',
+        'mypage.spec.ts',
+        'plans.spec.ts',
+        'headers.spec.ts',
+      ],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: authFile,
+      },
+    },
+    // 認証フローテスト: ログイン・登録フロー自体をテスト（シリアル実行で競合を避ける）
+    {
+      name: 'auth-flow',
+      testMatch: [
+        'auth.spec.ts',
+        'registration.spec.ts',
+      ],
+      use: { ...devices['Desktop Chrome'] },
+      fullyParallel: false,
+    },
+    // エラーハンドリングテスト
+    {
+      name: 'error-handling',
+      testMatch: 'error-handling.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    // ナビゲーションテスト
+    {
+      name: 'navigation',
+      testMatch: 'navigation.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
   ],
 
   /* 開発サーバーの設定 */
   webServer: process.env.E2E_BASE_URL || process.env.PLAYWRIGHT_BASE_URL
-    ? undefined // 外部URLを使用する場合は開発サーバーを起動しない
+    ? undefined
     : {
         command: 'pnpm dev',
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,
-        // サーバーが完全に起動するまで待機
         stdout: 'ignore',
         stderr: 'pipe',
       },
 });
-

@@ -13,10 +13,28 @@ interface UseComputedValuesParams {
 // メモ化された計算値を分離
 export const useComputedValues = ({ stores, notifications, auth, filters }: UseComputedValuesParams) => {
     const currentUserRank = useMemo(() => {
-        if (auth?.isAuthenticated && auth?.user) {
-            const contractStartDate = auth.user.contractStartDate || auth.user.createdAt
-            return calculateUserRank(contractStartDate)
+        if (!auth?.isAuthenticated || !auth?.user) {
+            return null
         }
+        
+        // contractStartDateまたはcreatedAtを取得
+        const contractStartDate = auth.user?.contractStartDate || auth.user?.createdAt
+        
+        // contractStartDateが存在しない場合はnullを返す
+        if (!contractStartDate) {
+            return null
+        }
+        
+        // contractStartDateが有効な値（Dateオブジェクトまたは文字列）の場合のみランクを計算
+        if (contractStartDate instanceof Date || typeof contractStartDate === 'string') {
+            try {
+                return calculateUserRank(contractStartDate)
+            } catch (error) {
+                console.error('[useComputedValues] Error calculating user rank:', error)
+                return null
+            }
+        }
+        
         return null
     }, [auth?.isAuthenticated, auth?.user])
 
