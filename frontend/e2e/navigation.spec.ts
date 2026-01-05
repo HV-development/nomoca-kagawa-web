@@ -5,7 +5,7 @@ import { waitForPageLoad, takeScreenshot } from './utils/test-helpers';
  * 基本ナビゲーションのE2Eテスト
  */
 test.describe('基本ナビゲーション', () => {
-  test('トップページにアクセスできること', async ({ page }) => {
+  test('トップページアクセス', async ({ page }) => {
     await page.goto('/');
     await waitForPageLoad(page);
 
@@ -16,18 +16,16 @@ test.describe('基本ナビゲーション', () => {
     await takeScreenshot(page, 'navigation-top');
   });
 
-  test('ログインページにアクセスできること', async ({ page }) => {
+  test('ログインページアクセス', async ({ page }) => {
     await page.goto('/login');
     await waitForPageLoad(page);
 
-    // ログインページの要素が表示されることを確認
-    const hasLoginContent = await page.getByRole('heading', { name: /ログイン/ }).isVisible().catch(() => false);
-    
-    expect(hasLoginContent || page.url().includes('/login')).toBeTruthy();
+    // ログインページの要素が表示されることを確認（必須要件）
+    await expect(page.getByRole('heading', { name: /ログイン/ })).toBeVisible({ timeout: 5000 });
     await takeScreenshot(page, 'navigation-login');
   });
 
-  test('存在しないページにアクセスすると適切なレスポンスが返ること', async ({ page }) => {
+  test('404レスポンス確認', async ({ page }) => {
     const response = await page.goto('/non-existent-page-xyz-123');
     
     // 404ステータス、またはリダイレクト、またはエラーページ
@@ -38,7 +36,7 @@ test.describe('基本ナビゲーション', () => {
     await takeScreenshot(page, 'navigation-404');
   });
 
-  test('プラン登録ページにアクセスできること', async ({ page }) => {
+  test('プラン登録ページアクセス', async ({ page }) => {
     await page.goto('/plan-registration');
     await waitForPageLoad(page);
 
@@ -49,7 +47,7 @@ test.describe('基本ナビゲーション', () => {
     await takeScreenshot(page, 'navigation-plan-registration');
   });
 
-  test('メール登録ページにアクセスできること', async ({ page }) => {
+  test('メール登録ページアクセス', async ({ page }) => {
     await page.goto('/email-registration');
     await waitForPageLoad(page);
 

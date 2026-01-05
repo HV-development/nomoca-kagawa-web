@@ -16,16 +16,19 @@ const authFile = '.auth/user.json';
  * 1. setup - 認証セットアップ（OTP認証を1回実行してstorageStateを保存）
  * 2. authenticated - storageStateを使用する全テスト（実データ使用）
  * 3. auth-flow - 認証フローのテスト（シリアル実行、認証状態を使用しない）
+ * 4. unauthenticated - 未認証状態でのテスト（ルートからアクセス）
  * 
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './e2e',
+  /* グローバルセットアップ - テストデータの初期化 */
+  globalSetup: './global-setup.ts',
   /* テストの最大実行時間 */
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
     /* アサーションのタイムアウト */
-    timeout: 5000,
+    timeout: 10000,
   },
   /* テストを並列実行 */
   fullyParallel: true,
@@ -33,8 +36,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* CIでのみ失敗したテストを再実行 */
   retries: process.env.CI ? 2 : 0,
-  /* 並列実行数を設定 */
-  workers: process.env.CI ? 2 : 4,
+  /* 並列実行数を設定（レート制限を避けるため減少） */
+  workers: process.env.CI ? 1 : 2,
   /* レポーター設定 */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
@@ -46,21 +49,25 @@ export default defineConfig({
     /* ベースURL */
     baseURL: process.env.E2E_BASE_URL || process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     /* アクションのタイムアウト */
-    actionTimeout: 10 * 1000,
+    actionTimeout: 15 * 1000,
     /* ナビゲーションのタイムアウト */
     navigationTimeout: 30 * 1000,
     /* スクリーンショット設定 */
     screenshot: {
-      mode: 'only-on-failure',
+      mode: 'on',
       fullPage: true,
     },
-    /* 動画設定 */
+    /* 動画設定 - 全テストで録画 */
     video: {
-      mode: 'retain-on-failure',
+      mode: 'on',
       size: { width: 1280, height: 720 },
     },
-    /* トレース */
-    trace: 'retain-on-failure',
+    /* トレース - 全テストで記録 */
+    trace: 'on',
+    /* ブラウザ操作を遅延させて動画に操作が映るようにする */
+    launchOptions: {
+      slowMo: 500, // 各操作間に500msの遅延を追加
+    },
   },
 
   /* プロジェクト設定 */
@@ -80,8 +87,11 @@ export default defineConfig({
         'coupons.spec.ts',
         'favorites.spec.ts',
         'mypage.spec.ts',
+        'history.spec.ts',
         'plans.spec.ts',
         'headers.spec.ts',
+        'coupon-restrictions.spec.ts',
+        'plan-payment-mydigi.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],
@@ -94,9 +104,18 @@ export default defineConfig({
       testMatch: [
         'auth.spec.ts',
         'registration.spec.ts',
+        'coupon-underage.spec.ts',
+        'coupon-no-plan.spec.ts',
+        'cross-app-auth.spec.ts',
       ],
       use: { ...devices['Desktop Chrome'] },
       fullyParallel: false,
+    },
+    // 未認証テスト: 認証なしでルートからアクセスするテスト
+    {
+      name: 'unauthenticated',
+      testMatch: 'coupon-unauthenticated.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
     },
     // エラーハンドリングテスト
     {
@@ -110,6 +129,7 @@ export default defineConfig({
       testMatch: 'navigation.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
+
   ],
 
   /* 開発サーバーの設定 */

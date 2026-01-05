@@ -10,7 +10,7 @@ test.describe('プラン管理', () => {
   // プラン登録ページテスト
   // ================================================================
   test.describe('プラン登録', () => {
-    test('プラン登録ページにアクセスできること', async ({ page }) => {
+    test('プラン登録ページアクセス', async ({ page }) => {
       await page.goto('/plan-registration');
       await waitForPageLoad(page);
 
@@ -21,15 +21,12 @@ test.describe('プラン管理', () => {
       await takeScreenshot(page, 'plan-registration');
     });
 
-    test('プラン情報が表示されること', async ({ page }) => {
+    test('プラン情報表示', async ({ page }) => {
       await page.goto('/plan-registration');
       await waitForPageLoad(page);
 
-      // プラン関連の情報が表示されていることを確認
-      const hasPlanContent = await page.getByText(/プラン|料金|月額|円/).isVisible().catch(() => false);
-      
-      // プランページのコンテンツが存在することを確認
-      expect(hasPlanContent || await page.locator('body').isVisible()).toBeTruthy();
+      // プラン関連の情報が表示されていることを確認（必須要件）
+      await expect(page.getByText(/プラン|料金|月額|円/).first()).toBeVisible({ timeout: 10000 });
     });
   });
 
@@ -37,7 +34,7 @@ test.describe('プラン管理', () => {
   // マイページからのプラン変更テスト
   // ================================================================
   test.describe('プラン変更', () => {
-    test('マイページからプラン関連リンクにアクセスできること', async ({ page }) => {
+    test('プラン関連リンクアクセス', async ({ page }) => {
       await page.goto('/home');
       await waitForPageLoad(page);
 
@@ -50,7 +47,7 @@ test.describe('プラン管理', () => {
 
         // プラン関連のリンクまたはボタンを探す
         const planLink = page.getByText(/プラン/).first();
-        const _hasPlanLink = await planLink.isVisible().catch(() => false);
+        await expect(planLink).toBeVisible({ timeout: 5000 });
 
         await takeScreenshot(page, 'mypage-plan-section');
       }

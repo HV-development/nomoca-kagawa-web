@@ -6,7 +6,10 @@ import { test, expect } from '@playwright/test';
  * 注意: このテストはstorageStateを使用して認証済み状態で実行されます。
  * 認証処理はauth.setup.tsで1回だけ実行され、その状態が共有されます。
  */
-test.describe('店舗一覧・詳細のテスト', () => {
+test.describe('店舗一覧詳細', () => {
+    // レート制限を避けるためシリアル実行
+    test.describe.configure({ mode: 'serial' });
+
     test.beforeEach(async ({ page }) => {
         // storageStateによって既に認証済み状態
         // ホームページにアクセス
@@ -16,20 +19,34 @@ test.describe('店舗一覧・詳細のテスト', () => {
         await page.waitForLoadState('load');
         
         // APIリクエストが完了するまで待機（実際のDBからデータを取得）
-        try {
-            await page.waitForResponse(response => 
-                response.url().includes('/api/shops') && response.status() === 200,
-                { timeout: 15000 }
-            );
-        } catch {
-            // タイムアウトしても続行
+        // APIリクエストを待機（リトライロジック付き）
+        let retries = 3;
+        while (retries > 0) {
+            try {
+                const response = await page.waitForResponse(
+                    resp => resp.url().includes('/api/shops'),
+                    { timeout: 15000 }
+                );
+                if (response.status() === 200) break;
+                if (response.status() === 429) {
+                    console.log('[Shops Test] Rate limited, waiting before retry...');
+                    await page.waitForTimeout(3000);
+                    await page.reload({ waitUntil: 'domcontentloaded' });
+                    retries--;
+                } else {
+                    break;
+                }
+            } catch {
+                // タイムアウトしても続行
+                break;
+            }
         }
         
         // 追加の待機時間（レンダリング完了を待つ）
         await page.waitForTimeout(2000);
     });
 
-    test('店舗一覧が表示されることを確認', async ({ page }) => {
+    test('店舗一覧表示', async ({ page }) => {
         // 店舗カードが表示されるまで待機
         const storeCards = page.locator('h3').filter({ hasText: /./ });
         
@@ -45,7 +62,7 @@ test.describe('店舗一覧・詳細のテスト', () => {
         expect(firstStoreName).toBeTruthy();
     });
 
-    test('店舗一覧から店舗詳細が表示されることを確認', async ({ page }) => {
+    test('店舗詳細表示', async ({ page }) => {
         // 店舗カードが表示されるまで待機
         const storeCards = page.locator('h3').filter({ hasText: /./ });
         await expect(storeCards.first()).toBeVisible({ timeout: 15000 });
@@ -95,7 +112,7 @@ test.describe('店舗一覧・詳細のテスト', () => {
         await expect(popupHeader).not.toBeVisible({ timeout: 3000 });
     });
 
-    test('店舗詳細ポップアップの主要情報が表示されることを確認', async ({ page }) => {
+    test('店舗詳細情報表示', async ({ page }) => {
         // 店舗カードが表示されるまで待機
         const storeCards = page.locator('h3').filter({ hasText: /./ });
         await expect(storeCards.first()).toBeVisible({ timeout: 15000 });
@@ -132,7 +149,7 @@ test.describe('店舗一覧・詳細のテスト', () => {
         await page.waitForTimeout(500);
     });
 
-    test('複数の店舗を順番にクリックして詳細を表示できることを確認', async ({ page }) => {
+    test('複数店舗詳細表示', async ({ page }) => {
         // 店舗カードが表示されるまで待機
         const storeCards = page.locator('h3').filter({ hasText: /./ });
         await expect(storeCards.first()).toBeVisible({ timeout: 15000 });

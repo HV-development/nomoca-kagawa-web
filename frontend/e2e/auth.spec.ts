@@ -16,7 +16,7 @@ test.describe('認証フローのテスト', () => {
   // ログインページ表示テスト
   // ================================================================
   test.describe('ログインページ表示', () => {
-    test('ログインページが正しく表示されること', async ({ page }) => {
+    test('ログインページ表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -26,7 +26,7 @@ test.describe('認証フローのテスト', () => {
       await takeScreenshot(page, 'login-page');
     });
 
-    test('メールアドレス入力欄が表示されること', async ({ page }) => {
+    test('メール入力欄表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -37,7 +37,7 @@ test.describe('認証フローのテスト', () => {
       await expect(emailInput).toBeVisible();
     });
 
-    test('パスワード入力欄が表示されること', async ({ page }) => {
+    test('パスワード入力欄表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -48,7 +48,7 @@ test.describe('認証フローのテスト', () => {
       await expect(passwordInput).toBeVisible();
     });
 
-    test('ログインボタンが表示されること', async ({ page }) => {
+    test('ログインボタン表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -61,7 +61,7 @@ test.describe('認証フローのテスト', () => {
   // バリデーションテスト
   // ================================================================
   test.describe('入力バリデーション', () => {
-    test('空のフォームを送信するとエラーが表示されること', async ({ page }) => {
+    test('空フォーム送信エラー', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -69,13 +69,12 @@ test.describe('認証フローのテスト', () => {
 
       // エラーメッセージが表示されることを確認
       const errorMessage = page.locator('.text-red-500, .text-red-600, [class*="error"]');
-      const hasError = await errorMessage.isVisible().catch(() => false);
       
-      // エラーが表示されるか、フォームがそのままかを確認
-      expect(hasError || page.url().includes('/login')).toBeTruthy();
+      // エラーメッセージが表示されることを確認（必須要件）
+      await expect(errorMessage.first()).toBeVisible({ timeout: 5000 });
     });
 
-    test('無効なメールアドレス形式を入力するとエラーが表示されること', async ({ page }) => {
+    test('無効メール形式エラー', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
@@ -86,11 +85,9 @@ test.describe('認証フローのテスト', () => {
       await page.getByRole('button', { name: /ログイン/i }).click();
       await page.waitForTimeout(500);
 
-      // エラーメッセージまたはログインページにとどまることを確認
+      // エラーメッセージが表示されることを確認（必須要件）
       const errorMessage = page.locator('.text-red-500, .text-red-600, [class*="error"]');
-      const hasError = await errorMessage.isVisible().catch(() => false);
-      
-      expect(hasError || page.url().includes('/login')).toBeTruthy();
+      await expect(errorMessage.first()).toBeVisible({ timeout: 5000 });
     });
   });
 
@@ -98,27 +95,29 @@ test.describe('認証フローのテスト', () => {
   // ナビゲーションテスト
   // ================================================================
   test.describe('ナビゲーション', () => {
-    test('新規登録リンクが表示されること', async ({ page }) => {
+    test('新規登録リンク表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
       const registerLink = page.getByRole('link', { name: /新規登録|会員登録|登録/ })
+        .or(page.getByRole('button', { name: /新規登録|会員登録|登録/ }))
         .or(page.locator('a[href*="register"], a[href*="email-registration"]'));
 
-      const _hasRegisterLink = await registerLink.isVisible().catch(() => false);
+      await expect(registerLink.first()).toBeVisible({ timeout: 5000 });
       
       // 新規登録リンクがあるかどうかを確認
       await takeScreenshot(page, 'login-page-navigation');
     });
 
-    test('パスワードリセットリンクが表示されること', async ({ page }) => {
+    test('パスワードリセットリンク表示', async ({ page }) => {
       await page.goto('/login');
       await waitForPageLoad(page);
 
       const resetLink = page.getByRole('link', { name: /パスワード.*忘れ|リセット|再設定/ })
+        .or(page.getByRole('button', { name: /パスワード.*忘れ|リセット|再設定/ }))
         .or(page.locator('a[href*="reset"], a[href*="forgot"]'));
 
-      const _hasResetLink = await resetLink.isVisible().catch(() => false);
+      await expect(resetLink.first()).toBeVisible({ timeout: 5000 });
       
       // パスワードリセットリンクの有無を確認
       await takeScreenshot(page, 'login-page-links');
