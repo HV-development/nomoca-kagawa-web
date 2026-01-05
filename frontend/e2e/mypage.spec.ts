@@ -851,7 +851,7 @@ test.describe('マイページ', () => {
       try {
         await successTitle.waitFor({ state: 'visible', timeout: 10000 });
         console.log(`[パスワード変更] 完了画面が表示されました`);
-      } catch (e) {
+      } catch (_e) {
         console.log(`[パスワード変更] 完了画面の待機中にタイムアウト`);
       }
       
