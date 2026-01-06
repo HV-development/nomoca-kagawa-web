@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('住所検索エラー:', error)
     return createNoCacheResponse(
-      { success: false, message: '住所検索サービスに接続できませんでした' },
+      { success: false, message: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }

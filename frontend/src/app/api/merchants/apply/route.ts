@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 // サーバーサイド用ベースURL
 // api-config.tsから変換済みのAPI_BASE_URLをインポート（Dockerネットワーク内の`api`ホスト名を`localhost`に変換済み）
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       if (response.status >= 500) {
         return createNoCacheResponse(
-          { error: { code: 'INTERNAL_SERVER_ERROR', message: 'お申し込みの処理に失敗しました。時間を置いて再度お試しください。' } },
+          { error: { message: SERVER_ERROR_MESSAGE } },
           { status: 500 }
         )
       }

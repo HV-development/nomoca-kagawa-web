@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse, addNoCacheHeaders } from '@/lib/response-utils'
+import { createNoCacheResponse, addNoCacheHeaders, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Payment webhook API fetch error:', error)
     return createNoCacheResponse(
-      { error: 'Webhook処理中にエラーが発生しました' },
+      { error: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }

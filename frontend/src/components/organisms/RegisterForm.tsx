@@ -1,27 +1,13 @@
-/// <reference path="../../types/shims-next.d.ts" />
 "use client"
 
-// 開発環境で型定義が未インストールな場合のエラー抑止
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import React, { useState, useRef, useEffect, useMemo, type ChangeEvent, type FormEvent } from "react"
-
-type AnchorClickEvent = { stopPropagation: () => void }
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      [elemName: string]: any
-    }
-  }
-}
 import { Input } from "@/components/atoms/Input"
 import { Button } from "@/components/atoms/Button"
 import { RadioButton } from "@/components/atoms/RadioButton"
 import { DateSelect } from "@/components/atoms/DateSelect"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { UseRregistrationCompleteSchema, type UserRegistrationComplete } from "@hv-development/schemas"
+
+type AnchorClickEvent = { stopPropagation: () => void }
 import { calculateAge } from "@/utils/age-calculator"
 
 interface RegisterFormProps {
@@ -376,7 +362,7 @@ export function RegisterForm({
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2B7A78] transition-colors"
             />
           </div>
-          {/* @ts-ignore children は下部に指定済み */}
+          {/* @ts-expect-error children は下部に指定済み */}
           <Button
             type="button"
             onClick={handleAddressSearch}
@@ -551,7 +537,7 @@ export function RegisterForm({
 
       {/* ボタン */}
       <div className="space-y-3">
-        {/* @ts-ignore children は下部に指定済み */}
+        {/* @ts-expect-error children は下部に指定済み */}
         <Button
           type="submit"
           disabled={isLoading}
@@ -560,7 +546,7 @@ export function RegisterForm({
           {isLoading ? "登録中..." : "登録する"}
         </Button>
 
-        {/* @ts-ignore children は下部に指定済み */}
+        {/* @ts-expect-error children は下部に指定済み */}
         <Button type="button" onClick={onCancel} variant="secondary" className="w-full py-3 text-base font-medium">
           キャンセル
         </Button>

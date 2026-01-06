@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     console.error('❌ [user/withdraw] Route error:', error)
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return createNoCacheResponse(
-      { error: { code: 'INTERNAL_ERROR', message: '退会処理に失敗しました', details: errorMessage } },
+      { error: { message: SERVER_ERROR_MESSAGE, details: errorMessage } },
       { status: 500 }
     )
   }

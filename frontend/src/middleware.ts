@@ -169,7 +169,8 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('accessToken')?.value || request.cookies.get('__Host-accessToken')?.value
     if (!token) {
       const url = request.nextUrl.clone()
-      url.pathname = '/'
+      // ログインページにリダイレクト（/loginまたは/）
+      url.pathname = '/login'
       url.searchParams.set('session', 'expired')
       const redirectResponse = NextResponse.redirect(url)
       // リダイレクトレスポンスにもキャッシュ無効化ヘッダーを設定

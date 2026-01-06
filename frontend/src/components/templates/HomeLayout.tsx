@@ -25,7 +25,8 @@ import { EmailConfirmationComplete } from "../molecules/EmailConfirmationComplet
 import CouponConfirmationPage from "../molecules/CouponConfirmationPage"
 import { UsageGuidePage } from "../molecules/UsageGuidePage"
 import { FooterNavigation } from "../molecules/FooterNavigation"
-import { BannerCarousel } from "@/components/organisms/BannerCarousel"
+// TODO: バナーカルーセル機能再有効化時に使用
+// import { BannerCarousel } from "@/components/organisms/BannerCarousel"
 import { AreaPopup } from "../molecules/AreaPopup"
 import { GenrePopup } from "../molecules/GenrePopup"
 import { HamburgerMenu } from "../molecules/HamburgerMenu"
@@ -43,8 +44,10 @@ interface HomeLayoutProps {
 }
 
 export function HomeLayout({ onMount }: HomeLayoutProps) {
+  console.log('[HomeLayout] Component mounted')
   // Context から必要な値を取得
   const { state, dispatch, handlers, auth, navigation, filters, computedValues } = useAppContext()
+  console.log('[HomeLayout] Context values retrieved')
 
   // ポップアップとモーダルの状態管理
   const [isAreaPopupOpen, setIsAreaPopupOpen] = useState(false)
@@ -320,11 +323,33 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const stableSelectedGenres = useMemo(() => selectedGenres ?? [], [selectedGenres])
 
   // 無限スクロール: 初回ロードと追加ロード
+  console.log('[HomeLayout] Calling useInfiniteStores with:', {
+    selectedAreas: stableSelectedAreas,
+    selectedGenres: stableSelectedGenres,
+  })
   const { isLoading: isStoresLoading, isLoadingMore, error, sentinelRef, items } = useInfiniteStores({
     limit: 10, // 1回の取得件数を増加（空白スクロールを防ぐ）
     selectedAreas: stableSelectedAreas,
     selectedGenres: stableSelectedGenres,
   })
+  console.log('[HomeLayout] useInfiniteStores returned:', {
+    isLoading: isStoresLoading,
+    isLoadingMore,
+    error,
+    itemsCount: items.length,
+  })
+
+  // デバッグ: エラーが設定された場合にログを出力
+  useEffect(() => {
+    if (error) {
+      console.log('[HomeLayout] Error from useInfiniteStores:', error)
+      console.log('[HomeLayout] Error type:', typeof error)
+      console.log('[HomeLayout] Error length:', error?.length)
+      console.log('[HomeLayout] Passing error to HomeContainer as bottomError:', error)
+    } else {
+      console.log('[HomeLayout] No error from useInfiniteStores')
+    }
+  }, [error])
 
   // itemsとstate.storesをマージして、isFavorite状態を同期
   const mergedStores = useMemo(() => {
@@ -861,7 +886,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
           isModalOpen={isCouponListOpen || isSuccessModalOpen || isHistoryOpen || isStoreDetailPopupOpen}
           loadMoreRef={sentinelRef}
           isLoadingMore={isLoadingMore}
-          bottomError={error}
+          bottomError={error || undefined}
           backgroundColorClass={backgroundColorClass}
           currentLocation={state.currentLocation}
           isInitialLoading={isInitialStoresLoading}

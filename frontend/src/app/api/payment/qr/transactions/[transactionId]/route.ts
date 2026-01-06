@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,7 +40,7 @@ export async function GET(
   } catch (error) {
     console.error('QR transaction get API error:', error)
     return createNoCacheResponse(
-      { error: { code: 'NETWORK_ERROR', message: '取引情報の取得中にエラーが発生しました' } },
+      { error: { code: 'NETWORK_ERROR', message: SERVER_ERROR_MESSAGE } },
       { status: 500 },
     )
   }

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     console.error('❌ [auth/login] Route error:', errorMessage, error)
     return createNoCacheResponse(
-      { error: 'ログイン処理中にエラーが発生しました', details: errorMessage },
+      { error: SERVER_ERROR_MESSAGE, details: errorMessage },
       { status: 500 }
     )
   }

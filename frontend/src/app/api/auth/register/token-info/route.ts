@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3002'
 
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Token info API error:', error)
         return createNoCacheResponse(
-            { error: { code: 'INTERNAL_ERROR', message: '内部エラーが発生しました' } },
+            { error: { message: SERVER_ERROR_MESSAGE } },
             { status: 500 }
         )
     }

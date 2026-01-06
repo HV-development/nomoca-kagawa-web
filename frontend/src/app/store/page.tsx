@@ -1,4 +1,3 @@
-/// <reference path="../../types/shims-next.d.ts" />
 'use client'
 
 import Image from 'next/image'

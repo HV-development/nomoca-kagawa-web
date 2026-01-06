@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from 'crypto'
+import { SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 /**
  * 登録セッションデータをサーバーサイドで管理するAPI
@@ -93,7 +94,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Session GET error:', error)
     return NextResponse.json(
-      { error: { code: 'INTERNAL_ERROR', message: '内部エラーが発生しました' } },
+      { error: { message: SERVER_ERROR_MESSAGE } },
       { status: 500 }
     )
   }
@@ -155,7 +156,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Session POST error:', error)
     return NextResponse.json(
-      { error: { code: 'INTERNAL_ERROR', message: '内部エラーが発生しました' } },
+      { error: { message: SERVER_ERROR_MESSAGE } },
       { status: 500 }
     )
   }
@@ -227,7 +228,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     console.error('Session DELETE error:', error)
     return NextResponse.json(
-      { error: { code: 'INTERNAL_ERROR', message: '内部エラーが発生しました' } },
+      { error: { message: SERVER_ERROR_MESSAGE } },
       { status: 500 }
     )
   }

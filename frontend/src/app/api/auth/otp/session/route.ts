@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 import { decrypt, COOKIE_NAME } from '@/lib/session-encryption'
-import { createNoCacheResponse } from '@/lib/response-utils'
+import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,14 +39,14 @@ export async function GET(request: NextRequest) {
     } catch (error) {
       console.error('Failed to decrypt session:', error)
       return createNoCacheResponse(
-        { error: 'セッションの復号化に失敗しました' },
+        { error: SERVER_ERROR_MESSAGE },
         { status: 500 }
       )
     }
   } catch (error) {
     console.error('Get OTP session error:', error)
     return createNoCacheResponse(
-      { error: 'セッション情報の取得中にエラーが発生しました' },
+      { error: SERVER_ERROR_MESSAGE },
       { status: 500 }
     )
   }

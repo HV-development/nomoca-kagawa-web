@@ -110,3 +110,6 @@ Thumbs.db
 .npmrc
 .yarnrc
 .pnpmfile.cjs
+
+# Playwright authentication state
+.auth/
