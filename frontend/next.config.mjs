@@ -47,7 +47,7 @@ const nextConfig = {
           "worker-src 'self' blob:",
           "child-src 'self' blob:",
           "base-uri 'self'",
-          "form-action 'self'",
+          "form-action 'self' https://link.paygent.co.jp https://sandbox.paygent.co.jp",
           "frame-ancestors 'none'",
         ].join('; ')
       },
