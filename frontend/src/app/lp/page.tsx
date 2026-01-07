@@ -1472,14 +1472,12 @@ export default function LPPage() {
             </p>
 
             {/* Store List Button */}
-            <a
-              href="https://www.nomoca-kagawa.com"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
               className="inline-flex items-center gap-4 px-8 py-4 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
               style={{
                 backgroundColor: 'var(--accent, #FFD93B)'
               }}
+              onClick={() => router.push('/home')}
             >
               <span
                 className="text-lg font-bold"
@@ -1493,7 +1491,7 @@ export default function LPPage() {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>
