@@ -501,55 +501,93 @@ function ContactFormContent() {
                   }}
                 >
                   <div>
-                    <p className="font-bold mb-2">・事業者の名称</p>
-                    <p className="ml-4">株式会社つなぐ</p>
+                    <p className="font-bold mb-2">はじめに</p>
+                    <p className="ml-4">株式会社サイテックアイ（以下「当社」といいます）は、お客さま・取引関係者・従業員等（以下「利用者」といいます）の個人情報を適切に取り扱い、その保護を図ることを社会的責務と考えています。</p>
+                    <p className="ml-4">当社は、個人情報の保護に関する法令及びその他の規範を遵守し、以下のとおりプライバシーポリシーを定め、個人情報の保護・管理に努めます。</p>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・個人情報保護管理者</p>
-                    <p className="ml-4">管理者名：個人情報保護管理責任者</p>
-                    <p className="ml-4">所属部署：株式会社つなぐ　管理部長</p>
-                    <p className="ml-4">連絡先メールアドレス：personal-info@saitama-tsunagu.com</p>
+                    <p className="font-bold mb-2">1. 収集する情報の範囲</p>
+                    <p className="ml-4">当社が取得する情報には、以下が含まれます。</p>
+                    <ul className="ml-8 list-disc">
+                      <li>氏名、住所、電話番号、メールアドレス、勤務先情報などの連絡先情報</li>
+                      <li>決済情報（クレジットカード情報、口座情報等）</li>
+                      <li>サービス利用に伴うログ情報（IPアドレス、端末識別子、ブラウザ情報、アクセス日時等）</li>
+                      <li>クッキーや類似の技術を通じた行動履歴情報（閲覧ページ、クリック履歴等）</li>
+                      <li>位置情報（利用者が許可した場合）</li>
+                    </ul>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・個人情報の利用目的</p>
-                    <p className="ml-4">お預かりした個人情報は、当社の運営するサービスに関するお問合せへの対応に利用します。</p>
+                    <p className="font-bold mb-2">2. 利用目的</p>
+                    <p className="ml-4">当社は、取得した個人情報を以下の目的のために利用します。</p>
+                    <ul className="ml-8 list-disc">
+                      <li>当社製品・サービスの提供、改善、開発</li>
+                      <li>お問い合わせ・ご要望への対応</li>
+                      <li>資料や情報の送付、契約・取引の遂行</li>
+                      <li>サービス利用状況の分析、利便性向上のための施策検討</li>
+                      <li>キャンペーンやイベント、広告・マーケティングの案内</li>
+                      <li>雇用管理・採用活動</li>
+                      <li>法令に基づく対応</li>
+                    </ul>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・お預かりする個人情報の項目</p>
-                    <p className="ml-4">本手続きでは、以下の項目をフォームに入力いただきます。</p>
-                    <p className="ml-4">氏名（漢字）、メールアドレス、連絡先、生年月日、性別、住所</p>
+                    <p className="font-bold mb-2">3. 第三者提供および共同利用</p>
+                    <p className="ml-4">当社は、利用者の同意なく個人情報を第三者に提供しません。ただし、以下の場合は例外とします。</p>
+                    <ul className="ml-8 list-disc">
+                      <li>法令に基づく場合</li>
+                      <li>人の生命、身体又は財産の保護のために必要がある場合で本人の同意を得ることが困難な場合</li>
+                      <li>公衆衛生の向上、児童の健全な育成に特に必要がある場合</li>
+                      <li>国の機関、地方公共団体等が法令に基づき事務を遂行するために協力する必要がある場合</li>
+                    </ul>
+                    <p className="ml-4 mt-2">また、業務委託に伴いクラウドサービス事業者や広告配信事業者等に個人情報を預託する場合があります。この際は適切な契約を締結し、管理・監督を行います。</p>
+                    <p className="ml-4">共同利用を行う場合には、利用目的・共同利用者・管理責任者をあらかじめ明示いたします。</p>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・個人情報の第三者提供について</p>
-                    <p className="ml-4">ご本人の同意がある場合または法令に基づく場合を除き、今回ご入力いただく個人情報は第三者に提供しません。</p>
+                    <p className="font-bold mb-2">4. 安全管理措置</p>
+                    <p className="ml-4">当社は、個人情報の漏洩・滅失・毀損を防止するため、以下の安全管理措置を実施します。</p>
+                    <ul className="ml-8 list-disc">
+                      <li>アクセス制御、暗号化通信（SSL/TLS）の採用</li>
+                      <li>不正アクセス・不正利用の監視システム導入</li>
+                      <li>個人情報管理責任者の設置と監督体制の整備</li>
+                    </ul>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・個人情報の委託について</p>
-                    <p className="ml-4">個人情報の取扱いを外部に委託する場合は、当社が規定する個人情報管理基準を満たす企業を選定して委託を行い、適切な取扱いが行われるように監督します。</p>
+                    <p className="font-bold mb-2">5. 利用者の権利</p>
+                    <p className="ml-4">利用者は、当社が保有するご自身の個人情報について、以下の権利を行使できます。</p>
+                    <ul className="ml-8 list-disc">
+                      <li>開示請求</li>
+                      <li>訂正・追加・削除の請求</li>
+                      <li>利用停止・消去の請求</li>
+                      <li>第三者提供の停止請求</li>
+                    </ul>
+                    <p className="ml-4 mt-2">これらの権利行使については、当社所定の窓口にご連絡ください。合理的な範囲で速やかに対応いたします。</p>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・取得した個人情報の開示等に応じる問合せ窓口</p>
-                    <p className="ml-4">本人からの請求等により、当社が本件により取得した個人情報の利用目的の通知・開示・内容の訂正・追加または削除・利用の停止・消去または第三者への提供の停止、第三者提供記録の開示（「開示等」といいます。）に応じます。</p>
-                    <p className="ml-4">開示等に応じる窓口は、株式会社つなぐ　個人情報問合せ窓口になります。</p>
-                    <p className="ml-4">メールアドレス：personal-info@saitama-tsunagu.com</p>
-                    <p className="ml-4">受付時間　平日9:30～12:00、13:00～16:30</p>
-                    <p className="ml-4">（土・日曜日、祝日、年末年始は翌営業日以降の対応とさせていただきます。）</p>
+                    <p className="font-bold mb-2">6. クッキー等の利用について</p>
+                    <p className="ml-4">当社は、利用者の利便性向上やサービス改善のため、クッキーや類似技術を使用することがあります。</p>
+                    <p className="ml-4">利用者はブラウザの設定でクッキーを拒否することができますが、その場合一部サービスが利用できなくなる可能性があります。</p>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・個人情報を与えることの任意性及び当該情報を与えなかった場合に生じる結果</p>
-                    <p className="ml-4">個人情報を取得する項目は、すべてご本人によってご提供いただくものです。ただし、必要な項目をいただけない場合、利用目的に記載の諸手続きまたは処理に支障が生じる可能性があります。</p>
+                    <p className="font-bold mb-2">7. お問い合わせ窓口</p>
+                    <p className="ml-4">当社の個人情報の取扱いに関するお問い合わせ・開示請求等は、以下の窓口までご連絡ください。</p>
+                    <p className="ml-4"><a href="https://www.psytec-ai.com/contact" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://www.psytec-ai.com/contact</a></p>
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">・本人が容易に知覚できない方法による個人情報の取得</p>
-                    <p className="ml-4">本フォームではCookieで個人情報を取得していませんが、セッション管理のためにだけCookieを使用しています。</p>
+                    <p className="font-bold mb-2">8. プライバシーポリシーの改定</p>
+                    <p className="ml-4">本ポリシーは、必要に応じて改定することがあります。重要な変更がある場合は、当社ウェブサイト等で周知するとともに、必要に応じて個別通知いたします。</p>
+                    <p className="ml-4 mt-2">最終改定日：2025年10月3日</p>
+                  </div>
+
+                  <div className="border-t pt-4 mt-4">
+                    <p className="ml-4">株式会社サイテックアイ</p>
+                    <p className="ml-4">代表取締役社長 大澤 佳加</p>
                   </div>
                 </div>
               </div>
