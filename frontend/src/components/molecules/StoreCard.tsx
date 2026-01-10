@@ -187,7 +187,7 @@ export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClic
         )}
       </div>
 
-      {/* 店舗写真カルーセル / 画像なしプレースホルダ */}
+      {/* 店舗写真カルーセル / デフォルト画像 */}
       <div className="relative overflow-hidden">
         {shouldShowPlaceholder ? (
           <button
@@ -196,10 +196,15 @@ export function StoreCard({ store, onFavoriteToggle, onCouponsClick, onStoreClic
               e.stopPropagation()
               onCouponsClick(store.id)
             }}
-            className="w-full aspect-[4/3] md:aspect-[16/9] rounded-lg border border-gray-300 bg-gray-200 flex items-center justify-center cursor-pointer"
-            aria-label="画像なし"
+            className="w-full aspect-[4/3] md:aspect-[16/9] rounded-lg overflow-hidden bg-white flex items-center justify-center cursor-pointer relative"
+            aria-label="店舗画像"
           >
-            <span className="text-black text-sm">no image</span>
+            <Image
+              src="/store-default.svg"
+              alt="店舗デフォルト画像"
+              fill
+              className="object-contain p-4"
+            />
           </button>
         ) : (
           <>
