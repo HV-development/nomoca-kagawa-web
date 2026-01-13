@@ -49,6 +49,7 @@ export interface Store {
   paymentMethods?: StorePaymentMethods
   usageScenes?: string[]
   customSceneText?: string
+  services?: string[]
 
   // メタ情報（任意）
   status?: string

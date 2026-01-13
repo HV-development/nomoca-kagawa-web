@@ -100,6 +100,33 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
       return services
     }
 
+    const parseServices = (services: unknown): string[] => {
+      if (!services) return []
+
+      if (Array.isArray(services)) {
+        return services
+          .map((service) => (typeof service === 'string' ? service.trim() : String(service ?? '').trim()))
+          .filter((service) => service.length > 0)
+      }
+
+      if (typeof services === 'string') {
+        try {
+          const parsed = JSON.parse(services)
+          return parseServices(parsed)
+        } catch {
+          return services.split(',').map((service) => service.trim()).filter((service) => service.length > 0)
+        }
+      }
+
+      if (typeof services === 'object') {
+        return Object.entries(services as Record<string, unknown>)
+          .filter(([, value]) => Boolean(value))
+          .map(([key]) => key)
+      }
+
+      return []
+    }
+
     // paymentMethodsを構築
     const creditCards = parsePaymentCredit(shop.paymentCredit)
     const digitalPayments = parsePaymentCode(shop.paymentCode)
@@ -145,6 +172,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     const accountEmail = shop.accountEmail as string | undefined
     const createdAt = shop.createdAt as string | undefined
     const updatedAt = shop.updatedAt as string | undefined
+    const services = parseServices((shop as { services?: unknown }).services)
 
     return {
       id: shop.id as string,
@@ -184,6 +212,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
       customSceneText: customSceneText && typeof customSceneText === 'string' && customSceneText.trim()
         ? customSceneText.trim()
         : undefined,
+      services: services.length > 0 ? services : undefined,
       paymentMethods: hasPaymentMethods ? {
         saicoin: !!shop.paymentSaicoin,
         tamapon: !!shop.paymentTamapon,
