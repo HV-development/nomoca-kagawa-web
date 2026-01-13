@@ -100,6 +100,33 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
       return services
     }
 
+    const parseServices = (services: unknown): string[] => {
+      if (!services) return []
+
+      if (Array.isArray(services)) {
+        return services
+          .map((service) => (typeof service === 'string' ? service.trim() : String(service ?? '').trim()))
+          .filter((service) => service.length > 0)
+      }
+
+      if (typeof services === 'string') {
+        try {
+          const parsed = JSON.parse(services)
+          return parseServices(parsed)
+        } catch {
+          return services.split(',').map((service) => service.trim()).filter((service) => service.length > 0)
+        }
+      }
+
+      if (typeof services === 'object') {
+        return Object.entries(services as Record<string, unknown>)
+          .filter(([, value]) => Boolean(value))
+          .map(([key]) => key)
+      }
+
+      return []
+    }
+
     // paymentMethodsを構築
     const creditCards = parsePaymentCredit(shop.paymentCredit)
     const digitalPayments = parsePaymentCode(shop.paymentCode)
@@ -145,6 +172,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     const accountEmail = shop.accountEmail as string | undefined
     const createdAt = shop.createdAt as string | undefined
     const updatedAt = shop.updatedAt as string | undefined
+    const services = parseServices((shop as { services?: unknown }).services)
 
     return {
       id: shop.id as string,
@@ -184,6 +212,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
       customSceneText: customSceneText && typeof customSceneText === 'string' && customSceneText.trim()
         ? customSceneText.trim()
         : undefined,
+      services: services.length > 0 ? services : undefined,
       paymentMethods: hasPaymentMethods ? {
         saicoin: !!shop.paymentSaicoin,
         tamapon: !!shop.paymentTamapon,
@@ -237,6 +266,10 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         }
 
         const url = `/api/shops?${queryParams.toString()}`
+
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:240',message:'Fetching shops',data:{url,targetPage,limit,selectedAreas,selectedGenres},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
 
         let res: Response
         try {
@@ -400,9 +433,22 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           throw new Error('レスポンスが空です')
         }
 
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:403',message:'API response received',data:{shopsCount:data?.shops?.length||0,pagination:data?.pagination,targetPage},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,B'})}).catch(()=>{});
+        // #endregion
+
         const items: Store[] = (data?.shops || []).map(mapShopToStore)
+
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:410',message:'Mapped stores count',data:{mappedCount:items.length,originalCount:data?.shops?.length||0},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
+
         const pagination = data?.pagination || {}
         const totalPages = typeof pagination.totalPages === 'number' ? pagination.totalPages : targetPage
+
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:417',message:'Pagination check',data:{targetPage,totalPages,hasMore:targetPage<totalPages,paginationRaw:pagination},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
 
         return {
           items,
@@ -507,6 +553,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         isFirstLoadRef.current = true
         initialLoadCompletedRef.current = true
         setIsLoading(false)
+        // #region agent log
+        fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:509',message:'Initial load completed',data:{page:result.page,hasMore:result.hasMore,itemsCount:result.items.length},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,B'})}).catch(()=>{});
+        // #endregion
       } catch (e) {
         if (initialLoadCompletedRef.current) {
           console.log('[useInfiniteStores] Initial load already completed, ignoring error')
@@ -626,6 +675,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
             if (now - lastLoadTimeRef.current < 1000) {
               return
             }
+            // #region agent log
+            fetch('http://127.0.0.1:7243/ingest/3e7657cf-d90c-47dc-87dc-00ee22e9e998',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'useInfiniteStores.ts:629',message:'IntersectionObserver triggered loadNext',data:{hasMore:hasMoreRef.current,pageRef:pageRef.current,isLoading,isLoadingMore},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+            // #endregion
             void loadNext()
           }
         },

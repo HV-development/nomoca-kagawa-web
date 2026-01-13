@@ -2,6 +2,8 @@
 "use client"
 
 import { X } from "lucide-react"
+import Image from "next/image"
+import { useState } from "react"
 import type { Store } from "@/types/store"
 
 interface StoreDetailPopupProps {
@@ -18,7 +20,23 @@ export function StoreDetailPopup({
   onClose,
   onCouponsClick
 }: StoreDetailPopupProps) {
+  const [isImageError, setIsImageError] = useState(false)
+
   if (!isOpen || !store) return null
+
+  // 店舗に紐付く画像を取得
+  const images = Array.from(
+    new Set(
+      [
+        store.thumbnailUrl,
+        ...(store.images || []),
+      ]
+        .map((img) => (img ? img.trim() : ""))
+        .filter((img) => img.length > 0)
+    )
+  )
+
+  const shouldShowPlaceholder = images.length === 0 || isImageError
 
   // 喫煙ポリシーのテキスト変換
   const getSmokingPolicyText = (policy: string) => {
@@ -84,6 +102,30 @@ export function StoreDetailPopup({
           {/* コンテンツ */}
           <div className="flex-1 overflow-y-auto p-4">
             <div className="space-y-4">
+              {/* 店舗写真 */}
+              <div className="relative overflow-hidden">
+                {shouldShowPlaceholder ? (
+                  <div className="w-full aspect-[4/3] rounded-lg overflow-hidden bg-white flex items-center justify-center relative">
+                    <Image
+                      src="/store-default.svg"
+                      alt="店舗デフォルト画像"
+                      fill
+                      className="object-contain p-4"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full aspect-[4/3] relative rounded-lg overflow-hidden">
+                    <Image
+                      src={images[0]}
+                      alt={`${store.name} 画像`}
+                      fill
+                      className="object-cover"
+                      onError={() => setIsImageError(true)}
+                    />
+                  </div>
+                )}
+              </div>
+
               {/* ホームページURL（一番上） */}
               {(store.homepageUrl || store.website) && (
                 <div className="space-y-2">
@@ -208,6 +250,16 @@ export function StoreDetailPopup({
                   </div>
                 )
               })()}
+
+              {/* サービス */}
+              {store.services && store.services.length > 0 && (
+                <div className="space-y-2">
+                  <div className="text-base font-bold text-gray-900">サービス</div>
+                  <div className="text-base text-gray-700">
+                    {store.services.join('　')}
+                  </div>
+                </div>
+              )}
 
               {/* 利用時間 */}
               {store.couponUsageStart && store.couponUsageEnd && (

@@ -66,6 +66,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const isFavoritesFilter = filters.isFavoritesFilter
   const stores = state.stores
   const currentView = navigation.currentView
+  const myPageView = navigation.myPageView
   const isAuthenticated = auth.isAuthenticated
   const isLoading = auth.isLoading
   const signupData = state.signupData
@@ -150,7 +151,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     }
 
     checkStoreIntroduction()
-  }, [isAuthenticated, currentView])
+  }, [isAuthenticated, currentView, myPageView])
 
   // storesが変更されたときにも同期する（店舗データが読み込まれた後）
   useEffect(() => {
@@ -194,7 +195,6 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const plan = auth.plan
   const usageHistory = auth.usageHistory || []
   const paymentHistory = auth.paymentHistory || []
-  const myPageView = navigation.myPageView
   const isCouponListOpen = state.isCouponListOpen
   const selectedStore = state.selectedStore
   const selectedCoupon = state.selectedCoupon
