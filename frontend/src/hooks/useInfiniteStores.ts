@@ -53,8 +53,7 @@ const normalizeSmokingPolicy = (smokingType: unknown, smokingPolicy: unknown): S
 }
 
 export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseInfiniteStoresResult {
-  // デフォルト10件に増加（空白スクロールを防ぐため）
-  const { limit = 10, selectedAreas = [], selectedGenres = [] } = options
+  const { limit = 20, selectedAreas = [], selectedGenres = [] } = options
 
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
@@ -711,8 +710,8 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         },
         {
           root: null,
-          // 画面下端でのみ次ページを取得開始（連続呼び出しを防ぐ）
-          rootMargin: '0px',
+          // 画面の半分の位置で次のページを取得開始
+          rootMargin: '50vh 0px',
           threshold: 0,
         }
       )
