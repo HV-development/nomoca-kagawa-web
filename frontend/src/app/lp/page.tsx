@@ -315,7 +315,7 @@ export default function LPPage() {
             {/* nomoca で - Mobile */}
             <div className="flex items-end justify-center gap-2 w-full">
               <Image
-                src="/lp/images/logo-nomoca-text.png"
+                src="/lp/images/logo-nomoca-text.webp"
                 alt="nomoca"
                 width={292}
                 height={40}
@@ -349,7 +349,7 @@ export default function LPPage() {
             {/* ビール画像 */}
             <div className="w-full flex-shrink-0 rounded-lg overflow-hidden" style={{ maxWidth: '358px', height: '224px' }}>
               <Image
-                src="/lp/images/user-fv-beer-mobile.png"
+                src="/lp/images/user-fv-beer-mobile.webp"
                 alt="乾杯"
                 width={358}
                 height={224}
@@ -359,7 +359,7 @@ export default function LPPage() {
             {/* スマホ画像（ビール画像に重ねる） */}
             <div className="flex-shrink-0" style={{ marginTop: '-52px' }}>
               <Image
-                src="/lp/images/user-fv-phone.png"
+                src="/lp/images/user-fv-phone.webp"
                 alt="スマホ画面"
                 width={206}
                 height={418}
@@ -476,7 +476,7 @@ export default function LPPage() {
             {/* nomoca で - Desktop */}
             <div className="flex items-end gap-4">
               <Image
-                src="/lp/images/logo-nomoca-text.png"
+                src="/lp/images/logo-nomoca-text.webp"
                 alt="nomoca"
                 width={410}
                 height={57}
@@ -522,7 +522,7 @@ export default function LPPage() {
               }}
             >
               <Image
-                src="/lp/images/user-fv-beer-desktop.png"
+                src="/lp/images/user-fv-beer-desktop.webp"
                 alt="乾杯"
                 fill
                 className="object-cover"
@@ -542,7 +542,7 @@ export default function LPPage() {
               }}
             >
               <Image
-                src="/lp/images/user-fv-phone.png"
+                src="/lp/images/user-fv-phone.webp"
                 alt="スマホ画面"
                 width={210}
                 height={432}
@@ -746,7 +746,7 @@ export default function LPPage() {
             {/* 画像 - テキスト背景に重なるように配置 */}
             <div className="flex-shrink-0 lg:-ml-8 lg:-ml-12 relative z-10 self-center">
               <Image
-                src="/lp/images/user-about.png"
+                src="/lp/images/user-about.webp"
                 alt="nomocaを楽しむ人々"
                 width={510}
                 height={440}
@@ -793,7 +793,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/user-feature-01.png"
+                  src="/lp/images/user-feature-01.webp"
                   alt="1店舗につき1杯無料！"
                   width={558}
                   height={400}
@@ -835,7 +835,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/user-feature-02.png"
+                  src="/lp/images/user-feature-02.webp"
                   alt="1日で複数店舗をハシゴできる！"
                   width={558}
                   height={400}
@@ -876,7 +876,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/user-feature-03.png"
+                  src="/lp/images/user-feature-03.webp"
                   alt="お酒が苦手でも楽しめる！"
                   width={558}
                   height={400}
@@ -918,7 +918,7 @@ export default function LPPage() {
             >
               <div className="w-full h-64 lg:h-80 lg:h-96 overflow-hidden">
                 <Image
-                  src="/lp/images/user-feature-04.png"
+                  src="/lp/images/user-feature-04.webp"
                   alt="新しいお店との出会い！"
                   width={558}
                   height={400}
@@ -991,7 +991,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/user-flow-01.png"
+                      src="/lp/images/user-flow-01.webp"
                       alt="お店を見つける"
                       width={350}
                       height={400}
@@ -1056,7 +1056,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72 rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/user-flow-02.png"
+                      src="/lp/images/user-flow-02.webp"
                       alt="スマホを見せる"
                       width={350}
                       height={400}
@@ -1122,7 +1122,7 @@ export default function LPPage() {
                 <div className="w-full flex justify-center">
                   <div className="w-72 h-72 lg:w-72 lg:h-72 lg:w-72 lg:h-72  rounded-full overflow-hidden">
                     <Image
-                      src="/lp/images/user-flow-03.png"
+                      src="/lp/images/user-flow-03.webp"
                       alt="ハシゴして楽しむ"
                       width={350}
                       height={400}
@@ -1229,7 +1229,7 @@ export default function LPPage() {
           <div
             className="relative p-8 lg:p-12 lg:p-16 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/lp/images/user-pricing-bg.png)',
+              backgroundImage: 'url(/lp/images/user-pricing-bg.webp)',
               backgroundColor: '#FFF'
             }}
           >
@@ -1307,7 +1307,7 @@ export default function LPPage() {
               >
                 {/* PC: 左にスマホ画像 */}
                 <Image
-                  src="/lp/images/user-pricing-phone.png"
+                  src="/lp/images/user-pricing-phone.webp"
                   alt="マイデジアプリ"
                   width={200}
                   height={236}
@@ -1377,7 +1377,7 @@ export default function LPPage() {
                 </div>
                 {/* スマホ: 下にスマホ画像 */}
                 <Image
-                  src="/lp/images/user-pricing-phone.png"
+                  src="/lp/images/user-pricing-phone.webp"
                   alt="マイデジアプリ"
                   width={152}
                   height={179}
@@ -1422,14 +1422,14 @@ export default function LPPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:hidden"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/user-stores-mobile-bg.png)'
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/lp/images/user-stores-mobile-bg.webp)'
           }}
         />
         {/* 背景画像 - PC */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block"
           style={{
-            backgroundImage: 'url(/lp/images/user-stores-bg.png)'
+            backgroundImage: 'url(/lp/images/user-stores-bg.webp)'
           }}
         />
 

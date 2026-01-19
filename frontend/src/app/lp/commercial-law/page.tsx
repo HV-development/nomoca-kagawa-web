@@ -64,7 +64,7 @@ export default function CommercialLawPage() {
           <div className="flex items-center justify-between">
             <Link href="/lp">
               <Image
-                src="/lp/images/logo-horizon-white.png"
+                src="/lp/images/logo-horizon-white.webp"
                 alt="nomocaKagawa"
                 width={1312}
                 height={320}

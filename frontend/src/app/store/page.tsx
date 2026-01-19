@@ -46,21 +46,21 @@ const steps = [
         step: 'STEP.1',
         title: 'お申し込み',
         description: 'お申し込みフォームからお店の情報を入力して送信してください。',
-        image: '/lp/store/step-1-image-bb98bb.png',
+        image: '/lp/store/step-1-image-bb98bb.webp',
         arrow: '/lp/store/step-arrow-1.svg',
     },
     {
         step: 'STEP.2',
         title: '掲載内容確認',
         description: '申し込み内容をnomoca事務局で確認し、販促物を店舗に向けて発送します。',
-        image: '/lp/store/step-2-image-6fae04.png',
+        image: '/lp/store/step-2-image-6fae04.webp',
         arrow: '/lp/store/step-arrow-2.svg',
     },
     {
         step: 'STEP.3',
         title: 'ご利用開始',
         description: '販促キットが到着したことを確認したのち、ご利用を開始していただけます。',
-        image: '/lp/store/step-3-image.png',
+        image: '/lp/store/step-3-image.webp',
     },
 ]
 
@@ -119,7 +119,7 @@ export default function StorePage() {
                 <div 
                     className="flex-1 flex items-end justify-center min-h-[695px] relative"
                     style={{
-                        backgroundImage: 'url(/lp/store/fv-background-15ed65.png)',
+                        backgroundImage: 'url(/lp/store/fv-background-15ed65.webp)',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat',
