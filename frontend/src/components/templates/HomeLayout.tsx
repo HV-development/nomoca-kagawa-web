@@ -328,7 +328,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     selectedGenres: stableSelectedGenres,
   })
   const { isLoading: isStoresLoading, isLoadingMore, error, sentinelRef, items } = useInfiniteStores({
-    limit: 10, // 1回の取得件数を増加（空白スクロールを防ぐ）
+    limit: 20,
     selectedAreas: stableSelectedAreas,
     selectedGenres: stableSelectedGenres,
   })

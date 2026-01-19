@@ -53,8 +53,7 @@ const normalizeSmokingPolicy = (smokingType: unknown, smokingPolicy: unknown): S
 }
 
 export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseInfiniteStoresResult {
-  // デフォルト10件に増加（空白スクロールを防ぐため）
-  const { limit = 10, selectedAreas = [], selectedGenres = [] } = options
+  const { limit = 20, selectedAreas = [], selectedGenres = [] } = options
 
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true)
