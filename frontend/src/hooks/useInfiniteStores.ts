@@ -710,8 +710,8 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         },
         {
           root: null,
-          // 画面下端でのみ次ページを取得開始（連続呼び出しを防ぐ）
-          rootMargin: '0px',
+          // 画面の半分の位置で次のページを取得開始
+          rootMargin: '50vh 0px',
           threshold: 0,
         }
       )
