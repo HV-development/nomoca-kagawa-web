@@ -497,6 +497,34 @@ export default function LPPage() {
             >
               もっと気軽に、楽しく街歩き！
             </p>
+
+            {/* CTAボタン - Desktop */}
+            <Link
+              href="/register"
+              className="flex items-center justify-between w-64 py-2 px-4 rounded-full hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: 'var(--accent, #FFD93B)' }}
+            >
+              <div className="flex-1" />
+              <div className="flex flex-col items-center gap-1">
+                <span
+                  className="text-sm font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+                >
+                  今すぐはじめる
+                </span>
+                <span
+                  className="text-lg font-bold"
+                  style={{ fontFamily: "'Noto Sans JP', sans-serif", color: '#000' }}
+                >
+                  &ldquo;一杯無料&rdquo;
+                </span>
+              </div>
+              <div className="flex-1 flex justify-end">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M10 7L15 12L10 17" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </Link>
           </div>
 
           {/* ビール＋スマホ - Desktop（PCのみ切り替え） */}
