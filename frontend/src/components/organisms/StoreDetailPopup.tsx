@@ -20,6 +20,7 @@ export function StoreDetailPopup({
   onClose,
   onCouponsClick
 }: StoreDetailPopupProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isImageError, setIsImageError] = useState(false)
 
   if (!isOpen || !store) return null
@@ -37,6 +38,15 @@ export function StoreDetailPopup({
   )
 
   const shouldShowPlaceholder = images.length === 0 || isImageError
+
+  // 写真クリックで次の写真に切り替え
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (images.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    }
+  }
 
   // 喫煙ポリシーのテキスト変換
   const getSmokingPolicyText = (policy: string) => {
@@ -114,15 +124,34 @@ export function StoreDetailPopup({
                     />
                   </div>
                 ) : (
-                  <div className="w-full aspect-[4/3] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={images[0]}
-                      alt={`${store.name} 画像`}
-                      fill
-                      className="object-cover"
-                      onError={() => setIsImageError(true)}
-                    />
-                  </div>
+                  <>
+                    <div
+                      className="w-full aspect-[4/3] cursor-pointer select-none relative rounded-lg overflow-hidden"
+                      onClick={handleImageClick}
+                    >
+                      <Image
+                        src={images[currentImageIndex] || store.thumbnailUrl!}
+                        alt={`${store.name} 画像 ${currentImageIndex + 1}`}
+                        fill
+                        className="object-cover transition-opacity duration-300 pointer-events-none"
+                        onError={() => setIsImageError(true)}
+                      />
+                    </div>
+                    {/* インジケーター */}
+                    {images.length > 1 && (
+                      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                        <div className="flex gap-1">
+                          {images.map((_, index) => (
+                            <div
+                              key={index}
+                              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${index === currentImageIndex ? "bg-white" : "bg-white/60"
+                                }`}
+                            ></div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -261,16 +290,20 @@ export function StoreDetailPopup({
                 </div>
               )}
 
-              {/* 利用時間 */}
-              {store.couponUsageStart && store.couponUsageEnd && (
+              {/* 利用時間・曜日 */}
+              {((store.couponUsageStart && store.couponUsageEnd) || (store.couponUsageDays && store.couponUsageDays.length > 0)) && (
                 <div className="space-y-2">
-                  <div className="text-base font-bold text-gray-900">利用時間</div>
+                  <div className="text-base font-bold text-gray-900">
+                    {store.couponUsageStart && store.couponUsageEnd ? '利用時間' : '利用可能曜日'}
+                  </div>
                   <div className="text-base text-gray-700">
                     {/* クーポン利用可能曜日 */}
                     {store.couponUsageDays && store.couponUsageDays.length > 0 && (
-                      <span>{store.couponUsageDays.split(',').filter(Boolean).map(d => d.trim()).join(' ')} </span>
+                      <span>{store.couponUsageDays.split(',').filter(Boolean).map(d => d.trim()).join(' ')}{store.couponUsageStart && store.couponUsageEnd ? ' ' : ''}</span>
                     )}
-                    {`${store.couponUsageStart}〜${store.couponUsageEnd}`}
+                    {store.couponUsageStart && store.couponUsageEnd && (
+                      <span>{store.couponUsageStart}〜{store.couponUsageEnd}</span>
+                    )}
                   </div>
                 </div>
               )}

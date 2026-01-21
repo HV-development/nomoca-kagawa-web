@@ -62,7 +62,7 @@ export default function MerchantLPPage() {
         {/* 左側: 背景画像 */}
         <div className="relative flex-1">
           <Image
-            src="/lp/images/merchant-fv-bg.png"
+            src="/lp/images/merchant-fv-bg.webp"
             alt="飲食店向けファーストビュー"
             fill
             className="object-cover"
@@ -371,7 +371,7 @@ export default function MerchantLPPage() {
         {/* 画像 */}
         <div className="w-full lg:w-[540px] h-auto lg:h-[400px] flex-shrink-0 rounded-lg overflow-hidden">
           <Image
-            src="/lp/images/merchant-overview.png"
+            src="/lp/images/merchant-overview.webp"
             alt="nomocaの仕組み"
             width={540}
             height={400}
@@ -428,7 +428,7 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--sub, #FAF8F4)', maxWidth: '580px' }}
           >
             <Image
-              src="/lp/images/merchant-benefit-01.png"
+              src="/lp/images/merchant-benefit-01.webp"
               alt="初期費用・掲載費無料"
               width={120}
               height={120}
@@ -450,7 +450,7 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--sub, #FAF8F4)', maxWidth: '580px' }}
           >
             <Image
-              src="/lp/images/merchant-benefit-02.png"
+              src="/lp/images/merchant-benefit-02.webp"
               alt="無料ドリンクで集客"
               width={120}
               height={120}
@@ -472,7 +472,7 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--sub, #FAF8F4)', maxWidth: '580px' }}
           >
             <Image
-              src="/lp/images/merchant-benefit-03.png"
+              src="/lp/images/merchant-benefit-03.webp"
               alt="新しいお客様との接点づくり"
               width={120}
               height={120}
@@ -494,7 +494,7 @@ export default function MerchantLPPage() {
             style={{ background: 'var(--sub, #FAF8F4)', maxWidth: '580px' }}
           >
             <Image
-              src="/lp/images/merchant-benefit-04.png"
+              src="/lp/images/merchant-benefit-04.webp"
               alt="簡単導入＆安心サポート"
               width={120}
               height={120}
@@ -539,7 +539,7 @@ export default function MerchantLPPage() {
         {/* プロセス画像（Figmaデザイン） */}
         <div className="w-full flex justify-center">
           <Image
-            src="/lp/images/merchant-simple.png"
+            src="/lp/images/merchant-simple.webp"
             alt="お店の対応フロー（約3秒）"
             width={920}
             height={484}
@@ -581,7 +581,7 @@ export default function MerchantLPPage() {
           >
             <div className="relative w-full">
               <Image
-                src="/lp/images/merchant-step-01.png"
+                src="/lp/images/merchant-step-01.webp"
                 alt="STEP.1 お申し込み"
                 width={348}
                 height={217}
@@ -636,7 +636,7 @@ export default function MerchantLPPage() {
           >
             <div className="relative w-full">
               <Image
-                src="/lp/images/merchant-step-02.png"
+                src="/lp/images/merchant-step-02.webp"
                 alt="STEP.2 掲載内容確認"
                 width={348}
                 height={217}
@@ -691,7 +691,7 @@ export default function MerchantLPPage() {
           >
             <div className="relative w-full">
               <Image
-                src="/lp/images/merchant-step-03.png"
+                src="/lp/images/merchant-step-03.webp"
                 alt="STEP.3 ご利用開始"
                 width={348}
                 height={217}

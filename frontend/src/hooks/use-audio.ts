@@ -63,29 +63,35 @@ export const useCouponAudio = () => {
   }, [])
 
   const playCouponSound = useCallback(() => {
+    const playWithRetry = () => {
+      const sound = globalCouponSound
+      if (!sound) return
+      // 再生エラー時は一度だけ再開してリトライ
+      sound.off('playerror')
+      sound.once('playerror', () => {
+        globalAudioContext?.resume().then(() => {
+          sound.play()
+        })
+      })
+      sound.play()
+    }
+
     // オーディオが初期化されていない場合は初期化
     if (!globalCouponSound) {
       initializeAudio()
-      // 初期化が終わり次第再生する（ロード完了を待つ）
-      setTimeout(() => {
-        if (globalCouponSound) {
-          if (isGlobalAudioReady) {
-            globalCouponSound.play()
-          } else {
-            globalCouponSound.once('load', () => {
-              globalCouponSound?.play()
-            })
-          }
+      if (globalCouponSound) {
+        if (isGlobalAudioReady) {
+          playWithRetry()
+        } else {
+          (globalCouponSound as Howl).once('load', playWithRetry)
         }
-      }, 100)
+      }
       return
     }
     
     if (!isGlobalAudioReady) {
       // ロード完了後に一度だけ再生する
-      globalCouponSound.once('load', () => {
-        globalCouponSound?.play()
-      })
+      (globalCouponSound as Howl).once('load', playWithRetry)
       return
     }
     
@@ -93,11 +99,11 @@ export const useCouponAudio = () => {
       // AudioContextの状態を確認
       if (globalAudioContext && globalAudioContext.state === 'suspended') {
         globalAudioContext.resume().then(() => {
-          globalCouponSound!.play()
+          playWithRetry()
         });
       } else {
         // 直接再生
-        globalCouponSound.play()
+        playWithRetry()
       }
     } catch {
     }
