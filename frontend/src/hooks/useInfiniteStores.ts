@@ -6,6 +6,7 @@ import type { Store } from '@/types/store'
 import type { ShopData } from '@hv-development/schemas'
 import { isFavoriteInStorage } from '@/lib/favorites-storage'
 import { mapGenresToIds } from '@/utils/genre-mapping'
+import { mapAreasToCities } from '@/utils/area-mapping'
 
 interface UseInfiniteStoresOptions {
   limit?: number
@@ -277,8 +278,11 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
 
         // エリアフィルターを追加（複数エリアの場合はカンマ区切りでareaパラメータに設定）
         if (selectedAreas.length > 0) {
-          // エリア値をそのままareaパラメータとして送信（例: "takamatsu,tosan"）
-          queryParams.append('area', selectedAreas.join(','))
+          // エリア値を日本語のエリア名に変換してから送信（例: "takamatsu" → "高松市内エリア"）
+          const areaNames = mapAreasToCities(selectedAreas)
+          if (areaNames.length > 0) {
+            queryParams.append('area', areaNames.join(','))
+          }
         }
 
         // ジャンルフィルターを追加
