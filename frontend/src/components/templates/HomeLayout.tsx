@@ -931,6 +931,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         onClose={onFavoritesClose}
         onFavoriteToggle={onFavoriteToggle}
         onCouponsClick={onCouponsClick}
+        onStoreClick={onStoreClick}
       />
 
       {/* 閲覧履歴ポップアップ */}
@@ -940,6 +941,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         onClose={onHistoryClose ?? (() => { })}
         onFavoriteToggle={onFavoriteToggle}
         onCouponsClick={onCouponsClick}
+        onStoreClick={onStoreClick}
       />
 
       <StoreDetailPopup
