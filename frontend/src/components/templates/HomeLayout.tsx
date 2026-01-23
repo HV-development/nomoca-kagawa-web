@@ -331,6 +331,8 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     limit: 20,
     selectedAreas: stableSelectedAreas,
     selectedGenres: stableSelectedGenres,
+    isNearbyFilter,
+    currentLocation: state.currentLocation,
   })
   console.log('[HomeLayout] useInfiniteStores returned:', {
     isLoading: isStoresLoading,
