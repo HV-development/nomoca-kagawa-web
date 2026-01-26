@@ -396,7 +396,7 @@ export const useAppHandlers = (
                 window.open("/プライバシーポリシー.pdf", "_blank")
                 break
             case "commercial-law":
-                window.open("/特定商取引法.pdf", "_blank")
+                window.open("/lp/commercial-law", "_blank", "noopener,noreferrer")
                 break
             case "contact":
                 window.location.href = "/lp/contact"

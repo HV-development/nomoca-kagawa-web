@@ -68,10 +68,8 @@ export function LpFooter(props: LpFooterProps) {
             >
               プライバシーポリシー
             </a>
-            <a
-              href="/特定商取引法.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/lp/commercial-law"
               className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
               style={{
                 fontFamily: "'Noto Sans JP', sans-serif",
@@ -79,7 +77,7 @@ export function LpFooter(props: LpFooterProps) {
               }}
             >
               特定商取引法に基づく表記
-            </a>
+            </Link>
             <Link
               href="/terms-of-service.pdf"
               target="_blank"
@@ -229,25 +227,13 @@ export function LpFooter(props: LpFooterProps) {
             >
               プライバシーポリシー
             </a>
-            {tone === 'white' ? (
-              <a
-                href="/特定商取引法.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"', fontWeight: '400' }}
-              >
-                特定商取引法に基づく表記
-              </a>
-            ) : (
-              <Link
-                href="/lp/commercial-law"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"', fontWeight: '400' }}
-              >
-                特定商取引法に基づく表記
-              </Link>
-            )}
+            <Link
+              href="/lp/commercial-law"
+              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
+              style={{ fontFamily: '"Zen Kaku Gothic New"', fontWeight: '400' }}
+            >
+              特定商取引法に基づく表記
+            </Link>
             <a
               href="/terms-of-service.pdf"
               target="_blank"
