@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 
 interface CommercialLawItem {
   label: string
@@ -171,82 +172,7 @@ export default function CommercialLawPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full bg-gray-50 border-t border-gray-200 mt-16 md:mt-24">
-        <div className="max-w-6xl mx-auto px-4 py-8 md:px-[120px] md:py-12">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-            <Link
-              href="/lp/faq"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              よくあるご質問
-            </Link>
-            <Link
-              href="/lp/contact"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              お問い合わせ
-            </Link>
-            <a
-              href="/プライバシーポリシー.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              プライバシーポリシー
-            </a>
-            <Link
-              href="/lp/commercial-law"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              特定商取引法に基づく表記
-            </Link>
-            <a
-              href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              ご利用規約
-            </a>
-          </div>
-
-          {/* Copyright */}
-          <div className="pb-6 md:pb-8">
-            <p
-              className="text-sm md:text-base"
-              style={{
-                color: '#000',
-                textAlign: 'center',
-                fontFamily: 'Rubik',
-                fontStyle: 'normal',
-                fontWeight: '400',
-                lineHeight: '100%'
-              }}
-            >
-              ©2025 nomocaKagawa
-            </p>
-          </div>
-        </div>
-      </footer>
+      <LpFooter variant="zen" tone="gray" mode="full" showLogo={false} className="mt-16 md:mt-24" />
     </div>
   )
 }
