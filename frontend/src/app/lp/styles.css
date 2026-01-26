@@ -14,8 +14,12 @@
   scrollbar-width: none;
 }
 
-/* グローバルなbodyとhtmlの制限を完全に無効化 */
-html, body {
+/* NOTE:
+ * 以前は html, body をグローバル上書きしていたため、/lp から遷移後もユーザー画面に影響していた。
+ * /lp 配下のみ有効化するため、LpLayoutController が html/body に lp-layout クラスを付与する前提でスコープする。
+ */
+html.lp-layout,
+body.lp-layout {
   max-width: none !important;
   width: 100vw !important;
   margin: 0 !important;
@@ -38,7 +42,6 @@ html, body {
 }
 
 /* body要素の制限を完全に無効化 */
-.lp-layout body,
 body.lp-layout {
   max-width: none !important;
   width: 100vw !important;

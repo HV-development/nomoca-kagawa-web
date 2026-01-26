@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 
 interface FAQItem {
   question: string
@@ -31,8 +32,8 @@ const faqData: FAQSection[] = [
         answer: '背景として酒類出荷の長期減少傾向や若年層の飲酒頻度低下が指摘されています。飲食業界の活性化、若年層の"ちょい飲み"機会づくり、観光・来街促進などを目的としています。'
       },
       {
-        question: 'だれが運営？出資・連携は？',
-        answer: '株式会社つなぐが運営。高松市、J:COM、JTB、イオンフィナンシャルサービス、埼玉りそな銀行、武蔵野銀行、埼玉縣信用金庫、たかまつ商工会議所等が出資・連携しております（商連は出資なし）。最新の構成は高松市みんなのアプリの公式サイト等をご確認ください。'
+        question: 'だれが運営？',
+        answer: '高松市に本拠を置くサイテックアイ株式会社が運営しております。'
       }
     ]
   },
@@ -517,89 +518,7 @@ export default function FAQPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full bg-white border-t">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div className="flex flex-col justify-center items-center gap-8 md:gap-10 pt-8 md:pt-12">
-            {/* Logo */}
-            <div className="mb-4 md:mb-8">
-              <Image
-                src="/logo.svg"
-                alt="TAMANOMI"
-                width={576}
-                height={96}
-                className="w-24 h-auto md:w-32 lg:w-[320px]"
-              />
-            </div>
-
-            {/* Footer Links */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-              <Link
-                href="/lp/faq"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                よくあるご質問
-              </Link>
-              <Link
-                href="/lp/contact"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                お問い合わせ
-              </Link>
-              <a
-                href="/プライバシーポリシー.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                プライバシーポリシー
-              </a>
-              <a
-                href="/特定商取引法.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                特定商取引法に基づく表記
-              </a>
-              <a
-                href="/terms-of-service.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                ご利用規約
-              </a>
-              <a
-                href="#"
-                className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-                style={{ fontFamily: '"Zen Kaku Gothic New"' }}
-              >
-                運営会社
-              </a>
-            </div>
-
-            {/* Copyright */}
-            <div className="pb-6 md:pb-8">
-              <p
-                className="text-sm md:text-base"
-                style={{
-                  color: '#000',
-                  textAlign: 'center',
-                  fontFamily: 'Rubik'
-                }}
-              >
-                ©2025 nomocaKagawa
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <LpFooter variant="zen" tone="white" mode="full" />
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 
 interface CommercialLawItem {
   label: string
@@ -10,48 +11,60 @@ interface CommercialLawItem {
 
 const commercialLawData: CommercialLawItem[] = [
   {
+    label: 'サイト名',
+    value: '香川“ちょい飲み”サイト「nomoca Kagawa」'
+  },
+  {
     label: '事業者名',
-    value: '株式会社つなぐ'
+    value: 'サイテックアイ株式会社'
   },
   {
     label: '代表者名',
-    value: '代表取締役 〇〇 〇〇'
+    value: '代表取締役 大澤 佳加'
   },
   {
     label: '所在地',
-    value: '〒000-0000\n埼玉県高松市〇〇区〇〇〇〇〇〇'
+    value: '〒761-8064\n香川県高松市上之町２丁目８−２７'
   },
   {
-    label: '電話番号',
-    value: '000-0000-0000'
-  },
-  {
-    label: 'メールアドレス',
-    value: 'info@tamanomi.jp'
+    label: 'お問い合わせ',
+    value: '以下のお問い合わせフォームよりご連絡ください。  \n※お問い合わせいただいた内容には、遅滞なく電子メールにてご返信いたします。  \n[お問い合わせフォーム URL]'
   },
   {
     label: '販売価格',
-    value: '月額980円（一般価格）\n月額490円（会員価格）\n※価格は税込表示です'
+    value: '購入手続きの際に画面に表示されます。\n表示価格はすべて税抜価格であり、別途消費税が加算されます。\n※価格は消費税法その他の事情により事前に予告なく変更する場合があります。'
   },
   {
-    label: '支払方法',
-    value: 'クレジットカード決済、コード決済（PayPay、イオンPay等）'
+    label: '販売価格以外でお客様に発生する金銭',
+    value: '当サイトのページの閲覧、コンテンツ購入、ソフトウェアのダウンロード等に必要となるインターネット接続料金、通信料金は、お客様のご負担となります。'
   },
   {
-    label: '支払時期',
-    value: 'サービス利用開始時に初回決済が行われ、以降は毎月自動更新日に決済が行われます'
+    label: 'お支払方法',
+    value: '以下のいずれかのお支払方法をご利用いただけます。  \n・各種クレジットカード、コード決済\n・その他、購入にかかる決済を代行する会社が提供するお支払方法'
   },
   {
-    label: 'サービス提供時期',
-    value: 'お申し込み完了後、即座にサービスをご利用いただけます'
+    label: '商品購入方法',
+    value: '会員登録時または、登録後「マイページ」より「有料会員登録」メニューより各プランを選択いただき、決済ページへ進んでいただくことで有料会員登録が完了します。\n本サービスは、月額制の定期課金方式です。契約は自動的に毎月更新されます。  ただし、一部コード決済は、毎月都度決済となっております。\n解約をご希望の場合は、次回決済日の前日までに「マイページ」より解約手続きを行ってください。期日を過ぎた場合、翌月分の料金が発生いたします。'
   },
   {
-    label: '返品・キャンセルポリシー',
-    value: 'サービス開始後の返金は原則として行っておりません。\n解約をご希望の場合は、更新日前日までにマイページから退会手続きを行ってください。\n解約後も更新日まではサービスをご利用いただけます。'
+    label: '提供時期',
+    value: '特別な定めを置いている場合を除き、お支払い手続き完了後直ちにご利用いただけます。'
   },
   {
-    label: 'その他',
-    value: 'サービスに関するお問い合わせは、お問い合わせフォームまたはメールアドレスよりご連絡ください。'
+    label: '動作環境',
+    value: '動作確認済みブラウザ：Microsoft Edge、Google Chrome、Safari の最新版  \n※ご利用の端末・ブラウザ・通信環境によっては、一部機能が正常に動作しない場合があります。'
+  },
+  {
+    label: '提供開始後のキャンセル',
+    value: '1．デジタルコンテンツという商品の性質上、購入確定後のキャンセル・返金には原則応じられません。ただし、当社に重大な瑕疵があった場合には、修正版の提供等の対応を行います。\n2．その他、利用制限、登録抹消、免責事項等について、当サイトの利用規約に従うこととします。'
+  },
+  {
+    label: '特別条件',
+    value: '１．クーリングオフについて\n本サービスは、訪問販売や電話勧誘販売等に該当しないため、特定商取引法におけるクーリングオフ制度の適用対象外です。\n2．定期課金方式の注意事項\n契約期間途中の解約となった場合も契約満了日までの料金が発生し、日割精算等による返金を含めた一切の返金は行われません。'
+  },
+  {
+    label: '電気通信役務',
+    value: '１．電気通信役務に該当するサービス提供においては、役務の特性上、クーリングオフの適用対象外となります。\nまた、役務提供の性質上、利用開始後の返金には原則応じられません。'
   }
 ]
 
@@ -159,82 +172,7 @@ export default function CommercialLawPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full bg-gray-50 border-t border-gray-200 mt-16 md:mt-24">
-        <div className="max-w-6xl mx-auto px-4 py-8 md:px-[120px] md:py-12">
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mb-4 md:mb-8">
-            <Link
-              href="/lp/faq"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              よくあるご質問
-            </Link>
-            <Link
-              href="/lp/contact"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              お問い合わせ
-            </Link>
-            <a
-              href="/プライバシーポリシー.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              プライバシーポリシー
-            </a>
-            <Link
-              href="/lp/commercial-law"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              特定商取引法に基づく表記
-            </Link>
-            <a
-              href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors text-sm md:text-base"
-              style={{
-                fontFamily: '"Zen Kaku Gothic New"',
-                fontWeight: '400'
-              }}
-            >
-              ご利用規約
-            </a>
-          </div>
-
-          {/* Copyright */}
-          <div className="pb-6 md:pb-8">
-            <p
-              className="text-sm md:text-base"
-              style={{
-                color: '#000',
-                textAlign: 'center',
-                fontFamily: 'Rubik',
-                fontStyle: 'normal',
-                fontWeight: '400',
-                lineHeight: '100%'
-              }}
-            >
-              ©2025 nomocaKagawa
-            </p>
-          </div>
-        </div>
-      </footer>
+      <LpFooter variant="zen" tone="gray" mode="full" showLogo={false} className="mt-16 md:mt-24" />
     </div>
   )
 }

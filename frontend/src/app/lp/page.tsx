@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 
 // カルーセル用のプレースホルダー（実際の画像がある場合は置き換えてください）
 const bannerImages = [
@@ -1505,7 +1506,7 @@ export default function LPPage() {
               style={{
                 backgroundColor: 'var(--accent, #FFD93B)'
               }}
-              onClick={() => router.push('/home')}
+              onClick={() => router.push('/')}
             >
               <span
                 className="text-lg font-bold"
@@ -1625,100 +1626,7 @@ export default function LPPage() {
         </div>
       </div>
 
-      {/* Footer Section */}
-      <div className="w-full bg-white py-12 lg:py-16 px-4 lg:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col items-center gap-6 lg:gap-8">
-          {/* Logo */}
-          <Image
-            src="/lp/images/logo-footer.svg"
-            alt="nomoca"
-            width={294}
-            height={294}
-            className="w-48 lg:w-64 lg:w-[294px] h-auto"
-          />
-
-          {/* Footer Links */}
-          <div className="flex flex-wrap justify-center gap-4 lg:gap-8 lg:gap-10">
-            <Link
-              href="/lp/faq"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              よくあるご質問
-            </Link>
-            <Link
-              href="/lp/contact"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              お問い合わせ
-            </Link>
-            <a
-              href="/プライバシーポリシー.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              プライバシーポリシー
-            </a>
-            <a
-              href="/特定商取引法.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              特定商取引法に基づく表記
-            </a>
-            <Link
-              href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              ご利用規約
-            </Link>
-            <a
-              href="#"
-              className="text-gray-800 hover:text-[#2B7A78] transition-colors text-sm lg:text-base"
-              style={{
-                fontFamily: "'Noto Sans JP', sans-serif",
-                fontWeight: '500'
-              }}
-            >
-              運営会社
-            </a>
-          </div>
-
-          {/* Copyright */}
-          <div className="pt-6 lg:pt-8 border-t border-gray-200 w-full text-center">
-            <p
-              className="text-sm lg:text-base"
-              style={{
-                fontFamily: 'Oswald, sans-serif',
-                color: '#000'
-              }}
-            >
-              ©2025 nomoca Kagawa
-            </p>
-          </div>
-        </div>
-      </div>
+      <LpFooter variant="nomocaHome" />
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 import { CreateMerchantSchema, type CreateMerchant, MerchantFormSchema } from '@hv-development/schemas'
 import { z } from 'zod'
 
@@ -770,14 +771,7 @@ export default function MerchantApplyPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-50 border-t mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-gray-600">
-            <p>&copy; 2025 TAMANOMI. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <LpFooter variant="zen" tone="gray" mode="copyrightOnly" />
     </div>
   )
 }
