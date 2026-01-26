@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { LpFooter } from '@/components/templates/lp/LpFooter'
 
 export default function MerchantLPPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -32,10 +33,10 @@ export default function MerchantLPPage() {
         <div className="flex items-center gap-11">
           <nav className="flex items-center space-x-10">
             <a href="#about" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">nomocaとは</a>
-            <a href="#benefits" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">魅力</a>
+            <a href="#benefits" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">メリット</a>
             <a href="#simple" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">使い方</a>
-            <a href="#how-to-apply" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">利用料金</a>
-            <a href="#stores" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">加盟店一覧</a>
+            <a href="#how-to-apply" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">お申し込み方法</a>
+            <Link href="/lp/contact" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">お問い合わせ</Link>
           </nav>
           <Link
             href="/lp"
@@ -233,14 +234,17 @@ export default function MerchantLPPage() {
                 nomocaとは
               </a>
               <a href="#benefits" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
-                掲載店のメリット
+                メリット
               </a>
               <a href="#simple" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
-                お店の対応
+                使い方
               </a>
               <a href="#how-to-apply" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
                 お申し込み方法
               </a>
+              <Link href="/lp/contact" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
+                お問い合わせ
+              </Link>
               <Link href="/lp" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
                 ユーザーの方はこちら
               </Link>
@@ -756,51 +760,7 @@ export default function MerchantLPPage() {
       </div>
 
       {/* ===== Footer ===== */}
-      <footer
-        className="flex flex-col justify-center items-center gap-6 pt-14 pb-0"
-        style={{ background: 'var(--sub, #FAF8F4)' }}
-      >
-        {/* Logo */}
-        <Image
-          src="/lp/images/logo-footer.svg"
-          alt="nomoca"
-          width={294}
-          height={294}
-          className="w-[200px] lg:w-[294px] h-auto"
-        />
-
-        {/* Footer Links */}
-        <div className="flex flex-col lg:flex-row flex-wrap justify-center items-center gap-6 lg:gap-10">
-          <Link href="/lp/faq" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            よくあるご質問
-          </Link>
-          <Link href="/lp/contact" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            お問い合わせ
-          </Link>
-          <a href="/プライバシーポリシー.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            プライバシーポリシー
-          </a>
-          <Link href="/lp/commercial-law" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            特定商取引法に基づく表記
-          </Link>
-          <a href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            ご利用規約
-          </a>
-          <a href="https://tsunagu.co.jp" target="_blank" rel="noopener noreferrer" className="text-base font-medium" style={{ fontFamily: '"Noto Sans JP", sans-serif', color: '#000' }}>
-            運営会社
-          </a>
-        </div>
-
-        {/* Copyright */}
-        <div
-          className="flex justify-center items-center w-full py-10"
-          style={{ borderTop: '1px solid #000' }}
-        >
-          <span className="text-base" style={{ fontFamily: 'Oswald, sans-serif', color: '#000' }}>
-            ©2025 nomoca
-          </span>
-        </div>
-      </footer>
+      <LpFooter variant="nomocaMerchant" />
     </div>
   )
 }
