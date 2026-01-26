@@ -444,13 +444,13 @@ export default function StorePage() {
                         <a href="/プライバシーポリシー.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             プライバシーポリシー
                         </a>
-                        <a href="/特定商取引法.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
+                        <Link href="/lp/commercial-law" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             特定商取引法に基づく表記
-                        </a>
+                        </Link>
                         <a href="/terms-of-service.pdf" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             ご利用規約
                         </a>
-                        <a href="#" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
+                        <a href="https://www.psytec-ai.com/" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-black hover:text-[#2B7A78] transition-colors">
                             運営会社
                         </a>
                     </div>

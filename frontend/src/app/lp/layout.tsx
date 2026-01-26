@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import './styles.css'
+import { LpLayoutController } from '@/components/providers/LpLayoutController'
 
 export const metadata: Metadata = {
   title: 'nomocaKagawa - 毎日1杯、無料で乾杯',
@@ -22,6 +23,7 @@ export default function LPLayout({
 }) {
   return (
     <div className="lp-layout">
+      <LpLayoutController />
       {children}
     </div>
   )
