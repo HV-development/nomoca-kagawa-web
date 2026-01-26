@@ -32,10 +32,10 @@ export default function MerchantLPPage() {
         <div className="flex items-center gap-11">
           <nav className="flex items-center space-x-10">
             <a href="#about" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">nomocaとは</a>
-            <a href="#benefits" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">魅力</a>
+            <a href="#benefits" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">メリット</a>
             <a href="#simple" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">使い方</a>
-            <a href="#how-to-apply" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">利用料金</a>
-            <a href="#stores" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">加盟店一覧</a>
+            <a href="#how-to-apply" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">お申し込み方法</a>
+            <Link href="/lp/contact" className="text-black hover:text-[#2B7A78] transition-colors text-base font-medium">お問い合わせ</Link>
           </nav>
           <Link
             href="/lp"
@@ -233,14 +233,17 @@ export default function MerchantLPPage() {
                 nomocaとは
               </a>
               <a href="#benefits" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
-                掲載店のメリット
+                メリット
               </a>
               <a href="#simple" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
-                お店の対応
+                使い方
               </a>
               <a href="#how-to-apply" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
                 お申し込み方法
               </a>
+              <Link href="/lp/contact" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
+                お問い合わせ
+              </Link>
               <Link href="/lp" className="text-gray-800 hover:text-[#2B7A78] transition-colors text-lg" onClick={() => setIsMobileMenuOpen(false)}>
                 ユーザーの方はこちら
               </Link>

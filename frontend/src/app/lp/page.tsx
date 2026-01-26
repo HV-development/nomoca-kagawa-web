@@ -1505,7 +1505,7 @@ export default function LPPage() {
               style={{
                 backgroundColor: 'var(--accent, #FFD93B)'
               }}
-              onClick={() => router.push('/home')}
+              onClick={() => router.push('/')}
             >
               <span
                 className="text-lg font-bold"
