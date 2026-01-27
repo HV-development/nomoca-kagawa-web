@@ -186,6 +186,18 @@ export default function PlanRegistrationPage() {
             ? discountPrice
             : selectedPlan.price
           const paymentAmount = Number(rawAmount)
+
+          // nomoca-kagawa向け: 決済金額の算出根拠が追えるようにログ出力
+          console.log('[plan-registration] paymentAmount算出:', {
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            mydigiAppLinked,
+            isLinked,
+            discountPrice,
+            price: selectedPlan.price,
+            rawAmount,
+            paymentAmount,
+          })
           const confirmed = window.confirm(
             `プラン「${selectedPlan.name}」\n` +
             `決済金額: ¥${paymentAmount.toLocaleString()}\n\n` +
