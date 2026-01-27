@@ -17,6 +17,18 @@ export default function CampaignPage() {
         >
           モニター会員登録方法
         </h1>
+        <div className="mt-3">
+          <p
+            className="inline-block rounded-full px-4 py-2 text-sm font-bold"
+            style={{
+              backgroundColor: '#FFD93B',
+              color: '#333',
+              fontFamily: '"Zen Kaku Gothic New", sans-serif',
+            }}
+          >
+            キャンペーンコード入力で3/31まで会員費が無料に！
+          </p>
+        </div>
       </div>
 
       {/* 3ステップセクション - 縦並び */}
