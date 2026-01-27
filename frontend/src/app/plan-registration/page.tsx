@@ -7,6 +7,7 @@ import {
   PlanListResponse,
   PlanListResponseSchema
 } from '@hv-development/schemas'
+import { isFutureExecutedDate } from '@/utils/application-date'
 
 export default function PlanRegistrationPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -180,16 +181,53 @@ export default function PlanRegistrationPage() {
       if (!isPaymentMethodChangeOnly) {
         const selectedPlan = plans.find(p => p.id === planId)
         if (selectedPlan) {
+          // デバッグ: plansステートから取得したデータをログ出力
+          const planWithDate = selectedPlan as PlanListResponse['plans'][number] & { first_executed_date?: string | null }
+          console.log('[plan-registration] plansステートから取得したプラン:', {
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            first_executed_date: planWithDate.first_executed_date,
+            allKeys: Object.keys(selectedPlan) as string[],
+          })
+
           const isLinked = mydigiAppLinked === true
-          const discountPrice = selectedPlan.discountPrice ?? null
+          const discountPrice = (selectedPlan as PlanListResponse['plans'][number] & { discount_price?: number | null }).discount_price ?? null
           const rawAmount = isLinked && discountPrice != null
             ? discountPrice
             : selectedPlan.price
           const paymentAmount = Number(rawAmount)
+
+          // nomoca-kagawa向け: 決済金額の算出根拠が追えるようにログ出力
+          console.log('[plan-registration] paymentAmount算出:', {
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+            mydigiAppLinked,
+            isLinked,
+            discountPrice,
+            price: selectedPlan.price,
+            rawAmount,
+            paymentAmount,
+          })
+
+          // first_executed_dateが未来日かどうかを判定
+          const firstExecutedDate = planWithDate.first_executed_date
+          const isFutureDate = isFutureExecutedDate(firstExecutedDate)
+          console.log('[plan-registration] first_executed_date判定:', {
+            firstExecutedDate,
+            isFutureDate,
+            paymentAmount,
+            planId: selectedPlan.id,
+            planName: selectedPlan.name,
+          })
+
+          const confirmMessage = isFutureDate
+            ? `カード登録を行います。よろしいですか？`
+            : `カード登録と同時に初回決済を行います。よろしいですか？`
+
           const confirmed = window.confirm(
             `プラン「${selectedPlan.name}」\n` +
             `決済金額: ¥${paymentAmount.toLocaleString()}\n\n` +
-            `カード登録と同時に初回決済を行います。よろしいですか？`
+            confirmMessage
           )
           if (!confirmed) {
             setIsLoading(false)
