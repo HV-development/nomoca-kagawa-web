@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { PlanRegistrationContainer } from '@/components/organisms/PlanRegistrationContainer'
 import {
   PlanListResponse,
-  PlanListResponseSchema
+  PlanListResponseSchema,
+  PlanResponse
 } from '@hv-development/schemas'
 import { isFutureExecutedDate } from '@/utils/application-date'
 
@@ -138,10 +139,33 @@ export default function PlanRegistrationPage() {
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`)
       }
 
-      const data = await response.json()
-
+      const data = await response.json()      
       // バリデーションを有効化
-      const validatedData = PlanListResponseSchema.parse(data)
+      const parseResult = PlanListResponseSchema.safeParse(data)
+      
+      if (!parseResult.success) {
+        console.error('[plan-registration] バリデーションエラー:', parseResult.error)
+        // バリデーションエラーの場合は、元のデータを使用（first_executed_dateを保持するため）
+        const validatedData = data
+        setPlans(validatedData.plans)
+        return
+      }
+      
+      // バリデーション成功後、元のデータからfirst_executed_dateを復元
+      const validatedData = parseResult.data
+      if (data.plans && validatedData.plans) {
+        validatedData.plans = validatedData.plans.map((validatedPlan, index) => {
+          const originalPlan = data.plans[index]
+          if (originalPlan && 'first_executed_date' in originalPlan) {
+            return {
+              ...validatedPlan,
+              first_executed_date: originalPlan.first_executed_date,
+            }
+          }
+          return validatedPlan
+        })
+      }
+      
       setPlans(validatedData.plans)
     } catch {
       setError('プランの取得に失敗しました')
@@ -182,7 +206,7 @@ export default function PlanRegistrationPage() {
         const selectedPlan = plans.find(p => p.id === planId)
         if (selectedPlan) {
           // デバッグ: plansステートから取得したデータをログ出力
-          const planWithDate = selectedPlan as PlanListResponse['plans'][number] & { first_executed_date?: string | null }
+          const planWithDate = selectedPlan as PlanResponse & { first_executed_date?: string | null }
           console.log('[plan-registration] plansステートから取得したプラン:', {
             planId: selectedPlan.id,
             planName: selectedPlan.name,
@@ -191,8 +215,8 @@ export default function PlanRegistrationPage() {
           })
 
           const isLinked = mydigiAppLinked === true
-          const discountPrice = (selectedPlan as PlanListResponse['plans'][number] & { discount_price?: number | null }).discount_price ?? null
-          const rawAmount = isLinked && discountPrice != null
+          const discountPrice = selectedPlan.discount_price ?? null
+          const rawAmount: number = isLinked && discountPrice != null
             ? discountPrice
             : selectedPlan.price
           const paymentAmount = Number(rawAmount)
