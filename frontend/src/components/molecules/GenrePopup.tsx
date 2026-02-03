@@ -119,8 +119,11 @@ export function GenrePopup({ isOpen, selectedGenres, onGenreToggle, onClose, onC
                   return (
                     <button
                       key={genre.value}
-                      onClick={() => onGenreToggle(genre.value)}
-                      className={`relative rounded-lg border-2 transition-all duration-200 active:scale-[0.98] active:bg-gray-100 text-center w-full text-sm py-3 px-2 min-h-[44px] flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${isSelected
+                      onClick={(e) => {
+                        (e.currentTarget as HTMLButtonElement).blur()
+                        onGenreToggle(genre.value)
+                      }}
+                      className={`relative rounded-lg border-2 transition-all duration-200 active:scale-[0.98] text-center w-full text-sm py-3 px-2 min-h-[44px] flex items-center justify-center font-medium focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${isSelected
                         ? "border-green-700 bg-green-100 text-green-800 shadow-md"
                         : "border-gray-300 bg-white text-gray-700"
                         }`}

@@ -833,7 +833,10 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
             近くのお店
           </button>
           <button
-            onClick={() => setIsAreaPopupOpen(true)}
+            onClick={(e) => {
+              (e.currentTarget as HTMLButtonElement).blur()
+              setIsAreaPopupOpen(true)
+            }}
             className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] active:bg-gray-100 ${(selectedAreas?.length ?? 0) > 0
               ? "border-green-500 bg-green-50 text-green-700"
               : "border-gray-300 bg-white text-gray-700"
@@ -847,7 +850,10 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
             )}
           </button>
           <button
-            onClick={() => setIsGenrePopupOpen(true)}
+            onClick={(e) => {
+              (e.currentTarget as HTMLButtonElement).blur()
+              setIsGenrePopupOpen(true)
+            }}
             className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] active:bg-gray-100 ${(selectedGenres?.length ?? 0) > 0
               ? "border-green-500 bg-green-50 text-green-700"
               : "border-gray-300 bg-white text-gray-700"
