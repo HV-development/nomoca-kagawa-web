@@ -169,7 +169,7 @@ export function FilterControls({
           onClick={handleAreaPopupOpen}
           className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${selectedArea
             ? "border-green-500 bg-green-50 text-green-700"
-            : "border-gray-300 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
+            : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50"
             }`}
         >
           <span>エリア</span>
@@ -183,7 +183,7 @@ export function FilterControls({
           onClick={handleGenrePopupOpen}
           className={`w-full flex items-center justify-center gap-1 px-2 py-2 border rounded-full text-xs font-medium transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-[#2B7A78] focus:border-[#2B7A78] ${selectedGenres.length > 0
             ? "border-green-500 bg-green-50 text-green-700"
-            : "border-gray-300 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50"
+            : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50"
             }`}
         >
           <span>ジャンル</span>
