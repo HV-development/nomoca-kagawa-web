@@ -323,35 +323,14 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const stableSelectedGenres = useMemo(() => selectedGenres ?? [], [selectedGenres])
 
   // 無限スクロール: 初回ロードと追加ロード
-  console.log('[HomeLayout] Calling useInfiniteStores with:', {
-    selectedAreas: stableSelectedAreas,
-    selectedGenres: stableSelectedGenres,
-  })
   const { isLoading: isStoresLoading, isLoadingMore, error, sentinelRef, items } = useInfiniteStores({
     limit: 20,
     selectedAreas: stableSelectedAreas,
     selectedGenres: stableSelectedGenres,
     isNearbyFilter,
     currentLocation: state.currentLocation,
+    isLocationLoading: state.isLocationLoading,
   })
-  console.log('[HomeLayout] useInfiniteStores returned:', {
-    isLoading: isStoresLoading,
-    isLoadingMore,
-    error,
-    itemsCount: items.length,
-  })
-
-  // デバッグ: エラーが設定された場合にログを出力
-  useEffect(() => {
-    if (error) {
-      console.log('[HomeLayout] Error from useInfiniteStores:', error)
-      console.log('[HomeLayout] Error type:', typeof error)
-      console.log('[HomeLayout] Error length:', error?.length)
-      console.log('[HomeLayout] Passing error to HomeContainer as bottomError:', error)
-    } else {
-      console.log('[HomeLayout] No error from useInfiniteStores')
-    }
-  }, [error])
 
   // itemsとstate.storesをマージして、isFavorite状態を同期
   const mergedStores = useMemo(() => {
