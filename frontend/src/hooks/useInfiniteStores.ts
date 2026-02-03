@@ -545,18 +545,14 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
   // 初回ロード（マウント時のみ実行）
   useEffect(() => {
     // 初回ロードは一度だけ実行（filterKeyRef.currentが空で、まだ完了していない場合のみ）
-    console.log('=== [useInfiniteStores] useEffect EXECUTED ===')
-    console.log('[useInfiniteStores] useEffect check:', {
-      filterKey: filterKeyRef.current,
-      initialLoadCompleted: initialLoadCompletedRef.current,
-      initialLoadInProgress: initialLoadInProgressRef.current,
-    })
-    
-    // デバッグ用: すべての条件を削除して確実に実行
-    console.log('[useInfiniteStores] Proceeding with fetchInitialData (all conditions removed)')
-    // 実行中フラグをリセット（デバッグ用）
-    initialLoadInProgressRef.current = false
-    initialLoadCompletedRef.current = false
+    if (filterKeyRef.current !== '' || initialLoadCompletedRef.current || initialLoadInProgressRef.current) {
+      return
+    }
+
+    // 近くのお店フィルタが有効な場合、位置情報が取得されるまで待機
+    if (isNearbyFilter && !currentLocation) {
+      return
+    }
 
     const nearbyKey = isNearbyFilter && currentLocation
       ? `${currentLocation.latitude.toFixed(6)},${currentLocation.longitude.toFixed(6)}`
@@ -566,11 +562,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     initialLoadInProgressRef.current = true
 
     const fetchInitialData = async () => {
-      console.log('[useInfiniteStores] fetchInitialData called')
       setIsLoading(true)
       setError(null)
       try {
-        console.log('[useInfiniteStores] Calling fetchPage(1)')
         const result = await fetchPage(1)
         // 初回ロードが完了しているかチェック
         if (initialLoadCompletedRef.current) {
@@ -585,10 +579,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         initialLoadCompletedRef.current = true
         setIsLoading(false)
       } catch (e) {
-        if (initialLoadCompletedRef.current) {
-          console.log('[useInfiniteStores] Initial load already completed, ignoring error')
-          return
-        }
+        if (initialLoadCompletedRef.current) return
         const message = e instanceof Error ? e.message : 'エラーが発生しました'
         console.error('[useInfiniteStores] Initial load error:', {
           message,
@@ -597,27 +588,21 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
           errorName: e instanceof Error ? e.name : 'Unknown',
           errorStack: e instanceof Error ? e.stack : undefined,
         })
-        // エラーを確実に設定し、ローディング状態を解除
-        console.log('[useInfiniteStores] Setting error before setError call:', message)
-        // エラーを同期的に設定
         setError(message)
-        setIsLoading(false)
-        // エラーが設定されたことを確認
-        console.log('[useInfiniteStores] Error set after setError call:', message)
-        // エラーが確実に設定されるように、少し待機してから確認
-        await new Promise(resolve => setTimeout(resolve, 100))
-        // エラーが設定されていることを再確認
-        console.log('[useInfiniteStores] Error state after timeout:', message)
       } finally {
         initialLoadInProgressRef.current = false
+        if (!initialLoadCompletedRef.current) {
+          setIsLoading(false)
+        }
       }
     }
 
     fetchInitialData()
 
     // クリーンアップ関数は不要（refで管理しているため）
+    // 依存配列にisNearbyFilterとcurrentLocationを追加し、位置情報取得後に初回ロードを実行
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isNearbyFilter, currentLocation])
 
   // フィルター変更時のデータ取得
   useEffect(() => {
