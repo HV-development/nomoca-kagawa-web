@@ -84,7 +84,7 @@ async function useCoupon(page: Page): Promise<boolean> {
                 console.log('[useCoupon] API error:', text);
                 return false;
             }
-        } catch (_error) {
+        } catch {
             console.log('[useCoupon] No API response received');
         }
         

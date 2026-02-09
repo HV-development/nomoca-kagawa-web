@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     const searchParams = url.searchParams
     const page = searchParams.get('page') || '1'
     const limit = searchParams.get('limit') || '20'
+    const name = searchParams.get('name')
     const city = searchParams.get('city')
     const area = searchParams.get('area')
     const genreId = searchParams.get('genreId')
@@ -38,6 +39,9 @@ export async function GET(request: NextRequest) {
     })
     
     // フィルターパラメータを追加
+    if (name) {
+      backendParams.append('name', name)
+    }
     if (city) {
       backendParams.append('city', city)
     }
@@ -123,6 +127,7 @@ export async function GET(request: NextRequest) {
       shops?: unknown[];
       total?: number;
       error?: unknown;
+      message?: string;
     }
     let data: ShopData = {}
     try {
@@ -165,7 +170,7 @@ export async function GET(request: NextRequest) {
         {
           error: data?.error || {
             code: 'API_ERROR',
-            message: data?.message || data?.error?.message || '店舗情報の取得に失敗しました',
+            message: data?.message || (data?.error as { message?: string })?.message || '店舗情報の取得に失敗しました',
           },
         },
         { status: response.status }

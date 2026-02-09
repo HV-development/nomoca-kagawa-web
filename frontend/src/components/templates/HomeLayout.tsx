@@ -10,6 +10,7 @@ import { SubscriptionContainer } from "../organisms/SubscriptionContainer"
 import { PasswordResetContainer } from "../organisms/PasswordResetContainer"
 
 import { HistoryPopup } from "../molecules/HistoryPopup"
+import { SearchBar } from "../molecules/SearchBar"
 import { MyPageLayout } from "./MypageLayout"
 import { PlanManagementContainer } from "../organisms/PlanManagementContainer"
 import { PlanChangeContainer } from "../organisms/PlanChangeContainer"
@@ -35,6 +36,8 @@ import { useAppContext } from "@/contexts/AppContext"
 import type { Store } from "@/types/store"
 import type { MyPageViewType } from "@/types/navigation"
 import type { AppAction } from '@hv-development/schemas'
+import type { CreateStoreIntroductionRequest } from "@/types/store-introduction"
+import type { Coupon } from "@/types/coupon"
 import { useInfiniteStores } from "@/hooks/useInfiniteStores"
 import { useFavorites } from "@/hooks/useFavorites"
 import { checkTodayUsage } from "@/utils/coupon-usage-check"
@@ -53,6 +56,21 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const [isAreaPopupOpen, setIsAreaPopupOpen] = useState(false)
   const [isGenrePopupOpen, setIsGenrePopupOpen] = useState(false)
   const [isUsageGuideModalOpen, setIsUsageGuideModalOpen] = useState(false)
+  // 検索モードの状態管理
+  const [isSearchMode, setIsSearchMode] = useState(false)
+  const [searchResults, setSearchResults] = useState<Store[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+
+  // 検索ボタンが押されたときに検索モードをトグル
+  useEffect(() => {
+    setIsSearchMode(state.isSearchPopupOpen)
+    // 検索モードが閉じられたら検索結果もクリア
+    if (!state.isSearchPopupOpen) {
+      setSearchResults([])
+      setSearchKeyword('')
+    }
+  }, [state.isSearchPopupOpen])
   const [isCouponUsedToday, setIsCouponUsedToday] = useState(false)
   const [isCheckingUsage, setIsCheckingUsage] = useState(false)
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false)
@@ -266,10 +284,10 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const onWithdrawComplete = handlers.handleWithdrawComplete
   interface ExtendedHandlers {
     handleStoreIntroduction: () => void;
-    handleStoreIntroductionSubmit: (data: { referrerUserId?: string; shopId?: string }) => Promise<void>;
+    handleStoreIntroductionSubmit: (data: CreateStoreIntroductionRequest) => Promise<void>;
   }
-  const onStoreIntroduction = (handlers as ExtendedHandlers).handleStoreIntroduction
-  const onStoreIntroductionSubmit = (handlers as ExtendedHandlers).handleStoreIntroductionSubmit
+  const onStoreIntroduction = (handlers as unknown as ExtendedHandlers).handleStoreIntroduction
+  const onStoreIntroductionSubmit = (handlers as unknown as ExtendedHandlers).handleStoreIntroductionSubmit
   const onLogout = handlers.handleLogout
   const onLogin = handlers.handleLogin
   const onSignup = handlers.handleSignup
@@ -350,6 +368,33 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       isFavorite: favoriteMap.get(item.id) ?? item.isFavorite
     }))
   }, [items, stores])
+
+  // 検索処理を関数として抽出
+  // エリアとジャンルで絞った条件（mergedStores）から店名をAND検索で絞る
+  const performSearch = useCallback((keyword: string) => {
+    if (!keyword.trim()) {
+      setSearchResults([])
+      return
+    }
+
+    setIsSearching(true)
+    // mergedStoresは既にエリア・ジャンルでフィルタリング済み
+    // その結果から店名でAND検索で絞る
+    const keywordLower = keyword.toLowerCase().trim()
+    const results = mergedStores.filter(store => {
+      return store.name.toLowerCase().includes(keywordLower)
+    })
+
+    setSearchResults(results)
+    setIsSearching(false)
+  }, [mergedStores])
+
+  // エリアやジャンルが変更された時に、検索モード中で検索キーワードがある場合は再検索
+  useEffect(() => {
+    if (isSearchMode && searchKeyword.trim()) {
+      performSearch(searchKeyword)
+    }
+  }, [isSearchMode, searchKeyword, performSearch])
 
   // 初回ページの要素を Context の stores に反映するため、監視と反映
   const initialAppliedRef = useRef(false)
@@ -463,10 +508,53 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   }
 
   const backgroundColorClass = getBackgroundColorByRank(currentUserRank ?? null, isAuthenticated)
+  
+  // APIレスポンスのクーポン型定義
+  interface ApiCoupon {
+    id: string
+    title?: string
+    name?: string
+    description?: string | null
+    conditions?: string | null
+    imageUrl?: string | null
+    drinkType?: 'alcohol' | 'soft_drink' | 'other' | null
+    status?: string
+    shopId?: string
+    storeId?: string
+    storeName?: string
+    shop?: { name?: string }
+    createdAt?: string
+    updatedAt?: string
+  }
+  
+  // APIレスポンスのStore型定義（拡張プロパティ対応）
+  interface ApiStore extends Store {
+    couponUsageStart?: string
+    couponUsageEnd?: string
+    couponUsageDays?: string
+  }
+  
   if (currentView === "coupon-confirmation") {
+    // APIから取得したクーポンデータをCoupon型に変換
+    const apiCoupon = selectedCoupon as unknown as ApiCoupon
+    const coupon: Coupon | null = selectedCoupon ? {
+      id: selectedCoupon.id,
+      name: apiCoupon.title || apiCoupon.name || '',
+      description: selectedCoupon.description || null,
+      conditions: selectedCoupon.conditions || null,
+      imageUrl: selectedCoupon.imageUrl || null,
+      drinkType: selectedCoupon.drinkType || null,
+      status: selectedCoupon.status,
+      storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+      storeName: apiCoupon.storeName || apiCoupon.shop?.name || '',
+      uuid: selectedCoupon.id,
+      createdAt: selectedCoupon.createdAt,
+      updatedAt: selectedCoupon.updatedAt,
+    } : null
+
     return (
       <CouponConfirmationPage
-        coupon={selectedCoupon}
+        coupon={coupon}
         onConfirm={onConfirmCoupon}
         onCancel={onCancelCoupon}
       />
@@ -596,7 +684,9 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     if (myPageView === "store-introduction") {
       return (
         <StoreIntroductionForm
-          onSubmit={onStoreIntroductionSubmit}
+          onSubmit={async (data: CreateStoreIntroductionRequest) => {
+            await onStoreIntroductionSubmit(data)
+          }}
           onBack={() => onMyPageViewChange("main")}
           isLoading={isLoading}
         />
@@ -857,6 +947,21 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         </div>
       </div>
 
+      {/* 検索バー */}
+      {isSearchMode && (
+        <SearchBar
+          onClose={() => {
+            handlers.handleSearchClose()
+            setSearchResults([])
+          }}
+          onSearch={(keyword) => {
+            setSearchKeyword(keyword)
+            performSearch(keyword)
+          }}
+          isLoading={isSearching}
+        />
+      )}
+
       {/* エリア選択ポップアップ */}
       <AreaPopup
         isOpen={isAreaPopupOpen}
@@ -897,28 +1002,37 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
           selectedAreas={selectedAreas}
           isNearbyFilter={isNearbyFilter}
           isFavoritesFilter={isFavoritesFilter}
-          stores={mergedStores}
-          onStoreClick={onStoreClick}
+          stores={isSearchMode && searchKeyword.trim() ? searchResults : mergedStores}
+          onStoreClick={(store: Store) => {
+            // Store型を@hv-development/schemasのStore型に変換
+            onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
+          }}
           onFavoriteToggle={onFavoriteToggle}
           onCouponsClick={onCouponsClick}
           isModalOpen={isCouponListOpen || isSuccessModalOpen || isHistoryOpen || isStoreDetailPopupOpen}
-          loadMoreRef={sentinelRef}
-          isLoadingMore={isLoadingMore}
-          bottomError={error || undefined}
+          loadMoreRef={isSearchMode ? undefined : sentinelRef}
+          isLoadingMore={isSearchMode ? false : isLoadingMore}
+          bottomError={isSearchMode ? null : error || undefined}
           backgroundColorClass={backgroundColorClass}
           currentLocation={state.currentLocation}
-          isInitialLoading={isInitialStoresLoading}
+          isInitialLoading={isSearchMode ? isSearching : isInitialStoresLoading}
         />
       </div>
 
       {/* お気に入り一覧ポップアップ */}
       <HistoryPopup
         isOpen={isFavoritesOpen}
-        stores={favoriteStores}
+        stores={favoriteStores.filter((store): store is Store => {
+          // Store型として有効なオブジェクトかチェック
+          return store && typeof store === 'object' && 'id' in store && 'name' in store
+        })}
         onClose={onFavoritesClose}
         onFavoriteToggle={onFavoriteToggle}
         onCouponsClick={onCouponsClick}
-        onStoreClick={onStoreClick}
+        onStoreClick={(store: Store) => {
+          // Store型を@hv-development/schemasのStore型に変換
+          onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
+        }}
       />
 
       {/* 閲覧履歴ポップアップ */}
@@ -928,7 +1042,10 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         onClose={onHistoryClose ?? (() => { })}
         onFavoriteToggle={onFavoriteToggle}
         onCouponsClick={onCouponsClick}
-        onStoreClick={onStoreClick}
+        onStoreClick={(store: Store) => {
+          // Store型を@hv-development/schemasのStore型に変換
+          onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
+        }}
       />
 
       <StoreDetailPopup
@@ -947,7 +1064,23 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       <CouponListPopup
         isOpen={isCouponListOpen}
         storeName={selectedStore?.name || ""}
-        coupons={storeCoupons}
+        coupons={storeCoupons.map((coupon): Coupon => {
+          const apiCoupon = coupon as unknown as ApiCoupon
+          return {
+            id: coupon.id,
+            name: apiCoupon.title || apiCoupon.name || '',
+            description: apiCoupon.description || null,
+            conditions: apiCoupon.conditions || null,
+            imageUrl: apiCoupon.imageUrl || null,
+            drinkType: apiCoupon.drinkType || null,
+            status: apiCoupon.status,
+            storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+            storeName: apiCoupon.shop?.name || apiCoupon.storeName || selectedStore?.name || '',
+            uuid: coupon.id,
+            createdAt: apiCoupon.createdAt,
+            updatedAt: apiCoupon.updatedAt,
+          }
+        })}
         onClose={onCouponListClose}
         onBack={onCouponListBack}
         onUseCoupon={onUseCoupon}
@@ -955,9 +1088,9 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         userBirthDate={user?.birthDate}
         isUsedToday={isCouponUsedToday}
         isCheckingUsage={isCheckingUsage || isLoadingCoupons}
-        couponUsageStart={selectedStore?.couponUsageStart}
-        couponUsageEnd={selectedStore?.couponUsageEnd}
-        couponUsageDays={selectedStore?.couponUsageDays}
+        couponUsageStart={(selectedStore as unknown as ApiStore)?.couponUsageStart}
+        couponUsageEnd={(selectedStore as unknown as ApiStore)?.couponUsageEnd}
+        couponUsageDays={(selectedStore as unknown as ApiStore)?.couponUsageDays}
       />
 
       {/* 使用方法ガイドモーダル */}
@@ -969,7 +1102,23 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       {/* クーポン使用成功モーダル */}
       <CouponUsedSuccessModal
         isOpen={isSuccessModalOpen}
-        coupon={selectedCoupon}
+        coupon={selectedCoupon ? (() => {
+          const apiCoupon = selectedCoupon as unknown as ApiCoupon
+          return {
+            id: selectedCoupon.id,
+            name: apiCoupon.title || apiCoupon.name || '',
+            description: selectedCoupon.description || null,
+            conditions: selectedCoupon.conditions || null,
+            imageUrl: selectedCoupon.imageUrl || null,
+            drinkType: selectedCoupon.drinkType || null,
+            status: selectedCoupon.status,
+            storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+            storeName: apiCoupon.storeName || apiCoupon.shop?.name || '',
+            uuid: selectedCoupon.id,
+            createdAt: selectedCoupon.createdAt,
+            updatedAt: selectedCoupon.updatedAt,
+          }
+        })() : null}
         onClose={onSuccessModalClose ?? (() => { })}
       />
 
