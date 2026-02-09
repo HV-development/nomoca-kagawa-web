@@ -508,18 +508,45 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   }
 
   const backgroundColorClass = getBackgroundColorByRank(currentUserRank ?? null, isAuthenticated)
+  
+  // APIレスポンスのクーポン型定義
+  interface ApiCoupon {
+    id: string
+    title?: string
+    name?: string
+    description?: string | null
+    conditions?: string | null
+    imageUrl?: string | null
+    drinkType?: 'alcohol' | 'soft_drink' | 'other' | null
+    status?: string
+    shopId?: string
+    storeId?: string
+    storeName?: string
+    shop?: { name?: string }
+    createdAt?: string
+    updatedAt?: string
+  }
+  
+  // APIレスポンスのStore型定義（拡張プロパティ対応）
+  interface ApiStore extends Store {
+    couponUsageStart?: string
+    couponUsageEnd?: string
+    couponUsageDays?: string
+  }
+  
   if (currentView === "coupon-confirmation") {
     // APIから取得したクーポンデータをCoupon型に変換
+    const apiCoupon = selectedCoupon as unknown as ApiCoupon
     const coupon: Coupon | null = selectedCoupon ? {
       id: selectedCoupon.id,
-      name: (selectedCoupon as any).title || (selectedCoupon as any).name || '',
+      name: apiCoupon.title || apiCoupon.name || '',
       description: selectedCoupon.description || null,
       conditions: selectedCoupon.conditions || null,
       imageUrl: selectedCoupon.imageUrl || null,
       drinkType: selectedCoupon.drinkType || null,
       status: selectedCoupon.status,
-      storeId: (selectedCoupon as any).shopId || '',
-      storeName: (selectedCoupon as any).storeName || (selectedCoupon as any).shop?.name || '',
+      storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+      storeName: apiCoupon.storeName || apiCoupon.shop?.name || '',
       uuid: selectedCoupon.id,
       createdAt: selectedCoupon.createdAt,
       updatedAt: selectedCoupon.updatedAt,
@@ -978,7 +1005,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
           stores={isSearchMode && searchKeyword.trim() ? searchResults : mergedStores}
           onStoreClick={(store: Store) => {
             // Store型を@hv-development/schemasのStore型に変換
-            onStoreClick(store as any)
+            onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
           }}
           onFavoriteToggle={onFavoriteToggle}
           onCouponsClick={onCouponsClick}
@@ -1004,7 +1031,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         onCouponsClick={onCouponsClick}
         onStoreClick={(store: Store) => {
           // Store型を@hv-development/schemasのStore型に変換
-          onStoreClick(store as any)
+          onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
         }}
       />
 
@@ -1017,7 +1044,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         onCouponsClick={onCouponsClick}
         onStoreClick={(store: Store) => {
           // Store型を@hv-development/schemasのStore型に変換
-          onStoreClick(store as any)
+          onStoreClick(store as unknown as Parameters<typeof onStoreClick>[0])
         }}
       />
 
@@ -1037,20 +1064,23 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       <CouponListPopup
         isOpen={isCouponListOpen}
         storeName={selectedStore?.name || ""}
-        coupons={storeCoupons.map((coupon: any): Coupon => ({
-          id: coupon.id,
-          name: coupon.title || coupon.name || '',
-          description: coupon.description || null,
-          conditions: coupon.conditions || null,
-          imageUrl: coupon.imageUrl || null,
-          drinkType: coupon.drinkType || null,
-          status: coupon.status,
-          storeId: coupon.shopId || coupon.storeId || '',
-          storeName: coupon.shop?.name || coupon.storeName || selectedStore?.name || '',
-          uuid: coupon.id,
-          createdAt: coupon.createdAt,
-          updatedAt: coupon.updatedAt,
-        }))}
+        coupons={storeCoupons.map((coupon): Coupon => {
+          const apiCoupon = coupon as unknown as ApiCoupon
+          return {
+            id: coupon.id,
+            name: apiCoupon.title || apiCoupon.name || '',
+            description: apiCoupon.description || null,
+            conditions: apiCoupon.conditions || null,
+            imageUrl: apiCoupon.imageUrl || null,
+            drinkType: apiCoupon.drinkType || null,
+            status: apiCoupon.status,
+            storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+            storeName: apiCoupon.shop?.name || apiCoupon.storeName || selectedStore?.name || '',
+            uuid: coupon.id,
+            createdAt: apiCoupon.createdAt,
+            updatedAt: apiCoupon.updatedAt,
+          }
+        })}
         onClose={onCouponListClose}
         onBack={onCouponListBack}
         onUseCoupon={onUseCoupon}
@@ -1058,9 +1088,9 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         userBirthDate={user?.birthDate}
         isUsedToday={isCouponUsedToday}
         isCheckingUsage={isCheckingUsage || isLoadingCoupons}
-        couponUsageStart={(selectedStore as any)?.couponUsageStart}
-        couponUsageEnd={(selectedStore as any)?.couponUsageEnd}
-        couponUsageDays={(selectedStore as any)?.couponUsageDays}
+        couponUsageStart={(selectedStore as unknown as ApiStore)?.couponUsageStart}
+        couponUsageEnd={(selectedStore as unknown as ApiStore)?.couponUsageEnd}
+        couponUsageDays={(selectedStore as unknown as ApiStore)?.couponUsageDays}
       />
 
       {/* 使用方法ガイドモーダル */}
@@ -1072,20 +1102,23 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       {/* クーポン使用成功モーダル */}
       <CouponUsedSuccessModal
         isOpen={isSuccessModalOpen}
-        coupon={selectedCoupon ? {
-          id: selectedCoupon.id,
-          name: (selectedCoupon as any).title || (selectedCoupon as any).name || '',
-          description: selectedCoupon.description || null,
-          conditions: selectedCoupon.conditions || null,
-          imageUrl: selectedCoupon.imageUrl || null,
-          drinkType: selectedCoupon.drinkType || null,
-          status: selectedCoupon.status,
-          storeId: (selectedCoupon as any).shopId || '',
-          storeName: (selectedCoupon as any).storeName || (selectedCoupon as any).shop?.name || '',
-          uuid: selectedCoupon.id,
-          createdAt: selectedCoupon.createdAt,
-          updatedAt: selectedCoupon.updatedAt,
-        } : null}
+        coupon={selectedCoupon ? (() => {
+          const apiCoupon = selectedCoupon as unknown as ApiCoupon
+          return {
+            id: selectedCoupon.id,
+            name: apiCoupon.title || apiCoupon.name || '',
+            description: selectedCoupon.description || null,
+            conditions: selectedCoupon.conditions || null,
+            imageUrl: selectedCoupon.imageUrl || null,
+            drinkType: selectedCoupon.drinkType || null,
+            status: selectedCoupon.status,
+            storeId: apiCoupon.shopId || apiCoupon.storeId || '',
+            storeName: apiCoupon.storeName || apiCoupon.shop?.name || '',
+            uuid: selectedCoupon.id,
+            createdAt: selectedCoupon.createdAt,
+            updatedAt: selectedCoupon.updatedAt,
+          }
+        })() : null}
         onClose={onSuccessModalClose ?? (() => { })}
       />
 
