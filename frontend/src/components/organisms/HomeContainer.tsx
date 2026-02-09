@@ -29,7 +29,7 @@ interface HomeContainerProps {
 export function HomeContainer({ 
   selectedGenres: _selectedGenres, // eslint-disable-line @typescript-eslint/no-unused-vars
   selectedEvents, 
-  selectedAreas: _selectedAreas, 
+  selectedAreas,
   isNearbyFilter, 
   isFavoritesFilter, 
   stores, 
@@ -46,8 +46,19 @@ export function HomeContainer({
   // 店舗データをフィルタリング
   const filteredStores = useMemo(() => {
     const storesList = (stores ?? []).filter(store => {
-    // エリアフィルターはサーバーサイドでフィルタリング済みのため、クライアントサイドでは不要
-    // サーバーからの結果をそのまま信頼する
+    // エリアフィルター（クライアントサイドフォールバック）
+    if ((selectedAreas?.length ?? 0) > 0) {
+      // 店舗のareaが選択されたエリア名に一致するかチェック
+      if (store.area) {
+        const matchesArea = selectedAreas.some(area => store.area === area)
+        if (!matchesArea) {
+          return false
+        }
+      } else {
+        // 店舗にarea情報がない場合は除外（フィルターが適用されている場合）
+        return false
+      }
+    }
     // ジャンルフィルター（サーバーサイドでフィルタリング済みのため、クライアントサイドでは不要）
     // サーバーサイドで既にフィルタリングされているため、ここでのフィルタリングは不要
     // if ((selectedGenres?.length ?? 0) > 0 && !selectedGenres?.includes(store.genre)) {
@@ -103,7 +114,7 @@ export function HomeContainer({
 
     // 近くのお店フィルターがOFFの場合は、店舗名カナ順でソート
     return [...storesList].sort((a, b) => a.name.localeCompare(b.name, 'ja'))
-  }, [stores, selectedEvents, isFavoritesFilter, isNearbyFilter, currentLocation])
+  }, [stores, selectedAreas, selectedEvents, isFavoritesFilter, isNearbyFilter, currentLocation])
 
   return (
     <div className={`flex-1 relative ${backgroundColorClass}`}>
