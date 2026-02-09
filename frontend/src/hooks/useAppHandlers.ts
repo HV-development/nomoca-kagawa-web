@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import type { AppAction, AppState, AppHandlers, Store } from '@hv-development/schemas'
+// 型定義の再読み込みを促すためのコメント
 import { appConfig } from '@/config/appConfig'
 import type { useAuth } from './useAuth'
 import type { useNavigation } from './useNavigation'
@@ -415,6 +416,15 @@ export const useAppHandlers = (
 
     const handleFavoritesClick = useCallback(() => {
         dispatch({ type: 'SET_FAVORITES_OPEN', payload: true })
+    }, [dispatch])
+
+    const handleSearchClick = useCallback(() => {
+        // トグル機能：既に開いている場合は閉じる
+        dispatch({ type: 'SET_SEARCH_POPUP_OPEN', payload: !state.isSearchPopupOpen })
+    }, [dispatch, state.isSearchPopupOpen])
+
+    const handleSearchClose = useCallback(() => {
+        dispatch({ type: 'SET_SEARCH_POPUP_OPEN', payload: false })
     }, [dispatch])
 
     const handleHistoryClick = useCallback(() => {
@@ -1373,6 +1383,8 @@ export const useAppHandlers = (
         handlePasswordResetResend,
         handleMenuItemClick,
         handleFavoritesClick,
+        handleSearchClick,
+        handleSearchClose,
         handleHistoryClick,
         handleFavoritesClose,
         handleHistoryClose,

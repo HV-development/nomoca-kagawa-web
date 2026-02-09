@@ -12,13 +12,12 @@ interface AreaPopupProps {
   onClear: () => void
 }
 
-// フィルター状態は「エリアコード」で保持する（例: takamatsu）
-// API 送信時に mapAreasToCities() で DB が保持する日本語エリア名へ変換する
+// エリア名を直接使用（DBに保存される値）
 const KAGAWA_AREAS = [
-  { value: "takamatsu", label: "高松市内エリア" },
-  { value: "tosan", label: "東讃エリア" },
-  { value: "chusan", label: "中讃エリア" },
-  { value: "seisan", label: "西讃エリア" },
+  "高松市内エリア",
+  "東讃エリア",
+  "中讃エリア",
+  "西讃エリア",
 ]
 
 export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClear }: AreaPopupProps) {
@@ -63,10 +62,10 @@ export function AreaPopup({ isOpen, selectedAreas, onAreaToggle, onClose, onClea
           <div className="grid grid-cols-2 gap-3 mb-6">
             {KAGAWA_AREAS.map((area) => (
               <AreaButton
-                key={area.value}
-                label={area.label}
-                isSelected={selectedAreas.includes(area.value)}
-                onClick={() => onAreaToggle(area.value)}
+                key={area}
+                label={area}
+                isSelected={selectedAreas.includes(area)}
+                onClick={() => onAreaToggle(area)}
                 className="text-sm py-3 px-2 min-h-[44px] flex items-center justify-center w-full font-medium"
               />
             ))}

@@ -109,6 +109,12 @@ export const GENRE_COLORS: Record<string, GenreColor> = {
     border: "border-gray-300",
     hover: "hover:bg-gray-300"
   },
+  udon: {
+    bg: "bg-orange-200",
+    text: "text-orange-800",
+    border: "border-orange-300",
+    hover: "hover:bg-orange-300"
+  },
   default: {
     bg: "bg-gray-100",
     text: "text-gray-700",
