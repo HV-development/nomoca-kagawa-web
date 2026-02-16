@@ -75,6 +75,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const [isCouponUsedToday, setIsCouponUsedToday] = useState(false)
   const [isCheckingUsage, setIsCheckingUsage] = useState(false)
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false)
+  const lastCheckedUsageShopIdRef = useRef<string | null>(null)
   const [hasStoreIntroduction, setHasStoreIntroduction] = useState(false)
 
   // 必要な値をローカル変数として定義
@@ -84,6 +85,13 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const isNearbyFilter = filters.isNearbyFilter
   const isFavoritesFilter = filters.isFavoritesFilter
   const stores = state.stores
+  // performSearch の依存から stores を外し、クーポンGET押下時の SET_STORES で再検索が走らないように ref で参照する
+  const storesRef = useRef(stores)
+  useEffect(() => {
+    storesRef.current = stores
+  }, [stores])
+  // お気に入り同期で「検索結果から1件だけ追加した」場合に favorites API を叩かないための ref
+  const lastSyncedStoresLengthRef = useRef(0)
   const currentView = navigation.currentView
   const myPageView = navigation.myPageView
   const isAuthenticated = auth.isAuthenticated
@@ -101,6 +109,11 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   // 認証済みユーザーの場合、お気に入り状態を同期する
   useEffect(() => {
     if (!isAuthenticated || !stores.length) return
+    // 検索モードで stores が増えた場合はスキップ（検索結果の「今すぐクーポンGET」押下で追加された分なので favorites を叩かない）
+    if (isSearchMode && stores.length > lastSyncedStoresLengthRef.current) {
+      return
+    }
+    lastSyncedStoresLengthRef.current = stores.length
 
     const syncFavorites = async () => {
       try {
@@ -132,7 +145,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
 
     // 初回ロード時とログイン時に同期
     syncFavorites()
-  }, [isAuthenticated, stores.length, dispatch])
+  }, [isAuthenticated, stores.length, dispatch, isSearchMode])
 
   // 店舗紹介登録状態を取得（マイページ表示時のみ）
   useEffect(() => {
@@ -175,9 +188,14 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   // storesが変更されたときにも同期する（店舗データが読み込まれた後）
   useEffect(() => {
     if (!isAuthenticated || !stores.length) return
+    // 検索モードで stores が増えた場合はスキップ（検索結果の「今すぐクーポンGET」押下で追加された分なので favorites を叩かない）
+    if (isSearchMode && stores.length > lastSyncedStoresLengthRef.current) {
+      return
+    }
 
     // 少し遅延してから同期（店舗データが完全に読み込まれた後）
     const timer = setTimeout(() => {
+      lastSyncedStoresLengthRef.current = stores.length
       const syncFavorites = async () => {
         try {
           const response = await fetch('/api/favorites', {
@@ -208,7 +226,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [stores.length, isAuthenticated, dispatch])
+  }, [stores.length, isAuthenticated, dispatch, isSearchMode])
 
   const user = auth.user
   const plan = auth.plan
@@ -223,21 +241,29 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const emailRegistrationStep = state.emailRegistrationStep
   const emailRegistrationEmail = state.emailRegistrationEmail
 
-  // クーポン使用履歴のチェック
+  // クーポン使用履歴のチェック（useEffect の複数回実行で API が重複呼び出しされないよう同一店舗は1回だけ）
   useEffect(() => {
+    if (!isCouponListOpen || !selectedStore) {
+      if (!isCouponListOpen) {
+        lastCheckedUsageShopIdRef.current = null
+      }
+      setIsCouponUsedToday(false)
+      setIsCheckingUsage(false)
+      return
+    }
+
+    if (!isAuthenticated) {
+      setIsCouponUsedToday(false)
+      setIsCheckingUsage(false)
+      return
+    }
+
+    if (lastCheckedUsageShopIdRef.current === selectedStore.id) {
+      return
+    }
+    lastCheckedUsageShopIdRef.current = selectedStore.id
+
     const checkUsage = async () => {
-      if (!isCouponListOpen || !selectedStore) {
-        setIsCouponUsedToday(false)
-        setIsCheckingUsage(false)
-        return
-      }
-
-      if (!isAuthenticated) {
-        setIsCouponUsedToday(false)
-        setIsCheckingUsage(false)
-        return
-      }
-
       setIsCheckingUsage(true)
       try {
         const hasUsedToday = await checkTodayUsage(selectedStore.id)
@@ -265,15 +291,17 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const onCouponsClick = useCallback(async (storeId: string) => {
     setIsLoadingCoupons(true)
     try {
-      // 検索結果から店舗を探す（検索モードの場合）
+      let storeOverride: Store | undefined
       if (isSearchMode && searchKeyword.trim()) {
         const searchStore = searchResults.find((s) => s.id === storeId)
-        if (searchStore && !state.stores.find((s) => s.id === storeId)) {
-          // 検索結果の店舗がstate.storesに存在しない場合は追加
-          dispatch({ type: 'SET_STORES', payload: [...state.stores, searchStore] } as AppAction)
+        if (searchStore) {
+          storeOverride = searchStore
+          if (!state.stores.find((s) => s.id === storeId)) {
+            dispatch({ type: 'SET_STORES', payload: [...state.stores, searchStore] } as AppAction)
+          }
         }
       }
-      await handlers.handleCouponsClick(storeId)
+      await (handlers as { handleCouponsClick: (storeId: string, storeOverride?: Store) => Promise<void> }).handleCouponsClick(storeId, storeOverride)
     } finally {
       setIsLoadingCoupons(false)
     }
@@ -479,7 +507,8 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         usageScenes: shop.usageScenes,
       }))
       const favoriteMap = new Map<string, boolean>()
-      stores.forEach((s) => favoriteMap.set(s.id, s.isFavorite))
+      const currentStores = storesRef.current ?? []
+      currentStores.forEach((s: Store) => favoriteMap.set(s.id, s.isFavorite))
       const results = fetchedStores.map((s) => ({
         ...s,
         isFavorite: favoriteMap.get(s.id) ?? s.isFavorite,
@@ -491,7 +520,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     } finally {
       setIsSearching(false)
     }
-  }, [stableSelectedAreas, stableSelectedGenres, isNearbyFilter, state.currentLocation, stores])
+  }, [stableSelectedAreas, stableSelectedGenres, isNearbyFilter, state.currentLocation])
 
   // エリアやジャンルが変更された時に、検索モード中で検索キーワードがある場合は再検索
   useEffect(() => {
