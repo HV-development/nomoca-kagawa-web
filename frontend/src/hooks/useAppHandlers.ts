@@ -12,6 +12,9 @@ import { getCurrentPosition } from '@/utils/location'
 import { toast } from 'sonner'
 import { useCouponAudio } from './use-audio'
 
+// クーポン一覧取得の二重リクエスト防止（モジュールスコープで全インスタンス共有）
+let couponFetchingStoreId: string | null = null
+
 // ハンドラー作成フック
 export const useAppHandlers = (
     dispatch: React.Dispatch<AppAction>,
@@ -31,8 +34,6 @@ export const useAppHandlers = (
 
     // OTP requestIdを管理するローカルstate
     const [otpRequestId, setOtpRequestId] = useState<string>("")
-    // クーポン一覧取得の二重リクエスト防止
-    const couponFetchingStoreIdRef = useRef<string | null>(null)
 
     const { initializeAudio } = useCouponAudio()
 
@@ -621,11 +622,11 @@ export const useAppHandlers = (
         const store = storeOverride ?? state.stores.find((s: { id: string }) => s.id === storeId)
 
         if (store) {
-            // 同一店舗への二重リクエスト防止
-            if (couponFetchingStoreIdRef.current === storeId) {
+            // 同一店舗への二重リクエスト防止（モジュール変数で全インスタンス共有）
+            if (couponFetchingStoreId === storeId) {
                 return
             }
-            couponFetchingStoreIdRef.current = storeId
+            couponFetchingStoreId = storeId
 
             dispatch({ type: 'SET_SELECTED_STORE', payload: store })
             dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: true })
@@ -690,7 +691,7 @@ export const useAppHandlers = (
                 console.error('❌ Error fetching coupons:', error)
                 dispatch({ type: 'SET_STORE_COUPONS', payload: [] })
             } finally {
-                couponFetchingStoreIdRef.current = null
+                couponFetchingStoreId = null
             }
         }
     }, [state.stores, dispatch])
@@ -981,11 +982,13 @@ export const useAppHandlers = (
     }, [navigation])
 
     const handleCouponListClose = useCallback(() => {
+        couponFetchingStoreId = null
         dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: false })
         dispatch({ type: 'SET_SELECTED_STORE', payload: null })
     }, [dispatch])
 
     const handleCouponListBack = useCallback(() => {
+        couponFetchingStoreId = null
         dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: false })
         dispatch({ type: 'SET_SELECTED_STORE', payload: null })
     }, [dispatch])
