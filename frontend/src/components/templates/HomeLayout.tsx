@@ -84,6 +84,11 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const isNearbyFilter = filters.isNearbyFilter
   const isFavoritesFilter = filters.isFavoritesFilter
   const stores = state.stores
+  // performSearch の依存から stores を外し、クーポンGET押下時の SET_STORES で再検索が走らないように ref で参照する
+  const storesRef = useRef(stores)
+  useEffect(() => {
+    storesRef.current = stores
+  }, [stores])
   const currentView = navigation.currentView
   const myPageView = navigation.myPageView
   const isAuthenticated = auth.isAuthenticated
@@ -479,7 +484,8 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         usageScenes: shop.usageScenes,
       }))
       const favoriteMap = new Map<string, boolean>()
-      stores.forEach((s) => favoriteMap.set(s.id, s.isFavorite))
+      const currentStores = storesRef.current ?? []
+      currentStores.forEach((s: Store) => favoriteMap.set(s.id, s.isFavorite))
       const results = fetchedStores.map((s) => ({
         ...s,
         isFavorite: favoriteMap.get(s.id) ?? s.isFavorite,
@@ -491,7 +497,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
     } finally {
       setIsSearching(false)
     }
-  }, [stableSelectedAreas, stableSelectedGenres, isNearbyFilter, state.currentLocation, stores])
+  }, [stableSelectedAreas, stableSelectedGenres, isNearbyFilter, state.currentLocation])
 
   // エリアやジャンルが変更された時に、検索モード中で検索キーワードがある場合は再検索
   useEffect(() => {
