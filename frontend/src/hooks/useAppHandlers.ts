@@ -31,6 +31,8 @@ export const useAppHandlers = (
 
     // OTP requestIdを管理するローカルstate
     const [otpRequestId, setOtpRequestId] = useState<string>("")
+    // クーポン一覧取得の二重リクエスト防止
+    const couponFetchingStoreIdRef = useRef<string | null>(null)
 
     const { initializeAudio } = useCouponAudio()
 
@@ -619,6 +621,12 @@ export const useAppHandlers = (
         const store = storeOverride ?? state.stores.find((s: { id: string }) => s.id === storeId)
 
         if (store) {
+            // 同一店舗への二重リクエスト防止
+            if (couponFetchingStoreIdRef.current === storeId) {
+                return
+            }
+            couponFetchingStoreIdRef.current = storeId
+
             dispatch({ type: 'SET_SELECTED_STORE', payload: store })
             dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: true })
             // クーポン取得開始時にローディング状態を設定（ローカル状態として管理）
@@ -681,6 +689,8 @@ export const useAppHandlers = (
             } catch (error) {
                 console.error('❌ Error fetching coupons:', error)
                 dispatch({ type: 'SET_STORE_COUPONS', payload: [] })
+            } finally {
+                couponFetchingStoreIdRef.current = null
             }
         }
     }, [state.stores, dispatch])
