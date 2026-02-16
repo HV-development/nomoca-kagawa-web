@@ -292,6 +292,7 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         }
 
         // ジャンルフィルターを追加（複数ジャンルをカンマ区切りで送信）
+        // nomoca-kagawa-webではselectedGenresはジャンル値（"japanese"など）の配列なので、ジャンルIDに変換
         if (selectedGenres.length > 0) {
           const genreIds = await mapGenresToIds(selectedGenres)
           if (genreIds.length > 0) {
