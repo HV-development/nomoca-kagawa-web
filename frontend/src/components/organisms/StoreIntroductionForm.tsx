@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Store } from 'lucide-react';
+import { Store as StoreIcon } from 'lucide-react';
 import type { CreateStoreIntroductionRequest } from '@/types/store-introduction';
 
 interface StoreIntroductionFormProps {
@@ -75,7 +75,7 @@ export const StoreIntroductionForm: React.FC<StoreIntroductionFormProps> = ({
       <div className="max-w-2xl mx-auto p-4">
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-4">
           <div className="flex items-center mb-6">
-            <Store className="w-8 h-8 text-green-600 mr-3" />
+            <StoreIcon className="w-8 h-8 text-green-600 mr-3" />
             <h1 className="text-2xl font-bold text-gray-800">店舗紹介</h1>
           </div>
 

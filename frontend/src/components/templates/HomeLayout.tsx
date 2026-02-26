@@ -48,10 +48,8 @@ interface HomeLayoutProps {
 }
 
 export function HomeLayout({ onMount }: HomeLayoutProps) {
-  console.log('[HomeLayout] Component mounted')
   // Context から必要な値を取得
   const { state, dispatch, handlers, auth, navigation, filters, computedValues } = useAppContext()
-  console.log('[HomeLayout] Context values retrieved')
 
   // ポップアップとモーダルの状態管理
   const [isAreaPopupOpen, setIsAreaPopupOpen] = useState(false)
