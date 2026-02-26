@@ -339,10 +339,10 @@ const MenuButtons = React.memo(({
   onChangePassword,
   onViewUsageHistory,
   onViewPaymentHistory,
-  onStoreIntroduction: _onStoreIntroduction,
+  onStoreIntroduction,
   onLogout,
   plan,
-  hasStoreIntroduction: _hasStoreIntroduction
+  hasStoreIntroduction
 }: {
   onEditProfile: () => void
   onViewPlan: () => void
@@ -360,15 +360,13 @@ const MenuButtons = React.memo(({
   
   return (
     <div className="space-y-3">
-      {/* TODO: 店舗紹介メニュー - 一時的に非表示（後で戻す） */}
-      {/* {onStoreIntroduction && (
+      {onStoreIntroduction && (
         <MenuButton 
-          onClick={hasStoreIntroduction ? undefined : onStoreIntroduction} 
+          onClick={onStoreIntroduction} 
           icon={Store} 
-          label={hasStoreIntroduction ? "店舗紹介（紹介済み）" : "店舗紹介"} 
-          disabled={hasStoreIntroduction}
+          label={hasStoreIntroduction ? "店舗紹介（変更）" : "店舗紹介"} 
         />
-      )} */}
+      )}
       {appConfig.myPageSettings.showProfile && (
         <MenuButton onClick={onEditProfile} icon={SquarePen} label="プロフィール編集" />
       )}
