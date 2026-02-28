@@ -63,6 +63,9 @@ export default function MypageSubPage() {
             case 'subscription':
               navigation.navigateToMyPage("subscription")
               break
+            case 'store-introduction':
+              navigation.navigateToMyPage("store-introduction")
+              break
             default:
               navigation.navigateToMyPage("main")
           }

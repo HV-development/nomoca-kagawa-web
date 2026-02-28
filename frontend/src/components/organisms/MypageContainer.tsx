@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react"
 import Image from "next/image"
-import { SquarePen, Crown, RefreshCw, Mail, Lock, LogOut, History, CreditCard, Share2, Copy, Check } from "lucide-react"
+import { SquarePen, Crown, RefreshCw, Mail, Lock, LogOut, History, CreditCard, Share2, Copy, Check, Store } from "lucide-react"
 import { User } from "lucide-react"
 import { Logo } from "../atoms/Logo"
 import { getNextRankInfo, getMonthsToNextRank, RANK_INFO } from "@/utils/rank-calculator"
@@ -148,14 +148,14 @@ ProfileCard.displayName = 'ProfileCard'
 // 紹介用URLカードコンポーネント
 const ReferrerUrlCard = React.memo(({ user }: { user?: UserType }) => {
   const [copied, setCopied] = React.useState(false)
-  
+
   if (!user) {
     return null
   }
 
   // 紹介用URLを生成（APIから取得できない場合はフロントエンドで生成）
-  const referrerUrl = user.referrerUrl || (typeof window !== 'undefined' 
-    ? `${window.location.origin}/email-registration?ref=${user.id}` 
+  const referrerUrl = user.referrerUrl || (typeof window !== 'undefined'
+    ? `${window.location.origin}/email-registration?ref=${user.id}`
     : null)
 
   const handleCopy = async () => {
@@ -191,11 +191,11 @@ const ReferrerUrlCard = React.memo(({ user }: { user?: UserType }) => {
               type="text"
               readOnly
               value={referrerUrl}
-              className="flex-1 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none"
+              className="flex-1 min-w-0 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-700 focus:outline-none truncate"
             />
             <button
               onClick={handleCopy}
-              className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center justify-center"
+              className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center justify-center flex-shrink-0"
               title={copied ? 'コピーしました' : 'クリップボードにコピー'}
             >
               {copied ? (
