@@ -75,6 +75,14 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false)
   const lastCheckedUsageShopIdRef = useRef<string | null>(null)
   const [hasStoreIntroduction, setHasStoreIntroduction] = useState(false)
+  const [storeIntroductionData, setStoreIntroductionData] = useState<{
+    storeName1: string;
+    recommendedMenu1: string;
+    storeName2: string;
+    recommendedMenu2: string;
+    storeName3: string;
+    recommendedMenu3: string;
+  } | null>(null)
 
   // 必要な値をローカル変数として定義
   const selectedGenres = filters.selectedGenres
@@ -151,6 +159,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
       // マイページ表示中かつ認証済みの場合のみチェック
       if (!isAuthenticated || currentView !== 'mypage') {
         setHasStoreIntroduction(false)
+        setStoreIntroductionData(null)
         return
       }
 
@@ -169,14 +178,29 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         if (response.ok) {
           const data = await response.json()
           // データがオブジェクトで、idが存在すれば登録済み
-          setHasStoreIntroduction(data && typeof data === 'object' && 'id' in data)
+          if (data && typeof data === 'object' && 'id' in data) {
+            setHasStoreIntroduction(true)
+            setStoreIntroductionData({
+              storeName1: data.storeName1 || '',
+              recommendedMenu1: data.recommendedMenu1 || '',
+              storeName2: data.storeName2 || '',
+              recommendedMenu2: data.recommendedMenu2 || '',
+              storeName3: data.storeName3 || '',
+              recommendedMenu3: data.recommendedMenu3 || '',
+            })
+          } else {
+            setHasStoreIntroduction(false)
+            setStoreIntroductionData(null)
+          }
         } else {
           // 401, 404などのエラーは未登録として扱う
           setHasStoreIntroduction(false)
+          setStoreIntroductionData(null)
         }
       } catch {
         // ネットワークエラーなども未登録として扱う
         setHasStoreIntroduction(false)
+        setStoreIntroductionData(null)
       }
     }
 
@@ -820,6 +844,8 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
           }}
           onBack={() => onMyPageViewChange("main")}
           isLoading={isLoading}
+          initialData={storeIntroductionData}
+          isEditMode={hasStoreIntroduction}
         />
       )
     }
