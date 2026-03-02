@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Link from 'next/link'
 
 /**
  * クライアント側の未捕捉例外をキャッチし、フォールバックUIを表示する。
@@ -46,12 +47,12 @@ export default function Error({
           >
             再試行
           </button>
-          <a
+          <Link
             href="/"
             className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
           >
             トップへ
-          </a>
+          </Link>
         </div>
       </div>
     </div>
