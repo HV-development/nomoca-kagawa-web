@@ -26,7 +26,7 @@ export default function CampaignPage() {
               fontFamily: '"Zen Kaku Gothic New", sans-serif',
             }}
           >
-            キャンペーンコード入力で3/31まで会員費が無料に！
+            キャンペーンコード入力で4/30まで会員費が無料に！
           </p>
         </div>
       </div>
@@ -144,7 +144,7 @@ export default function CampaignPage() {
                   登録時に右のコードを入力
                 </p>
                 <p className="text-xs mt-1" style={{ color: '#FF6F61', fontWeight: 700 }}>
-                  期限: 2026年3月31日
+                  期限: 2026年4月30日
                 </p>
               </div>
               <div 
@@ -272,7 +272,7 @@ export default function CampaignPage() {
               className="text-sm font-bold py-2 px-4 rounded-full"
               style={{ backgroundColor: '#FFF', color: '#333' }}
             >
-              条件<span style={{ color: '#FF6F61' }}>①②</span>を2026年2月28日までに達成すると
+              条件<span style={{ color: '#FF6F61' }}>①②</span>を2026年3月31日までに達成すると
             </p>
           </div>
         </div>
@@ -373,7 +373,7 @@ export default function CampaignPage() {
             className="text-2xl font-bold"
             style={{ color: '#6FC8E5', fontFamily: '"Zen Kaku Gothic New", sans-serif' }}
           >
-            4月末まで無料期間延長!!
+            5月末まで無料期間延長!!
           </h3>
         </div>
       </div>
