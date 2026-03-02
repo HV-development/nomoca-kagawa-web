@@ -146,8 +146,8 @@ const ProfileCard = memo(({ user, onEditProfile }: { user?: UserType, onEditProf
 ProfileCard.displayName = 'ProfileCard'
 
 // 紹介用URLカードコンポーネント  
-const ReferrerUrlCard = React.memo(({ user }: { user?: UserType }) => {
-  const [copied, setCopied] = React.useState(false)
+const ReferrerUrlCard = memo(({ user }: { user?: UserType }) => {
+  const [copied, setCopied] = useState(false)
   if (!user) {
     return null
   }
