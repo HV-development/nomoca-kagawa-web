@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo } from "react"
+import React, { useMemo, memo, useState } from "react"
 import Image from "next/image"
 import { SquarePen, Crown, RefreshCw, Mail, Lock, LogOut, History, CreditCard, Share2, Copy, Check, Store } from "lucide-react"
 import { User } from "lucide-react"
@@ -96,7 +96,7 @@ const useRankCalculations = (user: UserType | undefined, currentUserRank: string
 }
 
 // プロフィールカードコンポーネント
-const ProfileCard = React.memo(({ user, onEditProfile }: { user?: UserType, onEditProfile: () => void }) => {
+const ProfileCard = memo(({ user, onEditProfile }: { user?: UserType, onEditProfile: () => void }) => {
   if (!user) {
     return (
       <div className="bg-white rounded-2xl border border-green-200 p-6">
@@ -145,10 +145,9 @@ const ProfileCard = React.memo(({ user, onEditProfile }: { user?: UserType, onEd
 })
 ProfileCard.displayName = 'ProfileCard'
 
-// 紹介用URLカードコンポーネント
-const ReferrerUrlCard = React.memo(({ user }: { user?: UserType }) => {
-  const [copied, setCopied] = React.useState(false)
-
+// 紹介用URLカードコンポーネント  
+const ReferrerUrlCard = memo(({ user }: { user?: UserType }) => {
+  const [copied, setCopied] = useState(false)
   if (!user) {
     return null
   }
@@ -216,7 +215,7 @@ const ReferrerUrlCard = React.memo(({ user }: { user?: UserType }) => {
 ReferrerUrlCard.displayName = 'ReferrerUrlCard'
 
 // ランク画像コンポーネント
-const RankImage = React.memo(({ rank, alt, className }: { rank: string, alt: string, className: string }) => (
+const RankImage = memo(({ rank, alt, className }: { rank: string, alt: string, className: string }) => (
   <div className="relative w-8 h-8">
     <Image
       src={`/${rank}.svg`}
@@ -233,7 +232,7 @@ RankImage.displayName = 'RankImage'
 // ランクカードコンポーネント
 // TODO: 将来的にメンバーランク機能を再実装する可能性があるためコメントアウト
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const RankCard = React.memo(({ rankCalculations }: { rankCalculations: ReturnType<typeof useRankCalculations> }) => {
+const RankCard = memo(({ rankCalculations }: { rankCalculations: ReturnType<typeof useRankCalculations> }) => {
   const { nextRank, monthsToNext, currentRankInfo } = rankCalculations
 
   if (!currentRankInfo) return null
@@ -296,7 +295,7 @@ const RankCard = React.memo(({ rankCalculations }: { rankCalculations: ReturnTyp
 RankCard.displayName = 'RankCard'
 
 // メニューボタンコンポーネント
-const MenuButton = React.memo(({
+const MenuButton = memo(({
   onClick,
   icon: Icon,
   label,
@@ -332,7 +331,7 @@ const MenuButton = React.memo(({
 MenuButton.displayName = 'MenuButton'
 
 // メニューボタン群コンポーネント
-const MenuButtons = React.memo(({
+const MenuButtons = memo(({
   onEditProfile,
   onViewPlan,
   onChangeEmail,
@@ -391,7 +390,7 @@ const MenuButtons = React.memo(({
 })
 MenuButtons.displayName = 'MenuButtons'
 
-export const MyPageContainer = React.memo(function MyPageContainer({
+export const MyPageContainer = memo(function MyPageContainer({
   user,
   plan: _plan, // eslint-disable-line @typescript-eslint/no-unused-vars
   usageHistory,
@@ -523,7 +522,7 @@ export const MyPageContainer = React.memo(function MyPageContainer({
 })
 
 // サブビューコンポーネント（早期リターン用）
-const MyPageSubView = React.memo(({
+const MyPageSubView = memo(({
   currentView,
   user,
   usageHistory,
@@ -547,7 +546,7 @@ const MyPageSubView = React.memo(({
   currentUserRank
 }: {
   currentView: string
-  user: UserType
+  user?: UserType
   usageHistory: UsageHistory[]
   paymentHistory: PaymentHistory[]
   onViewChange: (view: string) => void
@@ -570,6 +569,7 @@ const MyPageSubView = React.memo(({
 }) => {
   switch (currentView) {
     case "profile-edit":
+      if (!user) return <SkeletonMyPage />
       return (
         <LazyFallback>
           <LazyProfileEditLayout
