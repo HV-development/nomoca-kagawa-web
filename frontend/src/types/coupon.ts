@@ -1,16 +1,4 @@
-export interface Coupon {
-  id: string
-  name: string // titleから変換
-  description: string | null
-  conditions: string | null
-  imageUrl: string | null
-  drinkType: 'alcohol' | 'soft_drink' | 'other' | null
-  status?: string
-  storeId: string
-  storeName: string
-  expiresAt?: Date
-  uuid: string
-  createdAt?: string
-  updatedAt?: string
-}
+export type { CouponUi } from '@hv-development/schemas'
 
+// UI表示用。コンポーネントでは Coupon として利用するためエイリアス
+export type Coupon = import('@hv-development/schemas').CouponUi

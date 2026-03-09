@@ -29,7 +29,7 @@ interface HomeContainerProps {
 export function HomeContainer({ 
   selectedGenres: _selectedGenres, // eslint-disable-line @typescript-eslint/no-unused-vars
   selectedEvents, 
-  selectedAreas,
+  selectedAreas, 
   isNearbyFilter, 
   isFavoritesFilter, 
   stores, 
