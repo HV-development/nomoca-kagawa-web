@@ -19,7 +19,6 @@ export default function LPPage() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(bannerImages.length * 7)
   const [carouselImageWidth, setCarouselImageWidth] = useState(303)
-  const [showFloatCta, setShowFloatCta] = useState(false)
 
   // 無限ループ用：画像を15回複製
   const extendedImages = [
@@ -62,16 +61,6 @@ export default function LPPage() {
     return () => {
       document.body.style.maxWidth = ''
     }
-  }, [])
-
-  // スクロールでフロート新規登録ボタンを表示
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowFloatCta(window.scrollY > 400)
-    }
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   // メディアクエリでカルーセル画像サイズを動的に変更
@@ -1638,49 +1627,6 @@ export default function LPPage() {
       </div>
 
       <LpFooter variant="nomocaHome" />
-
-      {/* フロート新規登録ボタン（スクロール後に下から表示） */}
-      {showFloatCta && (
-        <button
-          type="button"
-          onClick={() => router.push('/register')}
-          aria-label="新規登録"
-          className="hover:opacity-90 transition-opacity"
-          style={{
-            position: 'fixed',
-            bottom: '24px',
-            right: '16px',
-            zIndex: 50,
-            padding: '14px 20px',
-            borderRadius: '9999px',
-            border: 'none',
-            background: 'var(--accent, #FFD93B)',
-            color: '#000',
-            fontFamily: "'Noto Sans JP', sans-serif",
-            fontSize: '16px',
-            fontWeight: 700,
-            boxShadow: '0 4px 14px rgba(0,0,0,0.2)',
-            cursor: 'pointer',
-            transition: 'transform 0.2s, box-shadow 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            const el = e.currentTarget
-            if (el) {
-              el.style.transform = 'scale(1.02)'
-              el.style.boxShadow = '0 6px 20px rgba(0,0,0,0.25)'
-            }
-          }}
-          onMouseLeave={(e) => {
-            const el = e.currentTarget
-            if (el) {
-              el.style.transform = ''
-              el.style.boxShadow = '0 4px 14px rgba(0,0,0,0.2)'
-            }
-          }}
-        >
-          新規登録
-        </button>
-      )}
     </div>
   )
 }
