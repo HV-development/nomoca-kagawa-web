@@ -913,6 +913,12 @@ export const useAppHandlers = (
 
             const endScheduled = formatDate(nextBillingDate)
 
+            if (!userPlanId) {
+                throw new Error(
+                    'ユーザープラン情報を取得できませんでした。マイページを再読み込みしてから再度お試しください。'
+                )
+            }
+
             // 退会処理APIを呼び出し（Paygent継続課金ありの場合）
             // userEmailはバックエンドで認証トークンから取得するため、送信しない
             const response = await fetch('/api/payment/update', {
@@ -921,6 +927,7 @@ export const useAppHandlers = (
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    userPlanId,
                     customerId: user.paymentCard?.paygentCustomerId,
                     customerCardId: user.paymentCard?.paygentCustomerCardId,
                     runningId: runningId,
