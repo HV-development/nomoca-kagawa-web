@@ -959,11 +959,15 @@ export const useAppHandlers = (
     }, [navigation])
 
     const handleWithdrawComplete = useCallback(async () => {
-        // まず認証状態をクリア（cookieの削除も含む）
+        const user = auth.user
+        if (user?.accountStatus === 'withdrawing') {
+            navigation.navigateToMyPage("main")
+            return
+        }
+
         await auth.logout()
         navigation.resetNavigation()
 
-        // ログアウト完了後にログイン画面に遷移（home画面を表示しない）
         if (typeof window !== 'undefined') {
             window.location.href = '/'
         }
