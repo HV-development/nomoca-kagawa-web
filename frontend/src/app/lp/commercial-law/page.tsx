@@ -20,7 +20,7 @@ const commercialLawData: CommercialLawItem[] = [
   },
   {
     label: '代表者名',
-    value: '代表取締役 大澤 佳加'
+    value: '代表取締役 善生 佳加'
   },
   {
     label: '所在地',
