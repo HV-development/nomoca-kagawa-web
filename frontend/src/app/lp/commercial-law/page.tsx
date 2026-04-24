@@ -20,7 +20,7 @@ const commercialLawData: CommercialLawItem[] = [
   },
   {
     label: '代表者名',
-    value: '代表取締役 大澤 佳加'
+    value: '代表取締役 善生 佳加'
   },
   {
     label: '所在地',
@@ -28,7 +28,7 @@ const commercialLawData: CommercialLawItem[] = [
   },
   {
     label: 'お問い合わせ',
-    value: '以下のお問い合わせフォームよりご連絡ください。  \n※お問い合わせいただいた内容には、遅滞なく電子メールにてご返信いたします。  \n[お問い合わせフォーム URL]\nメールアドレス: nomoca.info@nomoca-kagawa.com\n電話番号: 087-899-6512'
+    value: '以下のお問い合わせフォームよりご連絡ください。  \n※お問い合わせいただいた内容には、遅滞なく電子メールにてご返信いたします。  \n[お問い合わせフォーム URL]\nメールアドレス: info@nomoca-kagawa\n電話番号: 087-899-6512'
 
   },
   {
