@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useState, useRef, useEffect } from "react"
-import type { AppAction, AppState, AppHandlers, Store } from '@hv-development/schemas'
+import type { AppAction, AppState, AppHandlers, Store, MyPageViewType } from '@hv-development/schemas'
 // 型定義の再読み込みを促すためのコメント
 import { appConfig } from '@/config/appConfig'
 import type { useAuth } from './useAuth'
@@ -947,8 +947,7 @@ export const useAppHandlers = (
             navigation.navigateToMyPage("withdrawal-complete")
         } catch (error) {
             console.error('退会処理エラー:', error)
-            // エラーメッセージを表示（必要に応じてモーダルなどで表示）
-            alert(error instanceof Error ? error.message : '退会処理に失敗しました')
+            navigation.navigateToMyPage("withdrawal-failed" as MyPageViewType)
         } finally {
             auth.setIsLoading(false)
         }
