@@ -947,7 +947,7 @@ export const useAppHandlers = (
             navigation.navigateToMyPage("withdrawal-complete")
         } catch (error) {
             console.error('退会処理エラー:', error)
-            navigation.navigateToMyPage("withdrawal-failed" as MyPageViewType)
+            navigation.navigateToMyPage("withdrawal-failed")
         } finally {
             auth.setIsLoading(false)
         }
