@@ -30,6 +30,7 @@ const GENRE_VALUE_TO_NAME_MAP: Record<string, string> = {
   cafe: "カフェ",
   shokudo: "食堂",
   udon: "うどん",
+  other: "その他",
   event: "イベント出店",
 }
 
