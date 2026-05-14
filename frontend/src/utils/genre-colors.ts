@@ -115,6 +115,12 @@ export const GENRE_COLORS: Record<string, GenreColor> = {
     border: "border-orange-300",
     hover: "hover:bg-orange-300"
   },
+  other: {
+    bg: "bg-slate-200",
+    text: "text-slate-800",
+    border: "border-slate-300",
+    hover: "hover:bg-slate-300"
+  },
   default: {
     bg: "bg-gray-100",
     text: "text-gray-700",
