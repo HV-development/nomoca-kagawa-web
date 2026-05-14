@@ -16,6 +16,7 @@ interface MyPageLayoutProps {
   | "plan-management"
   | "withdrawal"
   | "withdrawal-complete"
+  | "withdrawal-failed"
   | "store-introduction"
   onViewChange: (view: string) => void
   onEditProfile: () => void
