@@ -43,7 +43,6 @@ import type { Coupon } from "@/types/coupon"
 import { useInfiniteStores } from "@/hooks/useInfiniteStores"
 import { useFavorites } from "@/hooks/useFavorites"
 import { checkTodayUsage } from "@/utils/coupon-usage-check"
-import { mapGenresToIds } from "@/utils/genre-mapping"
 
 interface HomeLayoutProps {
   onMount?: () => void
@@ -449,10 +448,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         queryParams.append('area', stableSelectedAreas.join(','))
       }
       if (stableSelectedGenres.length > 0) {
-        const genreIds = await mapGenresToIds(stableSelectedGenres)
-        if (genreIds.length > 0) {
-          queryParams.append('genreId', genreIds.join(','))
-        }
+        queryParams.append('genreId', stableSelectedGenres.join(','))
       }
       if (isNearbyFilter && state.currentLocation) {
         queryParams.append('sortBy', 'distance')
