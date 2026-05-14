@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useState, useRef, useEffect } from "react"
-import type { AppAction, AppState, AppHandlers, Store, MyPageViewType } from '@hv-development/schemas'
+import type { AppAction, AppState, AppHandlers, Store } from '@hv-development/schemas'
 // 型定義の再読み込みを促すためのコメント
 import { appConfig } from '@/config/appConfig'
 import type { useAuth } from './useAuth'
