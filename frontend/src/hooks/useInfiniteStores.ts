@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Store } from '@/types/store'
 import type { ShopData } from '@hv-development/schemas'
 import { isFavoriteInStorage } from '@/lib/favorites-storage'
-import { mapGenresToIds } from '@/utils/genre-mapping'
 
 interface UseInfiniteStoresOptions {
   limit?: number
@@ -292,12 +291,9 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
         }
 
         // ジャンルフィルターを追加（複数ジャンルをカンマ区切りで送信）
-        // nomoca-kagawa-webではselectedGenresはジャンル値（"japanese"など）の配列なので、ジャンルIDに変換
+        // 管理画面に合わせて、selectedGenresは直接ジャンルIDの配列として扱う
         if (selectedGenres.length > 0) {
-          const genreIds = await mapGenresToIds(selectedGenres)
-          if (genreIds.length > 0) {
-            queryParams.append('genreId', genreIds.join(','))
-          }
+          queryParams.append('genreId', selectedGenres.join(','))
         }
 
         // 近くのお店: サーバーサイドで距離順ソート（全件ソート→ページング）
@@ -722,4 +718,3 @@ export function useInfiniteStores(options: UseInfiniteStoresOptions = {}): UseIn
     items,
   }
 }
-
