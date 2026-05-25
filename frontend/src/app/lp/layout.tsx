@@ -5,7 +5,7 @@ import { LpFlowButton } from '@/components/atoms/LpFlowButton'
 
 export const metadata: Metadata = {
   title: 'nomocaKagawa - 毎日1杯、無料で乾杯',
-  description: '「nomocaKagawa」は、毎日1軒につきドリンクが1杯無料になる新しい"Welcomeドリンク"サービスです。',
+  description: '香川県内のお店で使える便利でお得なサービス「nomoca Kagawa」。会員登録でポイントが貯まる、クーポンが使えるなど、お得な特典がいっぱい！',
   icons: {
     icon: [
       { url: '/favicon.png', type: 'image/png' },

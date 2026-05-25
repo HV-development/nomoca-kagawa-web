@@ -18,7 +18,7 @@ const plaster = Plaster({
 
 export const metadata: Metadata = {
   title: 'nomocaKagawa - 高松市のお得なサービス',
-  description: '高松市のお店で使える便利でお得なサービス「nomocaKagawa」。会員登録でポイントが貯まる、クーポンが使えるなど、お得な特典がいっぱい！',
+  description: '毎日一軒ごとにドリンク一杯が無料に！香川県の飲食店で使えるちょっとお得な"Welcomeドリンク"サービス「nomoca Kagawa」をご利用ください。',
   icons: {
     icon: [
       { url: '/favicon.png', type: 'image/png' },

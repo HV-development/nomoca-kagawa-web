@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Phone, Clock, MapPin } from "lucide-react"
 import { FavoriteButton } from "@/components/atoms/FavoriteButton"
 import type { Store } from "@/types/store"
-import { getGenreColor } from "@/utils/genre-colors"
+import { getGenreBackgroundClass, getGenreBackgroundStyle, getGenreBorderClass, getGenreBorderStyle, getGenreColor, getGenreTextClass, getGenreTextStyle } from "@/utils/genre-colors"
 import { formatDistance } from "@/utils/location"
 import { useEffect, useRef, useState } from "react"
 
@@ -32,6 +32,7 @@ export function StoreCard({
   const [isImageError, setIsImageError] = useState(false)
   const touchStartX = useRef<number | null>(null)
   const touchEndX = useRef<number | null>(null)
+  const genreColors = getGenreColor(store.genre)
 
   // 店舗に紐付く画像のみを使用（サンプル画像は除外）
   const images = Array.from(
@@ -150,7 +151,14 @@ export function StoreCard({
         {/* ジャンルバッジと連絡先アイコン */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className={`inline-block px-3 py-1.5 rounded-full text-sm font-medium border ${getGenreColor(store.genre).bg} ${getGenreColor(store.genre).text} ${getGenreColor(store.genre).border}`}>
+            <span
+              style={{
+                ...getGenreBackgroundStyle(genreColors),
+                ...getGenreBorderStyle(genreColors),
+                ...getGenreTextStyle(genreColors),
+              }}
+              className={`inline-block px-3 py-1.5 rounded-full text-sm font-medium border ${getGenreBackgroundClass(genreColors)} ${getGenreTextClass(genreColors)} ${getGenreBorderClass(genreColors)}`}
+            >
               {store.genreLabel}
             </span>
             {showDistance && store.distance !== undefined && (
