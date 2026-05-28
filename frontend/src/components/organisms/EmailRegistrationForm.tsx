@@ -9,7 +9,6 @@ import {
   NomocaUserRegistrationRequestSchema,
   type NomocaUserRegistrationRequest,
 } from "@hv-development/schemas"
-import { ZodError } from "zod"
 
 interface EmailRegistrationFormProps {
   initialEmail?: string
@@ -31,40 +30,35 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
   }, [initialEmail])
 
   const validateEmailField = (value: string) => {
-    try {
-      NomocaUserRegistrationRequestSchema.shape.email.parse(value)
+    const result = NomocaUserRegistrationRequestSchema.shape.email.safeParse(value)
+    if (result.success) {
       setErrors(prev => {
         const newErrors = { ...prev }
         delete newErrors.email
         return newErrors
       })
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const errorMessage = error.errors[0]?.message || "入力エラーです"
-        setErrors(prev => ({ ...prev, email: errorMessage }))
-      }
+    } else {
+      const errorMessage = result.error.issues[0]?.message || "入力エラーです"
+      setErrors(prev => ({ ...prev, email: errorMessage }))
     }
   }
 
   const validateForm = (): boolean => {
-    try {
-      NomocaUserRegistrationRequestSchema.parse(formData)
+    const result = NomocaUserRegistrationRequestSchema.safeParse(formData)
+    if (result.success) {
       setErrors({})
       return true
-    } catch (error) {
-      // ZodErrorかどうかをより確実にチェック
-      if (error instanceof ZodError) {
-        const newErrors: Partial<Record<keyof NomocaUserRegistrationRequest, string>> = {}
-        for (const issue of error.issues) {
-          const fieldName = issue.path[0] as keyof NomocaUserRegistrationRequest | undefined
-          if (fieldName === 'email') {
-            newErrors[fieldName] = issue.message
-          }
-        }
-        setErrors(newErrors)
-      }
-      return false
     }
+
+    const newErrors: Partial<Record<keyof NomocaUserRegistrationRequest, string>> = {}
+    for (const issue of result.error.issues) {
+      const fieldName = issue.path[0] as keyof NomocaUserRegistrationRequest | undefined
+      if (fieldName === 'email') {
+        newErrors[fieldName] = issue.message
+      }
+    }
+    setErrors(newErrors)
+    return false
   }
 
   // リアルタイムバリデーション（input時）
@@ -88,7 +82,7 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
       <div className="text-center mb-6">
         <h3 className="text-lg font-bold text-gray-900 mb-3">メールアドレス認証</h3>
         <div className="text-gray-600 space-y-2">
