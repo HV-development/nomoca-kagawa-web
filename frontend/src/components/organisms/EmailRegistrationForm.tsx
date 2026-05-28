@@ -5,62 +5,62 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/atoms/Button"
 import { Input } from "@/components/atoms/Input"
-import { UserRegistrationRequestSchema, type UserRegistrationRequest } from "@hv-development/schemas"
+import {
+  NomocaUserRegistrationRequestSchema,
+  type NomocaUserRegistrationRequest,
+} from "@hv-development/schemas"
 import { ZodError } from "zod"
 
 interface EmailRegistrationFormProps {
   initialEmail?: string
-  onSubmit: (data: UserRegistrationRequest) => void
+  onSubmit: (data: NomocaUserRegistrationRequest) => void
   onBack: () => void
   isLoading?: boolean
   errorMessage?: string
 }
 
 export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isLoading = false, errorMessage }: EmailRegistrationFormProps) {
-  const [formData, setFormData] = useState<UserRegistrationRequest>({
+  const [formData, setFormData] = useState<NomocaUserRegistrationRequest>({
     email: "",
-    campaignCode: ""
   })
-  const [errors, setErrors] = useState<Partial<Record<keyof UserRegistrationRequest, string>>>({})
+  const [errors, setErrors] = useState<Partial<Record<keyof NomocaUserRegistrationRequest, string>>>({})
 
   // initialEmailが変更された時にemailを更新
   useEffect(() => {
     setFormData(prev => ({ ...prev, email: initialEmail }))
   }, [initialEmail])
 
-  const validateField = (fieldName: keyof UserRegistrationRequest, value: string) => {
+  const validateEmailField = (value: string) => {
     try {
-      const fieldSchema = UserRegistrationRequestSchema.shape[fieldName];
-      fieldSchema.parse(value);
+      NomocaUserRegistrationRequestSchema.shape.email.parse(value)
       setErrors(prev => {
         const newErrors = { ...prev }
-        delete newErrors[fieldName]
+        delete newErrors.email
         return newErrors
       })
     } catch (error) {
       if (error instanceof ZodError) {
         const errorMessage = error.errors[0]?.message || "入力エラーです"
-        setErrors(prev => ({ ...prev, [fieldName]: errorMessage }))
+        setErrors(prev => ({ ...prev, email: errorMessage }))
       }
     }
   }
 
   const validateForm = (): boolean => {
     try {
-      UserRegistrationRequestSchema.parse(formData)
+      NomocaUserRegistrationRequestSchema.parse(formData)
       setErrors({})
       return true
     } catch (error) {
       // ZodErrorかどうかをより確実にチェック
-      if (error && typeof error === 'object' && 'errors' in error) {
-        const zodError = error as { errors: Array<{ path?: (string | number)[]; message: string }> };
-        const newErrors: Partial<Record<keyof UserRegistrationRequest, string>> = {}
-        zodError.errors.forEach((err) => {
-          const fieldName = err.path?.[0] as keyof UserRegistrationRequest
-          if (fieldName === 'email' || fieldName === 'campaignCode') {
-            newErrors[fieldName] = err.message
+      if (error instanceof ZodError) {
+        const newErrors: Partial<Record<keyof NomocaUserRegistrationRequest, string>> = {}
+        for (const issue of error.issues) {
+          const fieldName = issue.path[0] as keyof NomocaUserRegistrationRequest | undefined
+          if (fieldName === 'email') {
+            newErrors[fieldName] = issue.message
           }
-        })
+        }
         setErrors(newErrors)
       }
       return false
@@ -71,7 +71,7 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
   const handleEmailChange = (value: string) => {
     setFormData(prev => ({ ...prev, email: value }))
     if (value.trim()) {
-      validateField('email', value)
+      validateEmailField(value)
     } else {
       setErrors(prev => {
         const newErrors = { ...prev }
@@ -81,24 +81,10 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
     }
   }
 
-  const handleCampaignCodeChange = (value: string) => {
-    setFormData(prev => ({ ...prev, campaignCode: value }))
-    if (value.trim()) {
-      validateField('campaignCode', value)
-    } else {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors.campaignCode
-        return newErrors
-      })
-    }
-  }
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (validateForm()) {
-      onSubmit(formData)
-    }
+    if (!validateForm()) return
+    onSubmit({ email: formData.email.trim() })
   }
 
   return (
@@ -108,7 +94,10 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
         <div className="text-gray-600 space-y-2">
           <p>新規登録にはメールアドレスの認証が必要です。</p>
           <p>入力されたメールアドレスに認証用のリンクをお送りします。</p>
-          <p className="text-sm text-amber-600 font-medium">※現在、キャンペーンコードの入力が必須です</p>
+          {/*
+            キャンペーン終了に伴い非表示
+            <p className="text-sm text-amber-600 font-medium">※現在、キャンペーンコードの入力が必須です</p>
+          */}
         </div>
       </div>
 
@@ -137,28 +126,30 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
         error={errors.email}
       />
 
-      {/* キャンペーンコード入力 */}
-      <div>
-        <Input
-          type="text"
-          label="キャンペーンコード（必須）"
-          placeholder="例: WELCOME2024"
-          value={formData.campaignCode}
-          onChange={handleCampaignCodeChange}
-          error={errors.campaignCode as string}
-          required={true}
-        />
+      {/*
+        キャンペーン終了に伴い非表示
+        <div>
+          <Input
+            type="text"
+            label="キャンペーンコード（必須）"
+            placeholder="例: WELCOME2024"
+            value={formData.campaignCode}
+            onChange={handleCampaignCodeChange}
+            error={errors.campaignCode as string}
+            required={true}
+          />
 
-        <div className="text-center mt-3">
-          <button
-            type="button"
-            onClick={() => window.location.href = "/campaign"}
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium underline transition-colors"
-          >
-            キャンペーンコード・詳細はこちら
-          </button>
+          <div className="text-center mt-3">
+            <button
+              type="button"
+              onClick={() => window.location.href = "/campaign"}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium underline transition-colors"
+            >
+              キャンペーンコード・詳細はこちら
+            </button>
+          </div>
         </div>
-      </div>
+      */}
 
       <div className="space-y-3">
         <Button
