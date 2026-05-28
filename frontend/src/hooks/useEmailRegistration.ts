@@ -25,7 +25,6 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [lastEmail, setLastEmail] = useState<string>('')
-  const [lastCampaignCode, setLastCampaignCode] = useState<string>('')
   const [shopId, setShopId] = useState<string | undefined>(undefined)
   const hasCleanedSession = useRef(false)
 
@@ -112,7 +111,6 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
       await preRegister(registrationData.email, undefined, registrationData.referrerUserId, shopId)
       // メールアドレスを保存
       setLastEmail(data.email)
-      setLastCampaignCode('')
       // 送信完了画面に遷移
       setCurrentStep('complete')
     } catch (error) {
@@ -149,7 +147,7 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
       // URLパラメータから取得したreferrerUserIdを使用
       const referrerUserId = referrerUserIdFromUrl;
 
-      await preRegister(lastEmail, lastCampaignCode, referrerUserId || undefined, shopId)
+      await preRegister(lastEmail, undefined, referrerUserId || undefined, shopId)
       // 成功メッセージを表示（画面は complete のまま）
       setSuccessMessage('認証メールを再送信しました')
 
