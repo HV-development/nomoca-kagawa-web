@@ -21,6 +21,7 @@ interface EmailRegistrationFormProps {
 export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isLoading = false, errorMessage }: EmailRegistrationFormProps) {
   const [formData, setFormData] = useState<NomocaUserRegistrationRequest>({
     email: "",
+    campaignCode: "",
   })
   const [errors, setErrors] = useState<Partial<Record<keyof NomocaUserRegistrationRequest, string>>>({})
 
@@ -78,7 +79,10 @@ export function EmailRegistrationForm({ initialEmail = "", onSubmit, onBack, isL
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validateForm()) return
-    onSubmit({ email: formData.email.trim() })
+    onSubmit({
+      email: formData.email.trim(),
+      campaignCode: formData.campaignCode ?? "",
+    })
   }
 
   return (

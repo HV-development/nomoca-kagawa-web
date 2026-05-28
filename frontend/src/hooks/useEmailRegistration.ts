@@ -105,10 +105,11 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
       // 紹介者IDを含めてpreRegisterを呼び出し
       const registrationData: NomocaUserRegistrationRequest = {
         email: data.email,
+        campaignCode: data.campaignCode ?? '',
         ...(referrerUserId && referrerUserId.trim() !== '' ? { referrerUserId: referrerUserId.trim() } : {}),
       };
 
-      await preRegister(registrationData.email, undefined, registrationData.referrerUserId, shopId)
+      await preRegister(registrationData.email, registrationData.campaignCode, registrationData.referrerUserId, shopId)
       // メールアドレスを保存
       setLastEmail(data.email)
       // 送信完了画面に遷移
@@ -147,7 +148,7 @@ export function useEmailRegistration(): UseEmailRegistrationReturn {
       // URLパラメータから取得したreferrerUserIdを使用
       const referrerUserId = referrerUserIdFromUrl;
 
-      await preRegister(lastEmail, undefined, referrerUserId || undefined, shopId)
+      await preRegister(lastEmail, '', referrerUserId || undefined, shopId)
       // 成功メッセージを表示（画面は complete のまま）
       setSuccessMessage('認証メールを再送信しました')
 
