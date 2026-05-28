@@ -23,10 +23,12 @@ function EmailRegistrationContent() {
   // EmailRegistrationLayoutの型に合わせるためのラッパー関数
   const handleSubmit = (data: {
     email: string;
-    // キャンペーン終了に伴い非使用
-    // campaignCode: string;
+    campaignCode?: string;
   }) => {
-    handleEmailSubmit(data)
+    handleEmailSubmit({
+      ...data,
+      campaignCode: data.campaignCode ?? '',
+    })
   }
 
   return (
