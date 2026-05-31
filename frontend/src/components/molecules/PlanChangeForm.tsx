@@ -223,9 +223,10 @@ export function PlanChangeForm({ currentPlan, onPlanChange, onCancel, isLoading 
 
       // モーダル用のメッセージを作成
       const pointsMessage = typeof data.pointsGranted === 'number' && data.pointsGranted > 0
-        ? `${data.pointsGranted}ポイントを付与しました！`
-        : 'ポイントが付与されました！'
-      setModalMessage(`マイデジアプリとの連携が完了しました。\n\n${pointsMessage}\n\nお得なプランが表示されます。`)
+        ? `\n\n${data.pointsGranted}ポイントを付与しました！`
+        // : 'ポイントが付与されました！'
+        : ''
+      setModalMessage(`マイデジアプリとの連携が完了しました。${pointsMessage}\n\nお得なプランが表示されます。`)
 
       // モーダルを表示
       setShowSuccessModal(true)
