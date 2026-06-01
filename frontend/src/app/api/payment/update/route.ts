@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { buildApiUrl } from '@/lib/api-config'
 import { secureFetchWithCommonHeaders } from '@/lib/fetch-utils'
-import { createNoCacheResponse, SERVER_ERROR_MESSAGE } from '@/lib/response-utils'
+import { createNoCacheResponse } from '@/lib/response-utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Payment update API fetch error:', error)
     return createNoCacheResponse(
-      { error: SERVER_ERROR_MESSAGE },
+      { error: '継続課金変更中にエラーが発生しました' },
       { status: 500 }
     )
   }
