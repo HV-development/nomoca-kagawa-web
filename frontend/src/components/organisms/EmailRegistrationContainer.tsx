@@ -3,12 +3,12 @@
 import { HeaderLogo } from "../atoms/HeaderLogo"
 import { EmailRegistrationForm } from "@/components/organisms/EmailRegistrationForm"
 import { EmailRegistrationComplete } from "@/components/molecules/EmailRegistrationComplete"
-import { type UserRegistrationRequest } from "@hv-development/schemas"
+import { type NomocaUserRegistrationRequest } from "@hv-development/schemas"
 
 interface EmailRegistrationContainerProps {
   currentStep: "form" | "complete"
   email?: string
-  onSubmit: (data: UserRegistrationRequest) => void
+  onSubmit: (data: NomocaUserRegistrationRequest) => void
   onBack: () => void
   onBackToLogin: () => void
   onResend: () => void
