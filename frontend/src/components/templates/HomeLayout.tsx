@@ -19,6 +19,7 @@ import { CouponListPopup } from "../molecules/CouponListPopup"
 import { CouponUsedSuccessModal } from "../molecules/CouponUsedSuccessModal"
 import { LoginRequiredModal } from "../molecules/LoginRequiredModal"
 import { PlanRequiredModal } from "../molecules/PlanRequiredModal"
+import { PaymentPausedModal } from "../molecules/PaymentPausedModal"
 import { EmailChangeSuccessModal } from "../organisms/EmailChangeSuccessModal"
 import { StoreDetailPopup } from "@/components/organisms/StoreDetailPopup"
 import { Logo } from "../atoms/Logo"
@@ -385,6 +386,9 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const isPlanRequiredModalOpen = state.isPlanRequiredModalOpen
   const onPlanRequiredModalClose = handlers.handlePlanRequiredModalClose
   const onPlanRequiredModalRegister = handlers.handlePlanRequiredModalRegister
+  const isPaymentPausedModalOpen = state.isPaymentPausedModalOpen
+  const onPaymentPausedModalClose = handlers.handlePaymentPausedModalClose
+  const onPaymentPausedModalUpdate = handlers.handlePaymentPausedModalUpdate
   const onProfileEditSubmit = handlers.handleProfileEditSubmit
   const onEmailChangeSubmit = handlers.handleEmailChangeSubmit
   const onPasswordChangeSubmit = handlers.handlePasswordChangeSubmit
@@ -1211,6 +1215,13 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         isOpen={isPlanRequiredModalOpen}
         onClose={onPlanRequiredModalClose}
         onRegisterPlan={onPlanRequiredModalRegister}
+      />
+
+      {/* 継続課金の支払いが確認できないモーダル */}
+      <PaymentPausedModal
+        isOpen={isPaymentPausedModalOpen}
+        onClose={onPaymentPausedModalClose}
+        onUpdatePayment={onPaymentPausedModalUpdate}
       />
 
       {/* メールアドレス変更成功モーダル */}

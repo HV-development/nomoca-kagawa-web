@@ -12,6 +12,7 @@ export const initialState: AppState = {
     isSuccessModalOpen: false,
     isLoginRequiredModalOpen: false,
     isPlanRequiredModalOpen: false,
+    isPaymentPausedModalOpen: false,
     isStoreDetailPopupOpen: false,
     isFavoritesOpen: false,
     loginStep: "password",
@@ -59,6 +60,8 @@ export function appReducer(state: AppState, action: AppAction): AppState {
             return { ...state, isLoginRequiredModalOpen: action.payload }
         case 'SET_PLAN_REQUIRED_MODAL_OPEN':
             return { ...state, isPlanRequiredModalOpen: action.payload }
+        case 'SET_PAYMENT_PAUSED_MODAL_OPEN':
+            return { ...state, isPaymentPausedModalOpen: action.payload }
         case 'SET_STORE_DETAIL_POPUP_OPEN':
             return { ...state, isStoreDetailPopupOpen: action.payload }
         case 'SET_FAVORITES_OPEN':

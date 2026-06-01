@@ -1013,6 +1013,14 @@ export const useAppHandlers = (
             return
         }
 
+        // 継続課金の支払いが確認できず一時停止中（payment_suspended）の場合は支払確認を喚起
+        // ※ payment_suspended のプランは active 扱いされず auth.plan が null になるため、
+        //   プラン未契約チェックより前に判定する必要がある
+        if (auth.user?.isPaymentPaused) {
+            dispatch({ type: 'SET_PAYMENT_PAUSED_MODAL_OPEN', payload: true })
+            return
+        }
+
         // プラン未契約チェック
         if (!auth.plan) {
             dispatch({ type: 'SET_PLAN_REQUIRED_MODAL_OPEN', payload: true })
@@ -1029,7 +1037,7 @@ export const useAppHandlers = (
             navigation.navigateToView("coupon-confirmation")
             dispatch({ type: 'SET_COUPON_LIST_OPEN', payload: false })
         }
-    }, [auth.isAuthenticated, auth.plan, state.storeCoupons, navigation, dispatch, initializeAudio])
+    }, [auth.isAuthenticated, auth.user?.isPaymentPaused, auth.plan, state.storeCoupons, navigation, dispatch, initializeAudio])
 
     const handleConfirmCoupon = useCallback(async () => {
         if (!state.selectedCoupon || !state.selectedStore) {
@@ -1103,6 +1111,15 @@ export const useAppHandlers = (
     const handlePlanRequiredModalRegister = useCallback(() => {
         dispatch({ type: 'SET_PLAN_REQUIRED_MODAL_OPEN', payload: false })
         router.push('/plan-registration')
+    }, [dispatch, router])
+
+    const handlePaymentPausedModalClose = useCallback(() => {
+        dispatch({ type: 'SET_PAYMENT_PAUSED_MODAL_OPEN', payload: false })
+    }, [dispatch])
+
+    const handlePaymentPausedModalUpdate = useCallback(() => {
+        dispatch({ type: 'SET_PAYMENT_PAUSED_MODAL_OPEN', payload: false })
+        router.push('/payment-method-change')
     }, [dispatch, router])
 
     const handleCancelCoupon = useCallback(() => {
@@ -1448,6 +1465,8 @@ export const useAppHandlers = (
         handleLoginRequiredModalLogin,
         handlePlanRequiredModalClose,
         handlePlanRequiredModalRegister,
+        handlePaymentPausedModalClose,
+        handlePaymentPausedModalUpdate,
         handleCancelCoupon,
         handleUsageGuideClick,
         handleUsageGuideBack,
