@@ -1,7 +1,9 @@
 "use client"
 
 import React from "react"
-import type { AppAction, AppState, AppHandlers } from '@hv-development/schemas'
+import type { AppState, AppHandlers } from '@hv-development/schemas'
+import type { AppActionExt } from './useAppReducer'
+import type { AppHandlersExt } from '@/types/app-context'
 import type { useAuth } from './useAuth'
 import type { useNavigation } from './useNavigation'
 import type { useFilters } from './useFilters'
@@ -15,13 +17,13 @@ import { useMyPageHandlers } from './useMyPageHandlers'
 import { useNavigationHandlers } from './useNavigationHandlers'
 
 export const useAppHandlers = (
-    dispatch: React.Dispatch<AppAction>,
+    dispatch: React.Dispatch<AppActionExt>,
     auth: ReturnType<typeof useAuth>,
     navigation: ReturnType<typeof useNavigation>,
     filters: ReturnType<typeof useFilters>,
     router: AppRouterInstance,
     state: AppState
-): AppHandlers => {
+): AppHandlersExt => {
 
     const authHandlers = useAuthHandlers(dispatch, auth, navigation, router, state)
     const withdrawalHandlers = useWithdrawalHandlers(dispatch, auth, navigation)
@@ -40,5 +42,5 @@ export const useAppHandlers = (
         ...planHandlers,
         ...withdrawalHandlers,
         handleProfileEditSubmit: profileHandlers.handleProfileEditSubmit as AppHandlers['handleProfileEditSubmit'],
-    } as AppHandlers & { handleEmailChangeSuccessModalClose: () => void; handleStoreIntroduction: () => void; handleStoreIntroductionSubmit: (data: { referrerUserId?: string; shopId?: string }) => Promise<void> }
+    } as AppHandlersExt
 }

@@ -17,6 +17,8 @@ interface StoreListProps {
   className?: string
   showEmptyMessage?: boolean
   isLoading?: boolean
+  /** 支払い一時停止中で「今すぐクーポンGET」を無効化するか */
+  isCouponDisabled?: boolean
 }
 
 export function StoreList({
@@ -31,6 +33,7 @@ export function StoreList({
   className = "",
   showEmptyMessage = true,
   isLoading = false,
+  isCouponDisabled = false,
 }: StoreListProps) {
   // ローディング中はスピナーを表示
   if (isLoading) {
@@ -67,6 +70,7 @@ export function StoreList({
             onStoreClick={onStoreClick ?? (() => { })}
             showDistance={showDistance}
             actionsLayout={actionsLayout}
+            isCouponDisabled={isCouponDisabled}
           />
         </FadeInComponent>
       ))}
