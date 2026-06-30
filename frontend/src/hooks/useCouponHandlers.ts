@@ -131,6 +131,16 @@ export const useCouponHandlers = (
             return
         }
 
+        // paused は CouponListPopup の disable では拾えない経路（状態取得前に開いていた / 途中で paused 化）
+        // への二重防御。API 側 (409 SUBSCRIPTION_PAUSED) でも止まるが、ここで先に遮断する。
+        if (auth.plan.status === 'paused') {
+            dispatch({
+                type: 'SET_SUBSCRIPTION_PAUSED_MODAL',
+                payload: { open: true, mode: 'preCheck' },
+            })
+            return
+        }
+
         initializeAudio()
 
         const coupon = state.storeCoupons.find((c) => c.id === couponId)
