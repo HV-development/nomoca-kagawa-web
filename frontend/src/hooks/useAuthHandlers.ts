@@ -79,6 +79,7 @@ export const useAuthHandlers = (
             }
 
             let hasPlan = false
+            let isCancelledOnly = false
             try {
                 const userResponse = await fetch('/api/user/me', {
                     credentials: 'include',
@@ -87,7 +88,8 @@ export const useAuthHandlers = (
                 if (userResponse.ok) {
                     const userData = await userResponse.json()
                     hasPlan = userData.plan !== null && userData.plan !== undefined
-                    auth.login(userData, userData.plan, [], [])
+                    isCancelledOnly = userData.hasOnlyCancelledPlans === true
+                    auth.login(userData, userData.plan, [], [], isCancelledOnly)
                 }
             } catch {
                 // エラー処理
@@ -98,8 +100,9 @@ export const useAuthHandlers = (
                 return
             }
 
+            // cancelled のみのユーザーは home のバナーで再契約誘導するため、plan-registration に強制遷移しない
             let targetPath: string
-            if (!hasPlan) {
+            if (!hasPlan && !isCancelledOnly) {
                 targetPath = '/plan-registration'
             } else {
                 targetPath = '/home'
