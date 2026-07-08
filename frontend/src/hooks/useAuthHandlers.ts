@@ -89,7 +89,7 @@ export const useAuthHandlers = (
                     const userData = await userResponse.json()
                     hasPlan = userData.plan !== null && userData.plan !== undefined
                     isCancelledOnly = userData.hasOnlyCancelledPlans === true
-                    auth.login(userData, userData.plan, [], [], isCancelledOnly)
+                    auth.login(userData, userData.plan, [], [])
                 }
             } catch {
                 // エラー処理
