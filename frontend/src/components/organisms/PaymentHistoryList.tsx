@@ -21,13 +21,11 @@ export function PaymentHistoryList({
   const backgroundColorClass = "bg-gradient-to-br from-green-50 to-green-100"
 
   const formatDate = (date: Date | string) => {
-    // receivedTime はJSTの日時をそのままUTCフィールドに保持しているため、
-    // ブラウザのタイムゾーンに依存させず、UTC値のまま（＝JSTの日付のまま）描画する。
     const d = new Date(date)
-    const year = d.getUTCFullYear()
-    const month = d.getUTCMonth() + 1
-    const day = d.getUTCDate()
-    return `${year}年${month}月${day}日`
+    // receivedTime が null の行は paidAt が空文字 "" で返り、new Date("") が Invalid Date になる。
+    // date-fns の format に Invalid Date を渡すと RangeError で落ちるため防御する
+    if (Number.isNaN(d.getTime())) return "-"
+    return format(d, "yyyy年M月d日 HH:mm", { locale: ja })
   }
 
   const formatPaymentId = (paymentId: string) => {
