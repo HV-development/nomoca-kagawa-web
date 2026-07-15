@@ -184,9 +184,9 @@ export default function RegisterConfirmationPage() {
           // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
           // window.location.hrefを使用して強制的に遷移
           if (typeof window !== 'undefined') {
-            window.location.href = '/plan-registration?flow=signup'
+            window.location.href = '/plan-registration'
           } else {
-            router.push('/plan-registration?flow=signup')
+            router.push('/plan-registration')
           }
         }
       } else {
@@ -224,9 +224,9 @@ export default function RegisterConfirmationPage() {
     // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     // window.location.hrefを使用して強制的に遷移
     if (typeof window !== 'undefined') {
-      window.location.href = '/plan-registration?flow=signup&mydigiAppLinked=true'
+      window.location.href = '/plan-registration?mydigiAppLinked=true'
     } else {
-      router.push('/plan-registration?flow=signup&mydigiAppLinked=true')
+      router.push('/plan-registration?mydigiAppLinked=true')
     }
   }
 
@@ -235,9 +235,9 @@ export default function RegisterConfirmationPage() {
     // マイデジアプリ連携なしでプラン登録画面に遷移
     // Cookieベースのセッション管理に変更したため、sessionStorageは使用しない
     if (typeof window !== 'undefined') {
-      window.location.href = '/plan-registration?flow=signup'
+      window.location.href = '/plan-registration'
     } else {
-      router.push('/plan-registration?flow=signup')
+      router.push('/plan-registration')
     }
   }
 
