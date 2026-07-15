@@ -46,6 +46,7 @@ export function usePlanRegistration() {
   const [mydigiAppLinked, setMydigiAppLinked] = useState<boolean | null>(null)
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false)
   const [isPaymentMethodChangeOnly, setIsPaymentMethodChangeOnly] = useState<boolean>(false)
+  const [accountStatus, setAccountStatus] = useState<string | null>(null)
   const [userId, setUserId] = useState<string>('')
   const router = useRouter()
 
@@ -72,6 +73,7 @@ export function usePlanRegistration() {
       }
 
       setMydigiAppLinked(userData.mydigiAppLinked === true)
+      setAccountStatus(userData.status ?? null)
 
       const hasCard = userData.userCards && Array.isArray(userData.userCards) && userData.userCards.length > 0
       setHasPaymentMethod(!!hasCard)
@@ -372,6 +374,7 @@ export function usePlanRegistration() {
     mydigiAppLinked,
     hasPaymentMethod,
     isPaymentMethodChangeOnly,
+    accountStatus,
     handlePaymentMethodRegister,
     handleMydigiAppLinked,
     handleCancel,

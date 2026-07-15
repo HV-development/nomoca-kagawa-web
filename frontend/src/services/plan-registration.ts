@@ -7,6 +7,7 @@ import { ApiClient, requestPayPayPayment, requestQrPayment } from '@/lib/api-cli
 export interface UserData {
   id?: string
   email?: string
+  status?: string
   mydigiAppLinked?: boolean
   userCards?: unknown[]
   plan?: {
