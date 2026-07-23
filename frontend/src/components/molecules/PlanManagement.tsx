@@ -57,7 +57,7 @@ export function PlanManagement({ plan, onChangePlan, onChangePaymentMethod, hasP
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="text-base font-semibold text-gray-500 line-through">
-                    ¥{plan.price.toLocaleString()}
+                    ¥{(plan.discountPrice ?? plan.price).toLocaleString()}
                   </span>
                   <span className="text-2xl font-bold text-[#3A8A88]">¥0</span>
                 </div>
