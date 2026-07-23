@@ -4,6 +4,7 @@ import { Crown, Settings } from "lucide-react"
 import { format } from "date-fns"
 import { ja } from "date-fns/locale"
 import type { Plan } from "../../types/user"
+import { formatJstYmd, computeFreePeriodEndYmd } from "@/lib/date-utils"
 
 export interface PlanManagementCampaignInfo {
   freeDaysApplied: number
@@ -19,18 +20,6 @@ interface PlanManagementProps {
   hasPaymentMethod?: boolean
   className?: string
   campaignInfo?: PlanManagementCampaignInfo | null
-}
-
-function formatJstYmd(iso: string): string {
-  const d = new Date(iso)
-  const jst = new Date(d.getTime() + 9 * 60 * 60 * 1000 - d.getTimezoneOffset() * 60 * 1000)
-  return `${jst.getUTCFullYear()}年${jst.getUTCMonth() + 1}月${jst.getUTCDate()}日`
-}
-
-function computeFreePeriodEnd(iso: string): string {
-  const d = new Date(iso)
-  d.setUTCDate(d.getUTCDate() - 1)
-  return formatJstYmd(d.toISOString())
 }
 
 export function PlanManagement({ plan, onChangePlan, onChangePaymentMethod, hasPaymentMethod: _hasPaymentMethod, className = "", campaignInfo }: PlanManagementProps) {
@@ -75,7 +64,7 @@ export function PlanManagement({ plan, onChangePlan, onChangePaymentMethod, hasP
               </div>
               <div className="space-y-2">
                 <div className="space-y-2 text-xs text-green-900">
-                  <div>無料期間：{formatJstYmd(campaignInfo.appliedAt)}〜{computeFreePeriodEnd(campaignInfo.firstBillingDate)}</div>
+                  <div>無料期間：{formatJstYmd(campaignInfo.appliedAt)}〜{computeFreePeriodEndYmd(campaignInfo.firstBillingDate)}</div>
                   <div>初回決済日：{formatJstYmd(campaignInfo.firstBillingDate)}</div>
                 </div>
                 <p className="text-[8px] leading-relaxed text-gray-600">
