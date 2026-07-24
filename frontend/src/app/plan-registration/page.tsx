@@ -12,7 +12,7 @@ export default function PlanRegistrationPage() {
     mydigiAppLinked,
     hasPaymentMethod,
     isPaymentMethodChangeOnly,
-    isNewSignupFlow,
+    accountStatus,
     handlePaymentMethodRegister,
     handleMydigiAppLinked,
     handleCancel,
@@ -43,7 +43,7 @@ export default function PlanRegistrationPage() {
       onMydigiAppLinked={handleMydigiAppLinked}
       hasPaymentMethod={hasPaymentMethod}
       isPaymentMethodChangeOnly={isPaymentMethodChangeOnly}
-      isNewSignupFlow={isNewSignupFlow}
+      accountStatus={accountStatus}
     />
   )
 }
