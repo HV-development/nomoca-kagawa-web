@@ -105,7 +105,10 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
   const lastSyncedStoresLengthRef = useRef(0)
   const currentView = navigation.currentView
   const myPageView = navigation.myPageView
-  const campaignInfo = useCurrentCampaign(myPageView === "plan-management")
+  const campaignInfo = useCurrentCampaign(
+    myPageView === "plan-management" ||
+    myPageView === "withdrawal"
+  )
   const isAuthenticated = auth.isAuthenticated
   const isLoading = auth.isLoading
   const signupData = state.signupData
@@ -906,6 +909,7 @@ export function HomeLayout({ onMount }: HomeLayoutProps) {
         newEmail={newEmail}
         currentUserRank={currentUserRank}
         isEmailChangeSuccessModalOpen={isEmailChangeSuccessModalOpen}
+        campaignInfo={campaignInfo}
       />
     )
   }
