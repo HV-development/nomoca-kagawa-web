@@ -7,8 +7,12 @@ import { ApiClient, requestPayPayPayment, requestQrPayment } from '@/lib/api-cli
 export interface UserData {
   id?: string
   email?: string
+  status?: string
   mydigiAppLinked?: boolean
   userCards?: unknown[]
+  plan?: {
+    status?: string
+  } | null
 }
 
 export interface CardRegisterResponse {
@@ -84,6 +88,7 @@ export async function registerCreditCard(params: {
   customerId: string
   userEmail: string
   planId?: string
+  campaignCode?: string
 }): Promise<CardRegisterResponse> {
   const requestBody: Record<string, string> = {
     customerId: params.customerId,
@@ -92,6 +97,10 @@ export async function registerCreditCard(params: {
 
   if (params.planId) {
     requestBody.planId = params.planId
+  }
+
+  if (params.campaignCode) {
+    requestBody.campaignCode = params.campaignCode
   }
 
   const response = await fetch('/api/payment/register', {

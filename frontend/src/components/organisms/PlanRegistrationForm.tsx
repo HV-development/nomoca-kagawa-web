@@ -4,6 +4,7 @@ import { CreditCard, AlertCircle, CheckCircle, Smartphone, QrCode } from "lucide
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { PlanCard } from "@/components/molecules/PlanCard"
+import { CampaignCodeCard, type AppliedCampaign } from "@/components/molecules/CampaignCodeCard"
 import { Button } from "@/components/atoms/Button"
 import { Input } from "@/components/atoms/Input"
 import { Modal } from "@/components/atoms/Modal"
@@ -11,9 +12,10 @@ import { FadeInComponent } from "@/components/atoms/ProgressiveLoader"
 import { PlanListResponse } from '@hv-development/schemas'
 import type { PaymentMethodType } from '@/types/payment'
 import { ApiClient } from '@/lib/api-client';
+import { useCampaignAvailability } from '@/hooks/useCampaignAvailability'
 
 interface PlanRegistrationFormProps {
-  onPaymentMethodRegister: (planId: string, paymentMethod: PaymentMethodType) => void
+  onPaymentMethodRegister: (planId: string, paymentMethod: PaymentMethodType, campaignCode?: string) => void
   onCancel: () => void
   isLoading?: boolean
   plans: PlanListResponse['plans']
@@ -77,7 +79,9 @@ export function PlanRegistrationForm({
   const [modalMessage, setModalMessage] = useState<string>("")
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType>('CreditCard')
   const [allPlansDisplayed, setAllPlansDisplayed] = useState(false)
+  const [appliedCampaign, setAppliedCampaign] = useState<AppliedCampaign | null>(null)
   const displayedPlansCount = useRef(0)
+  const hasActiveCampaign = useCampaignAvailability(!isPaymentMethodChangeOnly)
 
   // 選択中のプランがサブスクリプションプランかを判定
   const selectedPlanData = plans.find(p => p.id === selectedPlan)
@@ -119,7 +123,8 @@ export function PlanRegistrationForm({
     }
 
     if (selectedPlan || isPaymentMethodChangeOnly) {
-      onPaymentMethodRegister(selectedPlan, selectedPaymentMethod)
+      const campaignCode = selectedPlanData?.is_subscription ? appliedCampaign?.code : undefined
+      onPaymentMethodRegister(selectedPlan, selectedPaymentMethod, campaignCode)
     }
   }
 
@@ -196,6 +201,14 @@ export function PlanRegistrationForm({
         </div>
       )}
 
+      {/* キャンペーンコード入力カード */}
+      {!isPaymentMethodChangeOnly && hasActiveCampaign && (
+        <CampaignCodeCard
+          appliedCampaign={appliedCampaign}
+          onApplied={setAppliedCampaign}
+        />
+      )}
+
       {/* 連携完了表示（連携済みまたは連携したIDがある場合、支払い方法変更のみの場合は非表示） */}
       {!isPaymentMethodChangeOnly && (mydigiAppLinked || linkedMydigiAppId) && (
         <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
@@ -224,8 +237,12 @@ export function PlanRegistrationForm({
           ) : (
             plans.map((plan, index) => {
               // APIから返される割引価格を使用
-              const hasDiscount = plan.discount_price !== null && plan.discount_price !== undefined;
-              const displayPrice = hasDiscount ? plan.discount_price : plan.price;
+              const hasDiscount = plan.discount_price != null;
+              const displayPrice = hasDiscount ? (plan.discount_price as number) : plan.price;
+              const campaignActive = appliedCampaign !== null && plan.is_subscription
+              const effectivePrice = `¥${displayPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`
+              const originalPrice = hasDiscount ? `¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}` : undefined
+              const campaignPrice = `¥0/最初の${appliedCampaign?.freeDays ?? 30}日間`
 
               return (
                 <PlanFadeIn key={plan.id} delay={index * 100} onDisplayed={handlePlanDisplayed}>
@@ -233,8 +250,8 @@ export function PlanRegistrationForm({
                     title={plan.name}
                     description={plan.description || ''}
                     features={plan.plan_content?.features || []}
-                    price={`¥${displayPrice.toLocaleString()}${plan.is_subscription ? '/月' : ''}`}
-                    originalPrice={hasDiscount ? `¥${plan.price.toLocaleString()}${plan.is_subscription ? '/月' : ''}` : undefined}
+                    price={campaignActive ? campaignPrice : effectivePrice}
+                    originalPrice={campaignActive ? effectivePrice : originalPrice}
                     badge={hasDiscount ? 'マイデジ連携でお得' : (plan.status === 'active' ? '利用可能' : undefined)}
                     isSelected={selectedPlan === plan.id}
                     onSelect={() => handlePlanSelect(plan.id)}
@@ -257,12 +274,30 @@ export function PlanRegistrationForm({
               </div>
               <div className="mb-3">
                 <div className="flex flex-col items-center">
-                  <span className="text-sm line-through text-gray-500 mb-1">
-                    ¥980/月
-                  </span>
-                  <p className="text-3xl font-bold text-blue-600 mb-1">
-                    ¥480/月
-                  </p>
+                  {appliedCampaign ? (
+                    <>
+                      <span className="text-sm line-through text-gray-500 mb-1">
+                        ¥480/月
+                      </span>
+                      <div className="flex items-end gap-1 mb-1">
+                        <p className="text-3xl font-bold text-blue-600 leading-none">
+                          ¥0
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          /最初の{appliedCampaign.freeDays}日間
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-sm line-through text-gray-500 mb-1">
+                        ¥980/月
+                      </span>
+                      <p className="text-3xl font-bold text-blue-600 mb-1">
+                        ¥480/月
+                      </p>
+                    </>
+                  )}
                   <p className="text-gray-700 text-sm font-medium">
                     マイデジアプリ連携で
                   </p>
