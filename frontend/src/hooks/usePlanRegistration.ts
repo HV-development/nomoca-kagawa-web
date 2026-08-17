@@ -47,6 +47,7 @@ export function usePlanRegistration() {
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false)
   const [isPaymentMethodChangeOnly, setIsPaymentMethodChangeOnly] = useState<boolean>(false)
   const [accountStatus, setAccountStatus] = useState<string | null>(null)
+  const [entryFlow, setEntryFlow] = useState<string | null>(null)
   const [userId, setUserId] = useState<string>('')
   const router = useRouter()
 
@@ -105,6 +106,8 @@ export function usePlanRegistration() {
     if (typeof window === 'undefined') return
 
     const urlParams = new URLSearchParams(window.location.search)
+
+    setEntryFlow(urlParams.get('flow'))
 
     if (urlParams.get('payment-method-change') === 'true') {
       setIsPaymentMethodChangeOnly(true)
@@ -381,6 +384,7 @@ export function usePlanRegistration() {
     hasPaymentMethod,
     isPaymentMethodChangeOnly,
     accountStatus,
+    entryFlow,
     handlePaymentMethodRegister,
     handleMydigiAppLinked,
     handleCancel,
