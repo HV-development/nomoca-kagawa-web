@@ -17,6 +17,7 @@ import {
   requestQrPayment,
 } from '@/services/plan-registration'
 import type { UserData } from '@/services/plan-registration'
+import type { PlanRegistrationEntryFlow } from '@/components/organisms/PlanRegistrationContainer'
 
 function generateCustomerId(emailStr: string): string {
   let hash = 0
@@ -47,7 +48,7 @@ export function usePlanRegistration() {
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false)
   const [isPaymentMethodChangeOnly, setIsPaymentMethodChangeOnly] = useState<boolean>(false)
   const [accountStatus, setAccountStatus] = useState<string | null>(null)
-  const [entryFlow, setEntryFlow] = useState<string | null>(null)
+  const [entryFlow, setEntryFlow] = useState<PlanRegistrationEntryFlow | null>(null)
   const [userId, setUserId] = useState<string>('')
   const router = useRouter()
 
@@ -107,7 +108,7 @@ export function usePlanRegistration() {
 
     const urlParams = new URLSearchParams(window.location.search)
 
-    setEntryFlow(urlParams.get('flow'))
+    setEntryFlow(urlParams.get('flow') === 'signup' ? 'signup' : null)
 
     if (urlParams.get('payment-method-change') === 'true') {
       setIsPaymentMethodChangeOnly(true)
