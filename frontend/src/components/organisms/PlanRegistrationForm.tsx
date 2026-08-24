@@ -25,6 +25,7 @@ interface PlanRegistrationFormProps {
   onMydigiAppLinked?: () => void
   hasPaymentMethod?: boolean
   isPaymentMethodChangeOnly?: boolean
+  isSignupFlow?: boolean
 }
 
 // プラン表示完了を検知するコンポーネント
@@ -70,6 +71,7 @@ export function PlanRegistrationForm({
   onMydigiAppLinked,
   hasPaymentMethod = false,
   isPaymentMethodChangeOnly = false,
+  isSignupFlow = false,
 }: PlanRegistrationFormProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>(plans.length > 0 ? plans[0].id : "")
   const [mydigiAppId, setMydigiAppId] = useState<string>("")
@@ -343,7 +345,7 @@ export function PlanRegistrationForm({
                 </div>
                 <div className="text-center">
                   <a
-                    href="/mydigi-app-guide"
+                    href={isSignupFlow ? '/mydigi-app-guide?flow=signup' : '/mydigi-app-guide'}
                     className="text-xs text-blue-600 hover:text-blue-800 underline"
                   >
                     ユーザーID取得手順はこちら

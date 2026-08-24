@@ -18,6 +18,7 @@ import {
   requestQrPayment,
 } from '@/services/plan-registration'
 import type { UserData } from '@/services/plan-registration'
+import type { PlanRegistrationEntryFlow } from '@/components/organisms/PlanRegistrationContainer'
 
 export type PlanRegistrationCampaign = {
   code: string
@@ -53,6 +54,7 @@ export function usePlanRegistration() {
   const [hasPaymentMethod, setHasPaymentMethod] = useState<boolean>(false)
   const [isPaymentMethodChangeOnly, setIsPaymentMethodChangeOnly] = useState<boolean>(false)
   const [accountStatus, setAccountStatus] = useState<string | null>(null)
+  const [entryFlow, setEntryFlow] = useState<PlanRegistrationEntryFlow | null>(null)
   const [userId, setUserId] = useState<string>('')
   const router = useRouter()
 
@@ -112,6 +114,8 @@ export function usePlanRegistration() {
 
     const urlParams = new URLSearchParams(window.location.search)
 
+    setEntryFlow(urlParams.get('flow') === 'signup' ? 'signup' : null)
+
     if (urlParams.get('payment-method-change') === 'true') {
       setIsPaymentMethodChangeOnly(true)
     }
@@ -132,19 +136,6 @@ export function usePlanRegistration() {
     window.addEventListener('focus', handleFocus)
     return () => window.removeEventListener('focus', handleFocus)
   }, [email, refreshUserInfo])
-
-  // pending ユーザーが /plan-registration からブラウザバックで離脱するのを防ぐ
-  useEffect(() => {
-    if (!isClient || accountStatus !== 'pending') return
-    if (typeof window === 'undefined') return
-
-    window.history.pushState(null, '', window.location.href)
-    const handlePopState = () => {
-      window.history.pushState(null, '', window.location.href)
-    }
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [isClient, accountStatus])
 
   useEffect(() => {
     if (isClient && mydigiAppLinked === null) {
@@ -439,6 +430,7 @@ export function usePlanRegistration() {
     hasPaymentMethod,
     isPaymentMethodChangeOnly,
     accountStatus,
+    entryFlow,
     handlePaymentMethodRegister,
     handleMydigiAppLinked,
     handleCancel,
