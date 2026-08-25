@@ -13,9 +13,10 @@ import { PlanListResponse } from '@hv-development/schemas'
 import type { PaymentMethodType } from '@/types/payment'
 import { ApiClient } from '@/lib/api-client';
 import { useCampaignAvailability } from '@/hooks/useCampaignAvailability'
+import type { PlanRegistrationCampaign } from '@/hooks/usePlanRegistration'
 
 interface PlanRegistrationFormProps {
-  onPaymentMethodRegister: (planId: string, paymentMethod: PaymentMethodType, campaignCode?: string) => void
+  onPaymentMethodRegister: (planId: string, paymentMethod: PaymentMethodType, campaign?: PlanRegistrationCampaign) => void
   onCancel: () => void
   isLoading?: boolean
   plans: PlanListResponse['plans']
@@ -24,6 +25,7 @@ interface PlanRegistrationFormProps {
   onMydigiAppLinked?: () => void
   hasPaymentMethod?: boolean
   isPaymentMethodChangeOnly?: boolean
+  isSignupFlow?: boolean
 }
 
 // プラン表示完了を検知するコンポーネント
@@ -69,6 +71,7 @@ export function PlanRegistrationForm({
   onMydigiAppLinked,
   hasPaymentMethod = false,
   isPaymentMethodChangeOnly = false,
+  isSignupFlow = false,
 }: PlanRegistrationFormProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>(plans.length > 0 ? plans[0].id : "")
   const [mydigiAppId, setMydigiAppId] = useState<string>("")
@@ -123,8 +126,10 @@ export function PlanRegistrationForm({
     }
 
     if (selectedPlan || isPaymentMethodChangeOnly) {
-      const campaignCode = selectedPlanData?.is_subscription ? appliedCampaign?.code : undefined
-      onPaymentMethodRegister(selectedPlan, selectedPaymentMethod, campaignCode)
+      const campaign = selectedPlanData?.is_subscription && appliedCampaign
+        ? { code: appliedCampaign.code, freeDays: appliedCampaign.freeDays }
+        : undefined
+      onPaymentMethodRegister(selectedPlan, selectedPaymentMethod, campaign)
     }
   }
 
@@ -340,7 +345,7 @@ export function PlanRegistrationForm({
                 </div>
                 <div className="text-center">
                   <a
-                    href="/mydigi-app-guide"
+                    href={isSignupFlow ? '/mydigi-app-guide?flow=signup' : '/mydigi-app-guide'}
                     className="text-xs text-blue-600 hover:text-blue-800 underline"
                   >
                     ユーザーID取得手順はこちら
