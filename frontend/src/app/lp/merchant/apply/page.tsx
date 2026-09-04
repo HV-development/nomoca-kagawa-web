@@ -76,11 +76,10 @@ export default function MerchantApplyPage() {
     })
   }
 
-  const validateField = (field: keyof MerchantApplyFormData, value: string) => {
+  const getFieldError = (field: keyof MerchantApplyFormData, value: string): string | null => {
     if (field === 'address2') {
       // address2は任意項目なので、バリデーション不要
-      clearFieldError(field)
-      return
+      return null
     }
 
     // accountEmailは独自のスキーマ、それ以外はMerchantFormSchemaでバリデーション
@@ -89,17 +88,24 @@ export default function MerchantApplyPage() {
       : MerchantFormSchema.shape[field as keyof typeof MerchantFormSchema.shape]
 
     if (!fieldSchema) {
-      clearFieldError(field)
-      return
+      return null
     }
 
     const result = fieldSchema.safeParse(value)
     if (result.success) {
-      clearFieldError(field)
-      return
+      return null
     }
 
-    setErrors((prev) => ({ ...prev, [field]: result.error.errors[0]?.message || '入力エラーです' }))
+    return result.error.errors[0]?.message || '入力エラーです'
+  }
+
+  const validateField = (field: keyof MerchantApplyFormData, value: string) => {
+    const message = getFieldError(field, value)
+    if (message) {
+      setErrors((prev) => ({ ...prev, [field]: message }))
+      return
+    }
+    clearFieldError(field)
   }
 
   const handleAddressSearch = async () => {
@@ -156,22 +162,34 @@ export default function MerchantApplyPage() {
   }
 
   const validateForm = (): FormErrors | null => {
+    const newErrors: FormErrors = {}
+
+    ;(Object.keys(formData) as Array<keyof MerchantApplyFormData>).forEach((field) => {
+      const message = getFieldError(field, formData[field] ?? '')
+      if (message) {
+        newErrors[field] = message
+      }
+    })
+
     const result = CreateMerchantSchema.safeParse({
       ...formData,
       applications: ['nomocaKagawa'] // デフォルト値
     })
 
-    if (result.success) {
+    if (!result.success) {
+      result.error.errors.forEach((err) => {
+        const field = err.path[0]
+        if (field && typeof field === 'string' && !(field in newErrors)) {
+          newErrors[field] = err.message
+        }
+      })
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+      setErrors({})
       return null
     }
 
-    const newErrors: FormErrors = {}
-    result.error.errors.forEach((err) => {
-      const field = err.path[0]
-      if (field && typeof field === 'string') {
-        newErrors[field] = err.message
-      }
-    })
     setErrors(newErrors)
     return newErrors
   }
